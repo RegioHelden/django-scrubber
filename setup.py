@@ -45,13 +45,13 @@ readme = open('README.md').read()
 history = open('CHANGELOG.md').read()
 
 setup(
-    name='django_scrubber',
+    name='django-scrubber',
     version=version,
     description="""Data Anonymizer for Django""",
     long_description=readme + '\n\n' + history,
     author='RegioHelden GmbH',
     author_email='entwicklung@regiohelden.de',
-    url='https://github.com/regiohelden/django_scrubber',
+    url='https://github.com/regiohelden/django-scrubber',
     packages=[
         'django_scrubber',
     ],
@@ -61,7 +61,6 @@ setup(
     ],
     license="BSD",
     zip_safe=False,
-    keywords='django_scrubber',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Django',

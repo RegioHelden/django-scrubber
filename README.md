@@ -9,6 +9,22 @@ To accomplish this, `django_scrubber` should be plugged in a step during the cre
 
 Simply mark the fields you want to anonymize and call the `scrub_data` management command. Data will be replaced based on different *scrubbers* (see below), which define how the anonymous content will be generated.
 
+## Installation
+
+Simply run:
+```
+pip install django-scrubber
+```
+
+And add `django_scrubber` to your django `INSTALLED_APPS`. I.e.: in `settings.py` add:
+```
+INSTALLED_APPS = [
+  ...
+  'django_scrubber',
+  ...
+]
+```
+
 ## Selecting data to scrub
 
 There are a few different ways to select which data should be scrubbed, namely: explicitly per model field; or globally per name or field type.
