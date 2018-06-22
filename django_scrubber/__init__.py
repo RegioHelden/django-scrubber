@@ -14,3 +14,7 @@ defaults = {
 # can be replaced with ChainMap if we only support py3
 def settings_with_fallback(key):
     return getattr(settings, key, defaults[key])
+
+
+class ScrubberInitError(Exception):
+    pass

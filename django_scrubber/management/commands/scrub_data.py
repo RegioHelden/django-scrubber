@@ -2,17 +2,13 @@ from __future__ import absolute_import
 
 import logging
 
-from faker import Faker
-
 from django.conf import settings
 from django.db.models import F
-from django.core.management.base import BaseCommand
+from django.db.utils import IntegrityError
+from django.core.management.base import BaseCommand, CommandError
 from django.apps import apps
-from django.utils.translation import to_locale, get_language
 
 from ... import settings_with_fallback
-from ...models import FakeData
-from ...scrubbers import Faker as FakerScrubber
 
 logger = logging.getLogger(__name__)
 
@@ -32,19 +28,6 @@ class Command(BaseCommand):
             # avoid logger, otherwise we might silently fail if we're on live and logging is being sent somewhere else
             self.stderr.write('this command should only be run with DEBUG=True, to avoid running on live systems')
             return False
-
-        faker = Faker(locale=to_locale(get_language()))
-
-        logger.info('Initializing fake scrub data')
-        FakeData.objects.all().delete()
-        fakedata = []
-        for provider in FakerScrubber.PROVIDERS:
-            # if we don't reset the seed for each provider, registering a new one might change all
-            # data for subsequent providers
-            faker.seed(settings_with_fallback('SCRUBBER_RANDOM_SEED'))
-            for i in range(settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')):
-                fakedata.append(FakeData(provider=provider, provider_offset=i, content=faker.format(provider)))
-        FakeData.objects.bulk_create(fakedata)
 
         global_scrubbers = settings_with_fallback('SCRUBBER_GLOBAL_SCRUBBERS')
         for model in apps.get_models():
@@ -73,9 +56,13 @@ class Command(BaseCommand):
 
             logger.info('Scrubbing %s with %s', model._meta.label, realized_scrubbers)
 
-            model.objects.annotate(
-                mod_pk=F('pk') % settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')
-                ).update(**realized_scrubbers)
+            try:
+                model.objects.annotate(
+                    mod_pk=F('pk') % settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')
+                    ).update(**realized_scrubbers)
+            except IntegrityError as e:
+                raise CommandError('Integrity error while scrubbing %s (%s); maybe increase '
+                                   'SCRUBBER_ENTRIES_PER_PROVIDER?' % (model, e))
 
 
 def _call_callables(d):
