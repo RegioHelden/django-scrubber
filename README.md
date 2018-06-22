@@ -9,7 +9,7 @@ To accomplish this, `django_scrubber` should be plugged in a step during the cre
 
 Simply mark the fields you want to anonymize and call the `scrub_data` management command. Data will be replaced based on different *scrubbers* (see below), which define how the anonymous content will be generated.
 
-# Selecting data to scrub
+## Selecting data to scrub
 
 There are a few different ways to select which data should be scrubbed, namely: explicitly per model field; or globally per name or field type.
 
@@ -41,9 +41,9 @@ By default, `django_scrubber` will affect all registered apps. This may lead to 
 
 Finally just run `./manage.py scrub_data` to **destructively** scrub the registered fields.
 
-# Built-In scrubbers
+## Built-In scrubbers
 
-## Hash
+### Hash
 
 Simple hashing of content:
 ```python
@@ -54,7 +54,7 @@ class Scrubbers:
 
 Currently this uses the MD5 hash which is supported in a wide variety of DB engines. Additionally, since security is not the main objective, a shorter hash length has a lower risk of being longer than whatever field it is supposed to replace.
 
-## Lorem
+### Lorem
 
 Simple scrubber meant to replace `TextField` with a static block of text. Has no options.
 ```python
@@ -62,7 +62,7 @@ class Scrubbers:
   somefield = scrubbers.Lorem
 ```
 
-## Faker
+### Faker
 
 Replaces content with the help of [faker](https://pypi.python.org/pypi/Faker).
 
@@ -76,22 +76,22 @@ The replacements are done on the database-level and should therefore be able to 
 
 Any [faker providers](https://faker.readthedocs.io/en/latest/providers.html) are supported and you can also register your own custom providers.
 
-### Locales
+#### Locales
 
 Faker will be initialized with the current django `LANGUAGE_CODE` and will populate the DB with localized data. If you want localized scrubbing, simply set it to some other value.
 
-### Idempotency
+#### Idempotency
 
 By default, the faker instance used to populate the DB uses a fixed random seed, in order to ensure different scrubbings of the same data generate the same output. This is particularly useful if the scrubbed data is imported as a dump by developers, since changing data during troubleshooting would otherwise be confusing.
 
 This behaviour can be changed by setting `SCRUBBER_RANDOM_SEED=None`, which ensures every scrubbing will generate random source data.
 
-### Limitations
+#### Limitations
 
 Scrubbing unique fields may lead to `IntegrityError`s, since there is no guarantee that the random content will not be repeated. Playing with different settings for `SCRUBBER_RANDOM_SEED` and `SCRUBBER_ENTRIES_PER_PROVIDER` may alleviate the problem.
 Unfortunately, for performance reasons, the source data for scrubbing with faker is added to the database, and arbitrarily increasing `SCRUBBER_ENTRIES_PER_PROVIDER` will significantly slow down scrubbing (besides still not guaranteeing uniqueness).
 
-# Settings
+## Settings
 
 ### `SCRUBBER_GLOBAL_SCRUBBERS`:
 Dictionary of global scrubbers. Keys should be either field names as strings or field type classes. Values should be one of the scrubbers provided in `django_scrubber.scrubbers`. 
