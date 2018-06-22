@@ -43,8 +43,20 @@ jobs:
       deploy:
         provider: pypi
         distributions: sdist
-        user: # TODO
+        user: RegioHelden
         password:
-          secure: "" # TODO
+          secure: !!binary |
+            ZkR5S0RPUDN3MXFiK3dTd1ZlQndRakdTcTBqNW1nYS9QZnpNbmh3d1A5MzhSN2V2TmVnWmxUYXly
+            VzI1MVJ1V2Z2L3RNNjZYRUpMWnhPYmp5OTlVVy9SNEVDbURvMHp6bUU3UEt5Z3NPS2wvdzJ5bjF5
+            SHZSZVBXU3NaZHVTZFU3V3BBWUFaWUxKYW55MlBaejRjRVZrMlF5ZmdzV1JIcktMUDlSQjEwd0xy
+            N0JDM3R4Vm85WEV5T0RxVkN5OTAvckVrU3FFZDYxQ1hpZU9EUVorTHVnVVNEUUd6VVE2clZKdE51
+            NXhpN1E5MzdwMzJINysxRTErT0RIWU5jL3dnLy9xd2kyL0M1TFNZd0hsUGNLNWU5dEo3UW5NTnUx
+            WXZOb1AyVzQrdkhKRnBiditvand0bXRKcmw4KzFSeWE0NHRVOVNiSEcybmZJRzRZeFNQTEkwNHBW
+            UW9teTk0OTVxUlBiaHVZc2FPODlqdi94aUVTeE56VVVLTm8xZWpha0VWS3RwMThwaC9LQitjSXA1
+            TkNuMlFqcHJjbU5nT3ZkY0JqTUZCYWpkOXFCWk1YY1RCMTl5UnhYN2JNU2Q5V1MweWpwVkVOTDlD
+            Sk0rUDI0d1d3Zi9tSDhjQjkrSDQ4dFVwNFJpMVRUZGhKV1NVTmtNN011MTZuckdQQXRDTVpNZXVh
+            c3V2QlZ1bnR4OG13L29SdTNNczFEY2JKT05PSkVGQW1WdCtOS1Q4ME1EcTJNYzlOQ0oyWEFDVWtC
+            QndtbC9qYU5YVlJvcE45a3NYcEVJZzZYVlB6SHI5VlVnSDNSQksyMW5ZQXJ2VCsrRlB4TTVXNzZY
+            WnVWUTFoK3g0N1prNUZuazNlanZSN05rOXhSanFSbjBzbytaSUo1eHNsVTE1V05NZWpVRkxlZ0k9
         on:
           tags: true
