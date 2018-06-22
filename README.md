@@ -1,5 +1,7 @@
 # Django Scrubber
 
+[![Build Status](https://travis-ci.org/RegioHelden/django-scrubber.svg?branch=master)](https://travis-ci.org/RegioHelden/django-scrubber)
+
 `django_scrubber` is a django app meant to help you anonymize your project's database data. It destructively alters data directly on the DB and therefore **should not be used on production**.
 
 The main use case is providing developers with realistic data to use during development, without having to distribute your customers' or users' potentially sensitive information.
