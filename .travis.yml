@@ -1,0 +1,47 @@
+language: python
+
+sudo: false
+
+dist: trusty
+
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
+env:
+  - TOXENV=py-django110
+  - TOXENV=py-django20
+
+matrix:
+  fast_finish: true
+
+install: pip install -r requirements_test.txt
+
+script: tox
+
+cache:
+  pip: true
+  directories:
+    - .tox
+
+stages:
+  - test
+  - deploy
+
+jobs:
+  include:
+    - stage: deploy
+      script: skip
+      env:
+      after_success:
+        - codecov -e TOXENV
+      deploy:
+        provider: pypi
+        distributions: sdist
+        user: # TODO
+        password:
+          secure: "" # TODO
+        on:
+          tags: true
