@@ -142,3 +142,9 @@ Do not attempt to scrub models which are not managed by the ORM.
 Only scrub models belonging to these specific django apps. If unset, will scrub all installed apps.
 
 (default: None)
+
+## Making a new release
+
+[bumpversion](https://github.com/peritus/bumpversion) is used to manage releases.
+
+Add your changes to the [CHANGELOG](./CHANGELOG.md) and run `bumpversion <major|minor|patch>`, then push (including tags)
