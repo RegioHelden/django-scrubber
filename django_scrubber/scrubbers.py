@@ -9,7 +9,6 @@ from django.db.utils import IntegrityError
 from django.utils.translation import to_locale, get_language
 
 from . import ScrubberInitError, settings_with_fallback
-from .models import FakeData
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +35,7 @@ class Faker(object):
         self.provider = provider
 
     def _initialize_data(self):
+        from .models import FakeData
         faker_instance = faker.Faker(locale=to_locale(get_language()))
 
         logger.info('Initializing fake scrub data for provider %s' % self.provider)
