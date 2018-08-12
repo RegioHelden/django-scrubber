@@ -49,6 +49,7 @@ setup(
     version=version,
     description="""Data Anonymizer for Django""",
     long_description=readme + '\n\n' + history,
+    long_description_content_type='text/markdown',
     author='RegioHelden GmbH',
     author_email='entwicklung@regiohelden.de',
     url='https://github.com/regiohelden/django-scrubber',

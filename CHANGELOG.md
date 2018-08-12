@@ -1,3 +1,7 @@
+# 0.1.4 Markdown readme
+
+* Make our README look beautiful on PyPI
+
 # 0.1.3 - Fix import
 
 * fixed [import issue #1](https://github.com/RegioHelden/django-scrubber/pull/1) - Thanks to [Charlie Denton](https://github.com/meshy)
