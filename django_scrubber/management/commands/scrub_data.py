@@ -4,7 +4,7 @@ import logging
 
 from django.conf import settings
 from django.db.models import F
-from django.db.utils import IntegrityError
+from django.db.utils import IntegrityError, DataError
 from django.core.management.base import BaseCommand, CommandError
 from django.apps import apps
 
@@ -63,6 +63,8 @@ class Command(BaseCommand):
             except IntegrityError as e:
                 raise CommandError('Integrity error while scrubbing %s (%s); maybe increase '
                                    'SCRUBBER_ENTRIES_PER_PROVIDER?' % (model, e))
+            except DataError as e:
+                raise CommandError('DataError while scrubbing %s (%s)' % (model, e))
 
 
 def _call_callables(d):
