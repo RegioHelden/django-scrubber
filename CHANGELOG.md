@@ -1,3 +1,7 @@
+# 0.2.0 - Add scrubber concatenation
+
+* Add scrubbers.Concat to make simple concatenation of scrubbers possible
+
 # 0.1.4 Markdown readme
 
 * Make our README look beautiful on PyPI
