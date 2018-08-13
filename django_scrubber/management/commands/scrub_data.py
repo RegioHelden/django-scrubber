@@ -59,7 +59,7 @@ class Command(BaseCommand):
             try:
                 model.objects.annotate(
                     mod_pk=F('pk') % settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')
-                    ).update(**realized_scrubbers)
+                ).update(**realized_scrubbers)
             except IntegrityError as e:
                 raise CommandError('Integrity error while scrubbing %s (%s); maybe increase '
                                    'SCRUBBER_ENTRIES_PER_PROVIDER?' % (model, e))

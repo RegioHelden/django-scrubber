@@ -5,6 +5,7 @@ import logging
 import faker
 
 from django.db.models import Func, Subquery, OuterRef
+from django.db.models.functions import Concat as DjangoConcat
 from django.db.utils import IntegrityError
 from django.utils.translation import to_locale, get_language
 
@@ -26,6 +27,22 @@ class Lorem(Func):
         "aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse "
         "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in "
         "culpa qui officia deserunt mollit anim id est laborum.'")
+
+
+class Concat(object):
+    '''
+    Wrapper around django.db.functions.Concat for lazy concatenation of scrubbers.
+    '''
+
+    def __init__(self, *expressions, **kwargs):
+        self.expressions = expressions
+        self.kwargs = kwargs
+
+    def __call__(self, field_name):
+        realized_expressions = list()
+        for exp in self.expressions:
+            realized_expressions.append(callable(exp) and exp(field_name) or exp)
+        return DjangoConcat(*realized_expressions, **self.kwargs)
 
 
 class Faker(object):
@@ -58,7 +75,12 @@ class Faker(object):
 
         self.INITIALIZED_PROVIDERS.add(self.provider)
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, field_name):
+        '''
+        Lazily instantiate the actual subquery used for scrubbing.
+
+        The Faker scrubber ignores the field_name parameter.
+        '''
         if self.provider not in self.INITIALIZED_PROVIDERS:
             self._initialize_data()
 

@@ -79,6 +79,16 @@ class Scrubbers:
   somefield = scrubbers.Lorem
 ```
 
+### Concat
+
+Wrapper around `django.db.functions.Concat` to enable simple concatenation of scrubbers. This is useful if you want to ensure a fields uniqueness through composition of, for instance, the `Hash` and `Faker` (see below) scrubbers. 
+
+The following will generate random email addresses by hashing the user-part and using `faker` for the domain part:
+```python
+class Scrubbers:
+  email = scrubbers.Concat(scubbers.Hash('email'), models.Value('@'), scrubbers.Faker('domain_name'))
+```
+
 ### Faker
 
 Replaces content with the help of [faker](https://pypi.python.org/pypi/Faker).
@@ -91,7 +101,7 @@ class Scrubbers:
 
 The replacements are done on the database-level and should therefore be able to cope with large amounts of data with reasonable performance.
 
-Any [faker providers](https://faker.readthedocs.io/en/latest/providers.html) are supported and you can also register your own custom providers.
+The `Faker` scrubber accepts a single required argument: the faker provider used to generate random data. All [faker providers](https://faker.readthedocs.io/en/latest/providers.html) are supported and you can also register your own custom providers.
 
 #### Locales
 
