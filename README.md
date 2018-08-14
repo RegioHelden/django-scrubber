@@ -153,6 +153,11 @@ Only scrub models belonging to these specific django apps. If unset, will scrub 
 
 (default: None)
 
+### `SCRUBBER_ADDITIONAL_FAKER_PROVIDERS`:
+Add additional fake providers to be used by Faker. Must be noted as full dotted path to the provider class.
+
+(default: empty list) 
+
 ## Making a new release
 
 [bumpversion](https://github.com/peritus/bumpversion) is used to manage releases.

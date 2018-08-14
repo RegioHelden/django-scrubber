@@ -1,5 +1,8 @@
 from __future__ import absolute_import
 
+from builtins import str as text
+
+import importlib
 import logging
 
 import faker
@@ -54,6 +57,24 @@ class Faker(object):
     def _initialize_data(self):
         from .models import FakeData
         faker_instance = faker.Faker(locale=to_locale(get_language()))
+
+        # load additional faker providers
+        for provider_name in settings_with_fallback('SCRUBBER_ADDITIONAL_FAKER_PROVIDERS'):
+            # try to load module
+            try:
+                module_name, class_name = text(provider_name).rsplit('.', 1)
+                module = importlib.import_module(module_name)
+            except Exception:
+                raise ScrubberInitError(
+                    'module not found for provider defined in SCRUBBER_ADDITIONAL_FAKER_PROVIDERS: %s' % provider_name)
+
+            # add provider to faker instance
+            provider = getattr(module, class_name, None)
+            if provider is None:
+                raise ScrubberInitError(
+                    'faker provider not found for provider defined in SCRUBBER_ADDITIONAL_FAKER_PROVIDERS: %s' %
+                    provider_name)
+            faker_instance.add_provider(provider)
 
         logger.info('Initializing fake scrub data for provider %s' % self.provider)
         # TODO: maybe be a bit smarter and only regenerate if needed?
