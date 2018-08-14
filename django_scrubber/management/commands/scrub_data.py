@@ -23,6 +23,10 @@ class Command(BaseCommand):
     help = 'Replace database data according to model-specific or global scrubbing rules.'
     leave_locale_alone = True
 
+    def add_arguments(self, parser):
+        parser.add_argument('--model', type=str, required=False,
+                            help='Scrub only a single model (format <app_label>.<model_name>)')
+
     def handle(self, *args, **kwargs):
         if not settings.DEBUG:
             # avoid logger, otherwise we might silently fail if we're on live and logging is being sent somewhere else
@@ -30,7 +34,20 @@ class Command(BaseCommand):
             return False
 
         global_scrubbers = settings_with_fallback('SCRUBBER_GLOBAL_SCRUBBERS')
-        for model in apps.get_models():
+
+        # run only for selected model
+        if kwargs.get('model', None) is not None:
+            app_label, model_name = kwargs.get('model').rsplit('.', 1)
+            try:
+                models = [apps.get_model(app_label=app_label, model_name=model_name)]
+            except LookupError:
+                raise CommandError('--model should be defined as <app_label>.<model_name>')
+
+        # run for all models of all apps
+        else:
+            models = apps.get_models()
+
+        for model in models:
             if settings_with_fallback('SCRUBBER_SKIP_UNMANAGED') and not model._meta.managed:
                 continue
             if (settings_with_fallback('SCRUBBER_APPS_LIST') and
