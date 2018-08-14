@@ -86,7 +86,7 @@ Wrapper around `django.db.functions.Concat` to enable simple concatenation of sc
 The following will generate random email addresses by hashing the user-part and using `faker` for the domain part:
 ```python
 class Scrubbers:
-  email = scrubbers.Concat(scubbers.Hash('email'), models.Value('@'), scrubbers.Faker('domain_name'))
+  email = scrubbers.Concat(scrubbers.Hash('email'), models.Value('@'), scrubbers.Faker('domain_name'))
 ```
 
 ### Faker
