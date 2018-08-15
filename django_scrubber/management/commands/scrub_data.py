@@ -48,6 +48,8 @@ class Command(BaseCommand):
             models = apps.get_models()
 
         for model in models:
+            if model._meta.proxy:
+                continue
             if settings_with_fallback('SCRUBBER_SKIP_UNMANAGED') and not model._meta.managed:
                 continue
             if (settings_with_fallback('SCRUBBER_APPS_LIST') and
