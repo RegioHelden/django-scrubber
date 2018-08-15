@@ -6,12 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-- Nothing
+### Changed
+- Ignore proxy models when scrubbing (thanks [Marco De Felice](https://github.com/md-f))
 
 ## [0.2.1] - 2018-08-14
 ### Added
 - Option to scrub only one model from the management command
-- Support loading additional faker providers by config setting SCRUBBER_ADDITIONAL_FAKER_PROVIDERS
+- Support loading additional faker providers by config setting SCRUBBER\_ADDITIONAL\_FAKER\_PROVIDERS
 
 ### Changed
 - Switched changelog format to the one proposed on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
