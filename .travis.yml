@@ -26,8 +26,6 @@ script: tox
 
 cache:
   pip: true
-  directories:
-    - .tox
 
 stages:
   - test
