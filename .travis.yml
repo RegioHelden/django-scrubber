@@ -9,15 +9,19 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
+  - "3.7"
 
 env:
   - TOXENV=py-django111
   - TOXENV=py-django20
+  - TOXENV=py-django21
 
 matrix:
   exclude:
     - python: "2.7"
       env: TOXENV=py-django20
+    - python: "2.7"
+      env: TOXENV=py-django21
   fast_finish: true
 
 install: pip install -r requirements_test.txt

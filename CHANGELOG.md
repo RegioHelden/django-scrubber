@@ -6,8 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Finally added some basic tests (thanks [Marco De Felice](https://github.com/md-f))
+
 ### Changed
 - Ignore proxy models when scrubbing (thanks [Marco De Felice](https://github.com/md-f))
+- Expand test coverage to include python 3.7 and django 2.1
 
 ## [0.2.1] - 2018-08-14
 ### Added
