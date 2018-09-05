@@ -9,7 +9,7 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-  - "3.7"
+  # - "3.7" # wait for https://github.com/travis-ci/travis-ci/issues/9815
 
 env:
   - TOXENV=py-django111
@@ -21,6 +21,8 @@ matrix:
     - python: "2.7"
       env: TOXENV=py-django20
     - python: "2.7"
+      env: TOXENV=py-django21
+    - python: "3.4"
       env: TOXENV=py-django21
   fast_finish: true
 
