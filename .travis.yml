@@ -27,21 +27,21 @@ matrix:
     - python: "2.7"
       env: TOXENV=py-django20-mysql
     - python: "2.7"
-        env: TOXENV=py-django20-postgres
+      env: TOXENV=py-django20-postgres
     - python: "2.7"
-        env: TOXENV=py-django20-sqlite
+      env: TOXENV=py-django20-sqlite
     - python: "2.7"
       env: TOXENV=py-django21-mysql
     - python: "2.7"
-        env: TOXENV=py-django21-postgres
+      env: TOXENV=py-django21-postgres
     - python: "2.7"
-        env: TOXENV=py-django21-sqlite
+      env: TOXENV=py-django21-sqlite
     - python: "3.4"
       env: TOXENV=py-django21-mysql
     - python: "3.4"
-        env: TOXENV=py-django21-postgres
+      env: TOXENV=py-django21-postgres
     - python: "3.4"
-        env: TOXENV=py-django21-sqlite
+      env: TOXENV=py-django21-sqlite
   fast_finish: true
 
 before_install:
