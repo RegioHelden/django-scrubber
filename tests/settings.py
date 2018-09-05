@@ -11,7 +11,7 @@ USE_TZ = True
 SECRET_KEY = "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
 
 DATABASES = {
-    "default": dj_database_url.config(env='DEFAULT_DATABASE')
+    "default": dj_database_url.config(default='sqlite://:memory:')
 }
 
 ROOT_URLCONF = "tests.urls"
