@@ -12,19 +12,41 @@ python:
   # - "3.7" # wait for https://github.com/travis-ci/travis-ci/issues/9815
 
 env:
-  - TOXENV=py-django111
-  - TOXENV=py-django20
-  - TOXENV=py-django21
+  - TOXENV=py-django111-mysql
+  - TOXENV=py-django111-postgres
+  - TOXENV=py-django111-sqlite
+  - TOXENV=py-django20-mysql
+  - TOXENV=py-django20-postgres
+  - TOXENV=py-django20-sqlite
+  - TOXENV=py-django21-mysql
+  - TOXENV=py-django21-postgres
+  - TOXENV=py-django21-sqlite
 
 matrix:
   exclude:
     - python: "2.7"
-      env: TOXENV=py-django20
+      env: TOXENV=py-django20-mysql
     - python: "2.7"
-      env: TOXENV=py-django21
+        env: TOXENV=py-django20-postgres
+    - python: "2.7"
+        env: TOXENV=py-django20-sqlite
+    - python: "2.7"
+      env: TOXENV=py-django21-mysql
+    - python: "2.7"
+        env: TOXENV=py-django21-postgres
+    - python: "2.7"
+        env: TOXENV=py-django21-sqlite
     - python: "3.4"
-      env: TOXENV=py-django21
+      env: TOXENV=py-django21-mysql
+    - python: "3.4"
+        env: TOXENV=py-django21-postgres
+    - python: "3.4"
+        env: TOXENV=py-django21-sqlite
   fast_finish: true
+
+before_install:
+  - if [[ $TOXENV == *mysql ]]; then mysql -e 'CREATE DATABASE test_db;'; fi
+  - if [[ $TOXENV == *postgres ]]; then psql -c 'CREATE DATABASE test_db;' -U postgres; fi
 
 install: pip install -r requirements_test.txt
 
