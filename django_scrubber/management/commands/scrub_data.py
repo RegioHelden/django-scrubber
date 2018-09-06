@@ -5,6 +5,7 @@ import logging
 from django.conf import settings
 from django.db.models import F
 from django.db.utils import IntegrityError, DataError
+from django.core.exceptions import FieldDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
 from django.apps import apps
 
@@ -59,14 +60,11 @@ class Command(BaseCommand):
             scrubbers = dict()
             for field in model._meta.fields:
                 if field.name in global_scrubbers:
-                    scrubbers[field.name] = global_scrubbers[field.name]
+                    scrubbers[field] = global_scrubbers[field.name]
                 elif type(field) in global_scrubbers:
-                    scrubbers[field.name] = global_scrubbers[type(field)]
+                    scrubbers[field] = global_scrubbers[type(field)]
 
-            try:
-                scrubbers.update(_get_fields(getattr(model, 'Scrubbers')))
-            except AttributeError:
-                pass  # no model-specific scrubbers
+            scrubbers.update(_get_model_scrubbers(model))
 
             if not scrubbers:
                 continue
@@ -90,14 +88,33 @@ def _call_callables(d):
     '''
     Helper to realize lazy scrubbers, like Faker, or global field-type scrubbers
     '''
-    return {k: (callable(v) and v(k) or v) for k, v in d.items()}
+    return {k.name: (callable(v) and v(k) or v) for k, v in d.items()}
+
+
+def _get_model_scrubbers(model):
+    scrubbers = dict()
+    try:
+        scrubber_cls = getattr(model, 'Scrubbers')
+    except AttributeError:
+        return scrubbers  # no model-specific scrubbers
+
+    for k, v in _get_fields(scrubber_cls):
+        try:
+            field = model._meta.get_field(k)
+        except FieldDoesNotExist as e:
+            raise
+
+        scrubbers[field] = v
+
+    return scrubbers
 
 
 def _get_fields(d):
     '''
-    Helper to get "normal" (i.e.: non-magic and non-dunder) instance attributes
+    Helper to get "normal" (i.e.: non-magic and non-dunder) instance attributes.
+    Returns an iterator of (field_name, field) tuples.
     '''
-    return {k: v for k, v in vars(d).items() if not k.startswith('_')}
+    return ((k, v) for k, v in vars(d).items() if not k.startswith('_'))
 
 
 def _filter_out_disabled(d):

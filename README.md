@@ -26,11 +26,13 @@ INSTALLED_APPS = [
 ]
 ```
 
-## Selecting data to scrub
+## Scrubbing data
+
+In order to scrub data, i.e.: to replace DB data with anonymized versions, `django-scrubber` must know which models and fields it should act on, and how the data should be replaced.
 
 There are a few different ways to select which data should be scrubbed, namely: explicitly per model field; or globally per name or field type.
 
-Adding scrubbers directly to model:
+Adding scrubbers directly to model, matching scrubbers to fields by name:
 ```python
 class MyModel(Model):
     somefield = CharField()
@@ -39,7 +41,7 @@ class MyModel(Model):
       somefield = scrubbers.Hash('somefield')
 ```
 
-Adding scrubber globally, either by field name or field type:
+Adding scrubbers globally, either by field name or field type:
 
 ```python
 # (in settings.py)
@@ -52,9 +54,12 @@ SCRUBBER_GLOBAL_SCRUBBERS = {
 
 Model scrubbers override field-name scrubbers, which in turn override field-type scrubbers.
 
-To disable global scrubbing in a specific model, simply set the field scrubber to `None`.
+To disable global scrubbing in some specific model, simply set the respective field scrubber to `None`.
 
-By default, `django_scrubber` will affect all registered apps. This may lead to issues with third-party apps if the global scrubbers are too general. This can be avoided with the `SCRUBBER_APPS_LIST` setting. Using this, you might for instance split your `INSTALLED_APPS` into multiple `SYSTEM_APPS` and `LOCAL_APPS`, then set `SCRUBBER_APPS_LIST = LOCAL_APPS`, to scrub only your own apps.
+Which mechanism will be used to scrub the selected data is determined by using one of the provided scrubbers in `django_scrubber.scrubbers`. See below for a list.
+Alternatively, values may be anything that can be used as a value in a `QuerySet.update()` call (like `Func` instances, string literals, etc), or any `callable` that returns such an object when called with a `Field` object as argument.
+
+By default, `django_scrubber` will affect all models from all registered apps. This may lead to issues with third-party apps if the global scrubbers are too general. This can be avoided with the `SCRUBBER_APPS_LIST` setting. Using this, you might for instance split your `INSTALLED_APPS` into multiple `SYSTEM_APPS` and `LOCAL_APPS`, then set `SCRUBBER_APPS_LIST = LOCAL_APPS`, to scrub only your own apps.
 
 Finally just run `./manage.py scrub_data` to **destructively** scrub the registered fields.
 
@@ -122,8 +127,6 @@ Unfortunately, for performance reasons, the source data for scrubbing with faker
 
 ### `SCRUBBER_GLOBAL_SCRUBBERS`:
 Dictionary of global scrubbers. Keys should be either field names as strings or field type classes. Values should be one of the scrubbers provided in `django_scrubber.scrubbers`. 
-
-Alternatively, values may be anything that can be used as a value in a `QuerySet.update()` call (like a `Func`), or a `callable` that returns such an object when called with a field name as argument.
 
 Example:
 ```python

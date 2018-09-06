@@ -10,8 +10,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Finally added some basic tests (thanks [Marco De Felice](https://github.com/md-f))
 
 ### Changed
+- **BREAKING**: scrubbers that are lazily initialized now receive `Field` instances as parameters, instead of field
+  names. If you have custom scrubbers depending on the previous behavior, these should be updated. Accessing the
+  field's name from the object instance is trivial: `field_instance.name`. E.g.: if you have `some_field = MyCustomScrubber`
+  in any of your models' `Scrubbers`, this class must accept a `Field` instance as first parameter.
+  Note that explicitly intializing any of the built-in scrubbers with field names is still supported, so if you were
+  just using built-in scrubbers, you should not be affected by this change.
 - Ignore proxy models when scrubbing (thanks [Marco De Felice](https://github.com/md-f))
-- Expand test coverage to include python 3.7 and django 2.1
+- Expand tests to include python 3.7 and django 2.1
 
 ## [0.2.1] - 2018-08-14
 ### Added
