@@ -7,7 +7,7 @@ import logging
 
 import faker
 
-from django.db.models import Func, Subquery, OuterRef
+from django.db.models import Field, Func, Subquery, OuterRef
 from django.db.models.functions import Concat as DjangoConcat
 from django.db.utils import IntegrityError
 from django.utils.translation import to_locale, get_language
@@ -17,12 +17,44 @@ from . import ScrubberInitError, settings_with_fallback
 logger = logging.getLogger(__name__)
 
 
-class Hash(Func):
-    function = 'MD5'
+class FieldFunc(Func):
+    '''
+    Base class for creating Func-like scrubbers.
+    Unlike Func, may receive a Field object as first argument, in which case it populates self.extra with its __dict__.
+    This enable derived classes to use the Field's attributes, either in methods or as interpolation variables in
+    self.template.
+    '''
+    def __init__(self, field, *args, **kwargs):
+        if isinstance(field, Field):
+            super(FieldFunc, self).__init__(field.name, *args, **kwargs)
+            self.extra.update(field.__dict__)
+        else:
+            super(FieldFunc, self).__init__(field, *args, **kwargs)
+
+
+class Hash(FieldFunc):
+    '''
+    Simple md5 hashing of content.
+    If initialized with a Field object, will use its max_length attribute to truncate the generated hash.
+    Otherwise, if initialized with a field name as string, will use the full hash length.
+    '''
+
+    template = 'LEFT(MD5(%(expressions)s, %(max_length)s))'
     arity = 1
 
+    def __init__(self, *args, **kwargs):
+        super(Hash, self).__init__(*args, **kwargs)
+        if 'max_length' in self.extra:
+            self.template = 'LEFT(MD5(%(expressions)s), %(max_length)s)'
+        else:
+            self.template = 'MD5(%(expressions)s)'
 
-class Lorem(Func):
+
+class Lorem(FieldFunc):
+    '''
+    Simple fixed-text scrubber, which replaces content with one paragraph of the well-known "lorem ipsum" text.
+    '''
+
     arity = 0
     template = (
         "'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore "
@@ -41,10 +73,10 @@ class Concat(object):
         self.expressions = expressions
         self.kwargs = kwargs
 
-    def __call__(self, field_name):
+    def __call__(self, field):
         realized_expressions = list()
         for exp in self.expressions:
-            realized_expressions.append(callable(exp) and exp(field_name) or exp)
+            realized_expressions.append(callable(exp) and exp(field) or exp)
         return DjangoConcat(*realized_expressions, **self.kwargs)
 
 
@@ -66,7 +98,7 @@ class Faker(object):
                 module = importlib.import_module(module_name)
             except Exception:
                 raise ScrubberInitError(
-                    'module not found for provider defined in SCRUBBER_ADDITIONAL_FAKER_PROVIDERS: %s' % provider_name)
+                    'module not found for provider defined in SCRUBBER_ADDITIONAL_FAKER_PROVIDERS: %s' %provider_name)
 
             # add provider to faker instance
             provider = getattr(module, class_name, None)
@@ -76,8 +108,7 @@ class Faker(object):
                     provider_name)
             faker_instance.add_provider(provider)
 
-        logger.info('Initializing fake scrub data for provider %s' % self.provider)
-        # TODO: maybe be a bit smarter and only regenerate if needed?
+        logger.info('Initializing fake scrub data for provider %s' % self.provider)        # TODO: maybe be a bit smarter and only regenerate if needed?
         FakeData.objects.filter(provider=self.provider).delete()
         fakedata = []
 
@@ -96,11 +127,11 @@ class Faker(object):
 
         self.INITIALIZED_PROVIDERS.add(self.provider)
 
-    def __call__(self, field_name):
+    def __call__(self, field):
         '''
         Lazily instantiate the actual subquery used for scrubbing.
 
-        The Faker scrubber ignores the field_name parameter.
+        The Faker scrubber ignores the field parameter.
         '''
         if self.provider not in self.INITIALIZED_PROVIDERS:
             self._initialize_data()
