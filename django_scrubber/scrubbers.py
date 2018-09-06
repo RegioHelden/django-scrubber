@@ -7,6 +7,7 @@ import logging
 
 import faker
 
+from django.db import router, connections
 from django.db.models import Field, Func, Subquery, OuterRef
 from django.db.models.functions import Concat as DjangoConcat
 from django.db.utils import IntegrityError
@@ -28,8 +29,16 @@ class FieldFunc(Func):
         if isinstance(field, Field):
             super(FieldFunc, self).__init__(field.name, *args, **kwargs)
             self.extra.update(field.__dict__)
+            self.connection_setup(connections[router.db_for_write(field.model)])
         else:
             super(FieldFunc, self).__init__(field, *args, **kwargs)
+
+    def connection_setup(self, db_connection):
+        '''
+        This function is called when initializing the scrubber, and allows doing setup necessary to support certain DB
+        vendors. It should be implemented by derived classes of FieldFunc.
+        '''
+        pass
 
 
 class Hash(FieldFunc):
@@ -39,15 +48,23 @@ class Hash(FieldFunc):
     Otherwise, if initialized with a field name as string, will use the full hash length.
     '''
 
-    template = 'LEFT(MD5(%(expressions)s, %(max_length)s))'
+    template = 'NULL'
     arity = 1
 
     def __init__(self, *args, **kwargs):
         super(Hash, self).__init__(*args, **kwargs)
         if 'max_length' in self.extra:
-            self.template = 'LEFT(MD5(%(expressions)s), %(max_length)s)'
+            self.template = 'SUBSTR(MD5(%(expressions)s), 1, %(max_length)s)'
         else:
             self.template = 'MD5(%(expressions)s)'
+
+    def connection_setup(self, db_connection):
+        if db_connection.vendor == 'sqlite':
+            # add MD5 support for sqlite; this calls back to python and will probably have a performance impact
+            import hashlib
+            import sqlite3
+            sqlite3.enable_callback_tracebacks(True)  # otherwise errors get ignored
+            db_connection.connection.create_function("MD5", 1, lambda c: hashlib.md5(c.encode('utf8')).hexdigest())
 
 
 class Lorem(FieldFunc):

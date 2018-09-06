@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - Finally added some basic tests (thanks [Marco De Felice](https://github.com/md-f))
+- `Hash` scrubber can now also be used on sqlite
 
 ### Changed
 - **BREAKING**: scrubbers that are lazily initialized now receive `Field` instances as parameters, instead of field
@@ -16,6 +17,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   in any of your models' `Scrubbers`, this class must accept a `Field` instance as first parameter.
   Note that explicitly intializing any of the built-in scrubbers with field names is still supported, so if you were
   just using built-in scrubbers, you should not be affected by this change.
+- related to the above, `FuncField` derived classes can now do connection-based setup by implementing the
+  `connection_setup` method. This is mostly useful for doing different things based on the DB vendor, and is used to
+  implement `MD5()` on sqlite (see added feature above)
 - Ignore proxy models when scrubbing (thanks [Marco De Felice](https://github.com/md-f))
 - Expand tests to include python 3.7 and django 2.1
 
