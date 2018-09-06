@@ -45,10 +45,9 @@ matrix:
   fast_finish: true
 
 before_install:
+  - pip install tox
   - if [[ $TOXENV == *mysql ]]; then mysql -e 'CREATE DATABASE test_db;'; fi
   - if [[ $TOXENV == *postgres ]]; then psql -c 'CREATE DATABASE test_db;' -U postgres; fi
-
-install: pip install -r requirements_test.txt
 
 script: tox
 

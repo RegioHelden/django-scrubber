@@ -48,7 +48,7 @@ class Hash(FieldFunc):
     Otherwise, if initialized with a field name as string, will use the full hash length.
     '''
 
-    template = 'NULL'
+    template = 'NULL'  # replaced during __init__
     arity = 1
 
     def __init__(self, *args, **kwargs):
@@ -115,7 +115,8 @@ class Faker(object):
                 module = importlib.import_module(module_name)
             except Exception:
                 raise ScrubberInitError(
-                    'module not found for provider defined in SCRUBBER_ADDITIONAL_FAKER_PROVIDERS: %s' %provider_name)
+                    'module not found for provider defined in SCRUBBER_ADDITIONAL_FAKER_PROVIDERS: %s' % provider_name
+                )
 
             # add provider to faker instance
             provider = getattr(module, class_name, None)
@@ -125,7 +126,8 @@ class Faker(object):
                     provider_name)
             faker_instance.add_provider(provider)
 
-        logger.info('Initializing fake scrub data for provider %s' % self.provider)        # TODO: maybe be a bit smarter and only regenerate if needed?
+        logger.info('Initializing fake scrub data for provider %s' % self.provider)
+        # TODO: maybe be a bit smarter and only regenerate if needed?
         FakeData.objects.filter(provider=self.provider).delete()
         fakedata = []
 
