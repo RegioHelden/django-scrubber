@@ -21,3 +21,11 @@ class TestScrubbers(TestCase):
             DataToBeScrubbed._meta.get_field('first_name').max_length,
             'len(%s) != %d' % (data.first_name, DataToBeScrubbed._meta.get_field('first_name').max_length)
         )
+
+    def test_hash_scrubber_textfield(self):
+        data = DataFactory.create(description='Foo')
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'description': scrubbers.Hash}):
+            call_command('scrub_data')
+        data.refresh_from_db()
+
+        self.assertNotEqual(data.description, 'Foo')
