@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [0.3.1] - 2018-09-10
+### Fixed
+- [#9](https://github.com/RegioHelden/django-scrubber/pull/9) `Hash` scrubber choking on fields with `max_length=None` - Thanks to [Charlie Denton](https://github.com/meshy)
+
 ## [0.3.0] - 2018-09-06
 ### Added
 - Finally added some basic tests (thanks [Marco De Felice](https://github.com/md-f))
