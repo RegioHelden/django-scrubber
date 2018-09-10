@@ -53,7 +53,7 @@ class Hash(FieldFunc):
 
     def __init__(self, *args, **kwargs):
         super(Hash, self).__init__(*args, **kwargs)
-        if 'max_length' in self.extra:
+        if self.extra.get('max_length') is not None:
             self.template = 'SUBSTR(MD5(%(expressions)s), 1, %(max_length)s)'
         else:
             self.template = 'MD5(%(expressions)s)'
