@@ -85,9 +85,9 @@ class Command(BaseCommand):
 
 
 def _call_callables(d):
-    '''
+    """
     Helper to realize lazy scrubbers, like Faker, or global field-type scrubbers
-    '''
+    """
     return {k.name: (callable(v) and v(k) or v) for k, v in d.items()}
 
 
@@ -110,16 +110,16 @@ def _get_model_scrubbers(model):
 
 
 def _get_fields(d):
-    '''
+    """
     Helper to get "normal" (i.e.: non-magic and non-dunder) instance attributes.
     Returns an iterator of (field_name, field) tuples.
-    '''
+    """
     return ((k, v) for k, v in vars(d).items() if not k.startswith('_'))
 
 
 def _filter_out_disabled(d):
-    '''
+    """
     Helper to remove Nones (actually any false-like type) from the scrubbers.
     This is needed so we can disable global scrubbers in a per-model basis.
-    '''
+    """
     return {k: v for k, v in d.items() if v}
