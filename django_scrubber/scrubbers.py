@@ -100,8 +100,10 @@ class Concat(object):
 class Faker(object):
     INITIALIZED_PROVIDERS = set()
 
-    def __init__(self, provider):
+    def __init__(self, provider, *args, **kwargs):
         self.provider = provider
+        self.provider_args = args
+        self.provider_kwargs = kwargs
 
     def _initialize_data(self):
         from .models import FakeData
@@ -136,7 +138,8 @@ class Faker(object):
         faker_instance.seed(settings_with_fallback('SCRUBBER_RANDOM_SEED'))
         for i in range(settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')):
             fakedata.append(FakeData(provider=self.provider, provider_offset=i,
-                                     content=faker_instance.format(self.provider)))
+                                     content=faker_instance.format(self.provider, *self.provider_args,
+                                                                   **self.provider_kwargs)))
 
         try:
             FakeData.objects.bulk_create(fakedata)
