@@ -102,11 +102,13 @@ Replaces content with the help of [faker](https://pypi.python.org/pypi/Faker).
 class Scrubbers:
   first_name = scrubbers.Faker('first_name')
   last_name = scrubbers.Faker('last_name')
+  past_date = scrubbers.Faker('past_date', start_date="-30d", tzinfo=None)
 ```
 
 The replacements are done on the database-level and should therefore be able to cope with large amounts of data with reasonable performance.
 
-The `Faker` scrubber accepts a single required argument: the faker provider used to generate random data. All [faker providers](https://faker.readthedocs.io/en/latest/providers.html) are supported and you can also register your own custom providers.
+The `Faker` scrubber requires at least one argument: the faker provider used to generate random data. All [faker providers](https://faker.readthedocs.io/en/latest/providers.html) are supported and you can also register your own custom providers.<br />
+Any remaining arguments will be passed through to that provider. Please refer to the faker docs if a provider accepts arguments and what to do with them.
 
 #### Locales
 

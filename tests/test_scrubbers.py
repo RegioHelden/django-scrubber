@@ -1,10 +1,11 @@
 from __future__ import absolute_import
 
-from django.test import TestCase
+import datetime
+
 from django.core.management import call_command
+from django.test import TestCase
 
 from django_scrubber import scrubbers
-
 from .models import DataFactory, DataToBeScrubbed
 
 
@@ -38,3 +39,16 @@ class TestScrubbers(TestCase):
 
         self.assertNotEqual(data.last_name, 'Foo')
         self.assertNotEqual(data.last_name, '')
+
+    def test_faker_scrubber_date_in_past(self):
+        """
+        Use this as an example for Faker scrubbers with parameters passed along
+        """
+        data = DataFactory.create(date_past=datetime.datetime.now())
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={
+                'date_past': scrubbers.Faker('past_date', start_date="-30d", tzinfo=None)}):
+            call_command('scrub_data')
+        data.refresh_from_db()
+
+        self.assertGreater(datetime.date.today(), data.date_past)
+        self.assertGreater(datetime.date.today() - datetime.timedelta(days=28), data.date_past)
