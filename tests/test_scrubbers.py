@@ -40,7 +40,7 @@ class TestScrubbers(TestCase):
         self.assertNotEqual(data.last_name, 'Foo')
         self.assertNotEqual(data.last_name, '')
 
-    def test_faker_scrubber_date_in_past(self):
+    def test_faker_scrubber_with_provider_arguments(self):
         """
         Use this as an example for Faker scrubbers with parameters passed along
         """
