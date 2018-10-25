@@ -1,7 +1,5 @@
 from __future__ import absolute_import
 
-import datetime
-
 from django.core.management import call_command
 from django.test import TestCase
 
@@ -44,11 +42,10 @@ class TestScrubbers(TestCase):
         """
         Use this as an example for Faker scrubbers with parameters passed along
         """
-        data = DataFactory.create(date_past=datetime.datetime.now())
-        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={
-                'date_past': scrubbers.Faker('past_date', start_date="-30d", tzinfo=None)}):
+        data = DataFactory.create(ean8='8')
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'ean8': scrubbers.Faker('ean', length=8)}):
             call_command('scrub_data')
         data.refresh_from_db()
 
-        self.assertGreater(datetime.date.today(), data.date_past)
-        self.assertGreater(datetime.date.today() - datetime.timedelta(days=28), data.date_past)
+        # The EAN Faker will by default emit ean13, so this should fail
+        self.assertEquals(8, len(data.ean8))
