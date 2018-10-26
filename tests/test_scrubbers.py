@@ -29,3 +29,12 @@ class TestScrubbers(TestCase):
         data.refresh_from_db()
 
         self.assertNotEqual(data.description, 'Foo')
+
+    def test_faker_scrubber_charfield(self):
+        data = DataFactory.create(last_name='Foo')
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'last_name': scrubbers.Faker('last_name')}):
+            call_command('scrub_data')
+        data.refresh_from_db()
+
+        self.assertNotEqual(data.last_name, 'Foo')
+        self.assertNotEqual(data.last_name, '')
