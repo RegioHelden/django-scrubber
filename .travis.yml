@@ -35,6 +35,10 @@ matrix:
       env: TOXENV=py-django21-sqlite
   fast_finish: true
 
+services:
+  - mysql
+  - postgresql
+
 before_install:
   - pip install tox
   - if [[ $TOXENV == *mysql ]]; then mysql -e 'CREATE DATABASE test_db;'; fi
