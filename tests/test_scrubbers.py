@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+from datetime import datetime, date, timedelta
+
 from django.core.management import call_command
 from django.test import TestCase
 
@@ -57,3 +59,16 @@ class TestScrubbers(TestCase):
 
         # make sure it doesn't reuse the ean with length=8 scrubber
         self.assertEquals(13, len(data.ean8))
+
+    def test_faker_scrubber_datefield(self):
+        """
+        Use this as an example for Scrubber's capability of optimistically Casting to the current field's type
+        """
+        data = DataFactory.create(date_past=date.today())
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={
+                'date_past': scrubbers.Faker('past_date', start_date="-30d", tzinfo=None)}):
+            call_command('scrub_data')
+        data.refresh_from_db()
+
+        self.assertGreater(date.today(), data.date_past)
+        self.assertGreater(date.today() - timedelta(days=28), data.date_past)

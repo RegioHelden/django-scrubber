@@ -9,7 +9,7 @@ import faker
 
 from django.db import router, connections
 from django.db.models import Field, Func, Subquery, OuterRef
-from django.db.models.functions import Concat as DjangoConcat
+from django.db.models.functions import Concat as DjangoConcat, Cast
 from django.db.utils import IntegrityError
 from django.utils.translation import to_locale, get_language
 
@@ -163,11 +163,11 @@ class Faker(object):
         # import it here to enable global scrubbers in settings.py
         from .models import FakeData
 
-        return Subquery(FakeData.objects.filter(
+        return Cast(Subquery(FakeData.objects.filter(
             provider=self.provider_key,
             provider_offset=OuterRef('mod_pk')  # this outer field gets annotated before .update()
             # TODO: This can be used instead of the annotated mod_pk, as soon as this issue is fixed:
             # https://code.djangoproject.com/ticket/28621
             # This would allow us to have per-provider cardinality.
             # provider_offset=Mod(OuterRef('pk'), Subquery(FakeData.objects.provider_count(OuterRef('provider'))))
-        ).values('content')[:1])
+        ).values('content')[:1]), field)
