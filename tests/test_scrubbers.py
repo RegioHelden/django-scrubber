@@ -51,9 +51,9 @@ class TestScrubbers(TestCase):
         self.assertEquals(8, len(data.ean8))
 
         # Add a new scrubber for ean13
-        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'ean13': scrubbers.Faker('ean', length=13)}):
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'ean8': scrubbers.Faker('ean', length=13)}):
             call_command('scrub_data')
         data.refresh_from_db()
 
         # make sure it doesn't reuse the ean with length=8 scrubber
-        self.assertEquals(13, len(data.ean13))
+        self.assertEquals(13, len(data.ean8))
