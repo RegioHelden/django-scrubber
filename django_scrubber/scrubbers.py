@@ -104,6 +104,8 @@ class Faker(object):
         self.provider = provider
         self.provider_args = args
         self.provider_kwargs = kwargs
+        args_hash = hash(self.provider_args)^hash(tuple(self.provider_kwargs.items()))
+        self.provider_key = '%s - %s' % self.provider, args_hash
 
     def _initialize_data(self):
         from .models import FakeData
@@ -147,7 +149,7 @@ class Faker(object):
             raise ScrubberInitError('Integrity error initializing faker data (%s); maybe decrease '
                                     'SCRUBBER_ENTRIES_PER_PROVIDER?' % (e,))
 
-        self.INITIALIZED_PROVIDERS.add(self.provider)
+        self.INITIALIZED_PROVIDERS.add(self.provider_key)
 
     def __call__(self, field):
         """
@@ -155,7 +157,7 @@ class Faker(object):
 
         The Faker scrubber ignores the field parameter.
         """
-        if self.provider not in self.INITIALIZED_PROVIDERS:
+        if self.provider_key not in self.INITIALIZED_PROVIDERS:
             self._initialize_data()
 
         # import it here to enable global scrubbers in settings.py
