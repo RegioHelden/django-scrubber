@@ -8,6 +8,7 @@ class DataToBeScrubbed(models.Model):
     last_name = models.CharField(max_length=255)
     description = models.TextField()
     ean8 = models.CharField(max_length=13)
+    date_past = models.DateField(null=True)
 
 
 class DataFactory(DjangoModelFactory):
