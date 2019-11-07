@@ -71,4 +71,4 @@ class TestScrubbers(TestCase):
         data.refresh_from_db()
 
         self.assertGreater(date.today(), data.date_past)
-        self.assertGreater(date.today() - timedelta(days=28), data.date_past)
+        self.assertLess(date.today() - timedelta(days=31), data.date_past)
