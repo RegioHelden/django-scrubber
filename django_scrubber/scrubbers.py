@@ -105,7 +105,7 @@ class Faker(object):
         self.provider_args = args
         self.provider_kwargs = kwargs
         args_hash = hash(self.provider_args)^hash(tuple(self.provider_kwargs.items()))
-        self.provider_key = '%s - %s' % self.provider, args_hash
+        self.provider_key = '%s - %s' % (self.provider, args_hash)
 
     def _initialize_data(self):
         from .models import FakeData
@@ -139,7 +139,7 @@ class Faker(object):
         # data for subsequent providers
         faker_instance.seed(settings_with_fallback('SCRUBBER_RANDOM_SEED'))
         for i in range(settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')):
-            fakedata.append(FakeData(provider=self.provider, provider_offset=i,
+            fakedata.append(FakeData(provider=self.provider_key, provider_offset=i,
                                      content=faker_instance.format(self.provider, *self.provider_args,
                                                                    **self.provider_kwargs)))
 
@@ -164,7 +164,7 @@ class Faker(object):
         from .models import FakeData
 
         return Subquery(FakeData.objects.filter(
-            provider=self.provider,
+            provider=self.provider_key,
             provider_offset=OuterRef('mod_pk')  # this outer field gets annotated before .update()
             # TODO: This can be used instead of the annotated mod_pk, as soon as this issue is fixed:
             # https://code.djangoproject.com/ticket/28621
