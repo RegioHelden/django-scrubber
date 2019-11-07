@@ -47,5 +47,13 @@ class TestScrubbers(TestCase):
             call_command('scrub_data')
         data.refresh_from_db()
 
-        # The EAN Faker will by default emit ean13, so this should fail
+        # The EAN Faker will by default emit ean13, so this should fail if the parameter was ignored
         self.assertEquals(8, len(data.ean8))
+
+        # Add a new scrubber for ean9
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'ean9': scrubbers.Faker('ean', length=9)}):
+            call_command('scrub_data')
+        data.refresh_from_db()
+
+        # make sure it doesn't reuse the ean with length=8 scrubber
+        self.assertEquals(9, len(data.ean9))
