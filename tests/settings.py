@@ -1,17 +1,24 @@
 # -*- coding: utf-8
 from __future__ import unicode_literals, absolute_import
 
+import os
+
 import django
-import dj_database_url
 
 DEBUG = True
 USE_TZ = True
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+SECRET_KEY = "uzbLoOIYlJnzGDYlUfynNyocjZH9NLSc3AAREwLDaugQkCzsQn"
 
 DATABASES = {
-    "default": dj_database_url.config(default='sqlite://:memory:')
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'test.sqlite3'),
+    }
 }
 
 ROOT_URLCONF = "tests.urls"
@@ -21,6 +28,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sites",
     "django_scrubber",
+    "tests",
 ]
 
 SITE_ID = 1
