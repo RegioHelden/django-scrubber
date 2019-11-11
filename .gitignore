@@ -45,6 +45,3 @@ output/*/index.html
 
 # Sphinx
 docs/_build
-
-# Sqlite databases
-*.sqlite3
