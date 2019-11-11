@@ -8,7 +8,7 @@ from django.db import connection
 from django.test import TestCase
 
 from django_scrubber import scrubbers
-from tests.models import DataFactory, DataToBeScrubbed
+from .models import DataFactory, DataToBeScrubbed
 
 
 class TestScrubbers(TestCase):

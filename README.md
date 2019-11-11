@@ -125,7 +125,7 @@ This behaviour can be changed by setting `SCRUBBER_RANDOM_SEED=None`, which ensu
 Scrubbing unique fields may lead to `IntegrityError`s, since there is no guarantee that the random content will not be repeated. Playing with different settings for `SCRUBBER_RANDOM_SEED` and `SCRUBBER_ENTRIES_PER_PROVIDER` may alleviate the problem.
 Unfortunately, for performance reasons, the source data for scrubbing with faker is added to the database, and arbitrarily increasing `SCRUBBER_ENTRIES_PER_PROVIDER` will significantly slow down scrubbing (besides still not guaranteeing uniqueness).
 
-When using `django < 2.2` and working on `sqlite` a bug within django causes field-specific scrubbing (e.g. `date_object`, `boolean`) to fail. Please consider using a different database backend or upgrade to the latest django version.
+When using `django < 2.1` and working on `sqlite` a bug within django causes field-specific scrubbing (e.g. `date_object`) to fail. Please consider using a different database backend or upgrade to the latest django version.
 
 ## Settings
 
