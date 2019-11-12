@@ -5,4 +5,3 @@ flake8>=2.1.0
 tox>=1.7.0
 codecov>=2.0.0
 factory_boy>=2.11.1
-dj_database_url>=0.5.0
