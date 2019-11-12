@@ -2,6 +2,7 @@
 from __future__ import unicode_literals, absolute_import
 
 import django
+import dj_database_url
 
 DEBUG = True
 USE_TZ = True
@@ -10,10 +11,7 @@ USE_TZ = True
 SECRET_KEY = "uzbLoOIYlJnzGDYlUfynNyocjZH9NLSc3AAREwLDaugQkCzsQn"
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
-    }
+    "default": dj_database_url.config(default='sqlite://:memory:')
 }
 
 ROOT_URLCONF = "tests.urls"
