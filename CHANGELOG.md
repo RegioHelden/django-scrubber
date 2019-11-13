@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [0.4.0] - 2019-11-13
+### Added
+- `Faker` scrubber now supports passing arbitrary arguments to faker providers and also non-text fields (thanks [Benedikt Bauer](https://github.com/mastacheata) and [Ronny Vedrilla](https://github.com/GitRon))
+
 ## [0.3.1] - 2018-09-10
 ### Fixed
 - [#9](https://github.com/RegioHelden/django-scrubber/pull/9) `Hash` scrubber choking on fields with `max_length=None` - Thanks to [Charlie Denton](https://github.com/meshy)
