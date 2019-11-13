@@ -18,6 +18,9 @@ env:
   - TOXENV=py-django21-mysql
   - TOXENV=py-django21-postgres
   - TOXENV=py-django21-sqlite
+  - TOXENV=py-django22-mysql
+  - TOXENV=py-django22-postgres
+  - TOXENV=py-django22-sqlite
 
 matrix:
   exclude:
@@ -33,6 +36,12 @@ matrix:
       env: TOXENV=py-django21-postgres
     - python: "2.7"
       env: TOXENV=py-django21-sqlite
+    - python: "2.7"
+      env: TOXENV=py-django22-mysql
+    - python: "2.7"
+      env: TOXENV=py-django22-postgres
+    - python: "2.7"
+      env: TOXENV=py-django22-sqlite
   fast_finish: true
 
 services:
