@@ -65,9 +65,9 @@ class TestScrubbers(TestCase):
     def test_faker_scrubber_datefield(self):
         """
         Use this as an example for Scrubber's capability of optimistically Casting to the current field's type
-        There is a bug with django < 2.2 and sqlite, that's why we don't run the test there.
+        There is a bug with django < 2.1 and sqlite, that's why we don't run the test there.
         """
-        if django.VERSION > (2, 1) or connection.vendor != "sqlite":
+        if django.VERSION >= (2, 1) or connection.vendor != "sqlite":
             data = DataFactory.create(date_past=date.today())
             with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={
                     'date_past': scrubbers.Faker('past_date', start_date="-30d", tzinfo=None)}):
