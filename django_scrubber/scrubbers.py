@@ -130,7 +130,7 @@ class Faker(object):
                     provider_name)
             faker_instance.add_provider(provider)
 
-        provider_args_str = ', '.join(str(i) for i in sef.provider_args)
+        provider_args_str = ', '.join(str(i) for i in self.provider_args)
         provider_kwargs_str = ', '.join(str(i) for i in self.provider_kwargs)
         logger.info('Initializing fake scrub data for provider %s(%s, %s)' %
             (self.provider, provider_args_str, provider_kwargs_str)

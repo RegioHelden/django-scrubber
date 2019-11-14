@@ -51,7 +51,7 @@ class TestScrubbers(TestCase):
             call_command('scrub_data')
         data.refresh_from_db()
 
-        # The EAN Faker will by default emit ean13, so this should fail if the parameter was ignored
+        # The EAN Faker will by default emit ean13, so this would fail if the parameter was ignored
         self.assertEquals(8, len(data.ean8))
 
         # Add a new scrubber for ean13
@@ -76,3 +76,17 @@ class TestScrubbers(TestCase):
 
             self.assertGreater(date.today(), data.date_past)
             self.assertLess(date.today() - timedelta(days=31), data.date_past)
+
+    def test_faker_scrubber_run_twice(self):
+        """
+        Use this as an example of what happens when you want to run the same Faker scrubbers twice
+        """
+        data = DataFactory.create(company='Foo')
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={
+                'company': scrubbers.Faker('company')}):
+            call_command('scrub_data')
+            call_command('scrub_data')
+        data.refresh_from_db()
+
+        self.assertNotEqual(data.company, 'Foo')
+        self.assertNotEqual(data.company, '')
