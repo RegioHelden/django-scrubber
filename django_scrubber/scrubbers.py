@@ -130,9 +130,13 @@ class Faker(object):
                     provider_name)
             faker_instance.add_provider(provider)
 
-        logger.info('Initializing fake scrub data for provider %s' % self.provider)
+        provider_args_str = ', '.join(str(i) for i in sef.provider_args)
+        provider_kwargs_str = ', '.join(str(i) for i in self.provider_kwargs)
+        logger.info('Initializing fake scrub data for provider %s(%s, %s)' %
+            (self.provider, provider_args_str, provider_kwargs_str)
+        )
         # TODO: maybe be a bit smarter and only regenerate if needed?
-        FakeData.objects.filter(provider=self.provider).delete()
+        FakeData.objects.filter(provider=self.provider_key).delete()
         fakedata = []
 
         # if we don't reset the seed for each provider, registering a new one might change all
