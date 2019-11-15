@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [0.4.1] - 2019-11-16
+### Fixed
+- correctly clear fake data model to fix successive calls to `scrub_data` (thanks [Benedikt Bauer](https://github.com/mastacheata))
+
 ## [0.4.0] - 2019-11-13
 ### Added
 - `Faker` scrubber now supports passing arbitrary arguments to faker providers and also non-text fields (thanks [Benedikt Bauer](https://github.com/mastacheata) and [Ronny Vedrilla](https://github.com/GitRon))
