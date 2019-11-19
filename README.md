@@ -161,6 +161,19 @@ Add additional fake providers to be used by Faker. Must be noted as full dotted 
 
 (default: empty list) 
 
+## Logging
+
+Scrubber uses the default django logger. The logger name is ``django_scrubber.scrubbers``. 
+So if you want to log - for example - to the console, you could set up the logger like this:
+
+````
+LOGGING['loggers']['django_scrubber.scrubbers'] = {
+    'handlers': ['console'],
+    'propagate': True,
+    'level': 'DEBUG',
+}
+````
+
 ## Making a new release
 
 [bumpversion](https://github.com/peritus/bumpversion) is used to manage releases.
