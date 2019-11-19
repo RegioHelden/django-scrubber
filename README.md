@@ -167,7 +167,7 @@ Scrubber uses the default django logger. The logger name is ``django_scrubber.sc
 So if you want to log - for example - to the console, you could set up the logger like this:
 
 ````
-LOGGING['loggers']['django_scrubber.scrubbers'] = {
+LOGGING['loggers']['django_scrubber'] = {
     'handlers': ['console'],
     'propagate': True,
     'level': 'DEBUG',
