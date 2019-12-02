@@ -65,6 +65,17 @@ Finally just run `./manage.py scrub_data` to **destructively** scrub the registe
 
 ## Built-In scrubbers
 
+### Empty/Null
+
+The simplest scrubbers: replace the field's content with the empty string or `NULL`, respectively.
+```python
+class Scrubbers:
+    somefield = scrubbers.Empty
+    someother = scrubbers.Null
+```
+
+These scrubbers have no options.
+
 ### Hash
 
 Simple hashing of content:

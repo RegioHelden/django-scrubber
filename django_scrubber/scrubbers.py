@@ -41,13 +41,11 @@ class FieldFunc(Func):
         pass
 
 
-class Empty(Func):
-    arity = 0
+class Empty(FieldFunc):
     template = "''"
 
 
-class Null(Func):
-    arity = 0
+class Null(FieldFunc):
     template = 'NULL'
 
 
@@ -82,7 +80,6 @@ class Lorem(FieldFunc):
     Simple fixed-text scrubber, which replaces content with one paragraph of the well-known "lorem ipsum" text.
     """
 
-    arity = 0
     template = (
         "'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore "
         "et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut "
