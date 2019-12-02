@@ -41,6 +41,16 @@ class FieldFunc(Func):
         pass
 
 
+class Empty(FieldFunc):
+    arity = 0
+    template = "''"
+
+
+class Null(FieldFunc):
+    arity = 0
+    template = 'NULL'
+
+
 class Hash(FieldFunc):
     """
     Simple md5 hashing of content.
@@ -104,7 +114,7 @@ class Faker(object):
         self.provider = provider
         self.provider_args = args
         self.provider_kwargs = kwargs
-        args_hash = hash(self.provider_args)^hash(tuple(self.provider_kwargs.items()))
+        args_hash = hash(self.provider_args) ^ hash(tuple(self.provider_kwargs.items()))
         self.provider_key = '%s - %s' % (self.provider, args_hash)
 
     def _initialize_data(self):
@@ -132,9 +142,9 @@ class Faker(object):
 
         provider_args_str = ', '.join(str(i) for i in self.provider_args)
         provider_kwargs_str = ', '.join(str(i) for i in self.provider_kwargs)
-        logger.info('Initializing fake scrub data for provider %s(%s, %s)' %
-            (self.provider, provider_args_str, provider_kwargs_str)
-        )
+        logger.info('Initializing fake scrub data for provider %s(%s, %s)' % (
+            self.provider, provider_args_str, provider_kwargs_str
+        ))
         # TODO: maybe be a bit smarter and only regenerate if needed?
         FakeData.objects.filter(provider=self.provider_key).delete()
         fakedata = []

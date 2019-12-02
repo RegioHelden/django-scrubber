@@ -12,6 +12,22 @@ from .models import DataFactory, DataToBeScrubbed
 
 
 class TestScrubbers(TestCase):
+    def test_empty_scrubber(self):
+        data = DataFactory.create(first_name='Foo')
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'first_name': scrubbers.Empty}):
+            call_command('scrub_data')
+        data.refresh_from_db()
+
+        self.assertEqual(data.first_name, '')
+
+    def test_null_scrubber(self):
+        data = DataFactory.create(last_name='Foo')
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'last_name': scrubbers.Null}):
+            call_command('scrub_data')
+        data.refresh_from_db()
+
+        self.assertEqual(data.last_name, None)
+
     def test_hash_scrubber_max_length(self):
         data = DataFactory.create(first_name='Foo')
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'first_name': scrubbers.Hash}):
