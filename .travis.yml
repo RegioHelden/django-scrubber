@@ -65,6 +65,7 @@ stages:
 jobs:
   include:
     - stage: deploy
+      if: tag IS present
       script: skip
       env:
       after_success:
