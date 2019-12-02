@@ -41,12 +41,12 @@ class FieldFunc(Func):
         pass
 
 
-class Empty(FieldFunc):
+class Empty(Func):
     arity = 0
     template = "''"
 
 
-class Null(FieldFunc):
+class Null(Func):
     arity = 0
     template = 'NULL'
 
