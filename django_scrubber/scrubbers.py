@@ -139,7 +139,7 @@ class Faker(object):
 
         provider_args_str = ', '.join(str(i) for i in self.provider_args)
         provider_kwargs_str = ', '.join(str(i) for i in self.provider_kwargs)
-        logger.info('Initializing fake scrub data for provider %s(%s, %s)' % (
+        logger.info('Initializing fake scrub data for provider %s(%s, %s)',
             self.provider, provider_args_str, provider_kwargs_str
         ))
         # TODO: maybe be a bit smarter and only regenerate if needed?
