@@ -170,3 +170,11 @@ Add additional fake providers to be used by Faker. Must be noted as full dotted 
 [bumpversion](https://github.com/peritus/bumpversion) is used to manage releases.
 
 Add your changes to the [CHANGELOG](./CHANGELOG.md) and run `bumpversion <major|minor|patch>`, then push (including tags)
+
+
+## Limitations
+
+### Overridden manager queryset method
+
+If you override the base manager's ``get_queryset()`` method and alter the default behaviour, *django-scrubber* will 
+behave accordingly. For example, if you exclude certain rows, they will NOT be scrubbed.
