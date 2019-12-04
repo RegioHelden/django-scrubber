@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [0.4.3] - 2019-12-04
+### Added
+- add empty and null scrubbers
+
+### Changed
+- make `Lorem` scrubber lazy, matching README
+
+### Fixed
+- set more stringent version requirements (faker >= 3 breaks builds)
+
 ## [0.4.1] - 2019-11-16
 ### Fixed
 - correctly clear fake data model to fix successive calls to `scrub_data` (thanks [Benedikt Bauer](https://github.com/mastacheata))
