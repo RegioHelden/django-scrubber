@@ -141,7 +141,7 @@ class Faker(object):
         provider_kwargs_str = ', '.join(str(i) for i in self.provider_kwargs)
         logger.info('Initializing fake scrub data for provider %s(%s, %s)',
             self.provider, provider_args_str, provider_kwargs_str
-        ))
+        )
         # TODO: maybe be a bit smarter and only regenerate if needed?
         FakeData.objects.filter(provider=self.provider_key).delete()
         fakedata = []
