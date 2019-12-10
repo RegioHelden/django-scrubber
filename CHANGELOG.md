@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [0.4.4] - 2019-12-11
+### Fixed
+- add the same version restrictions on faker to setup.py
+
 ## [0.4.3] - 2019-12-04
 ### Added
 - add empty and null scrubbers
