@@ -172,7 +172,7 @@ Add additional fake providers to be used by Faker. Must be noted as full dotted 
 Add your changes to the [CHANGELOG](./CHANGELOG.md) and run `bumpversion <major|minor|patch>`, then push (including tags)
 
 
-## Limitations
+## Hints
 
 ### Overridden manager queryset method
 
