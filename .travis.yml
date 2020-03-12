@@ -3,45 +3,19 @@ language: python
 dist: xenial
 
 python:
-  - "2.7"
-  - "3.5"
   - "3.6"
   - "3.7"
+  - "3.8"
 
 env:
-  - TOXENV=py-django111-mysql
-  - TOXENV=py-django111-postgres
-  - TOXENV=py-django111-sqlite
-  - TOXENV=py-django20-mysql
-  - TOXENV=py-django20-postgres
-  - TOXENV=py-django20-sqlite
-  - TOXENV=py-django21-mysql
-  - TOXENV=py-django21-postgres
-  - TOXENV=py-django21-sqlite
   - TOXENV=py-django22-mysql
   - TOXENV=py-django22-postgres
   - TOXENV=py-django22-sqlite
+  - TOXENV=py-django30-mysql
+  - TOXENV=py-django30-postgres
+  - TOXENV=py-django30-sqlite
 
 matrix:
-  exclude:
-    - python: "2.7"
-      env: TOXENV=py-django20-mysql
-    - python: "2.7"
-      env: TOXENV=py-django20-postgres
-    - python: "2.7"
-      env: TOXENV=py-django20-sqlite
-    - python: "2.7"
-      env: TOXENV=py-django21-mysql
-    - python: "2.7"
-      env: TOXENV=py-django21-postgres
-    - python: "2.7"
-      env: TOXENV=py-django21-sqlite
-    - python: "2.7"
-      env: TOXENV=py-django22-mysql
-    - python: "2.7"
-      env: TOXENV=py-django22-postgres
-    - python: "2.7"
-      env: TOXENV=py-django22-sqlite
   fast_finish: true
 
 services:
