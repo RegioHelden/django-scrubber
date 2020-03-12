@@ -5,7 +5,7 @@ from builtins import str as text
 import importlib
 import logging
 
-import faker
+from faker import Faker as LibFaker, Generator
 
 from django.db import router, connections
 from django.db.models import Field, Func, Subquery, OuterRef
@@ -116,7 +116,7 @@ class Faker(object):
 
     def _initialize_data(self):
         from .models import FakeData
-        faker_instance = faker.Faker(locale=to_locale(get_language()))
+        faker_instance = LibFaker(locale=to_locale(get_language()))
 
         # load additional faker providers
         for provider_name in settings_with_fallback('SCRUBBER_ADDITIONAL_FAKER_PROVIDERS'):
@@ -148,7 +148,7 @@ class Faker(object):
 
         # if we don't reset the seed for each provider, registering a new one might change all
         # data for subsequent providers
-        faker_instance.seed(settings_with_fallback('SCRUBBER_RANDOM_SEED'))
+        Generator.seed(settings_with_fallback('SCRUBBER_RANDOM_SEED'))
         for i in range(settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')):
             fakedata.append(FakeData(provider=self.provider_key, provider_offset=i,
                                      content=faker_instance.format(self.provider, *self.provider_args,
