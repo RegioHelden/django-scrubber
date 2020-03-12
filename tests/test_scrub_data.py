@@ -2,7 +2,7 @@ try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
-from StringIO import StringIO
+from io import StringIO
 
 from django.core.management import call_command
 from django.test import TestCase
