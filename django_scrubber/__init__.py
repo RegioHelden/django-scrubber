@@ -12,7 +12,7 @@ defaults = {
 }
 
 
-# can be replaced with ChainMap if we only support py3
+# TODO: replace with ChainMap now that we only support py3
 def settings_with_fallback(key):
     return getattr(settings, key, defaults[key])
 
