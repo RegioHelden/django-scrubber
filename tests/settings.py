@@ -1,4 +1,3 @@
-# -*- coding: utf-8
 import django
 import dj_database_url
 
