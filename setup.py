@@ -60,9 +60,6 @@ setup(
         "django-model-utils>=2.0,<4",
         "faker>=0.7.0,<3.0.0",
     ],
-    extras_require={
-        ":python_version<'3'": ["future>=0.16.0"],
-    },
     license="BSD",
     zip_safe=False,
     classifiers=[
