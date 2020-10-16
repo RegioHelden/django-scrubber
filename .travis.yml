@@ -15,9 +15,6 @@ env:
   - TOXENV=py-django30-postgres
   - TOXENV=py-django30-sqlite
 
-matrix:
-  fast_finish: true
-
 services:
   - mysql
   - postgresql
@@ -37,6 +34,7 @@ stages:
   - deploy
 
 jobs:
+  fast_finish: true
   include:
     - stage: deploy
       if: tag IS present
