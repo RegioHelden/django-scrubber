@@ -57,8 +57,8 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        "django-model-utils>=2.0,<4",
-        "faker>=0.7.0,<3.0.0",
+        "django-model-utils>=2.0,<5",
+        "faker>=0.8.0,<5.0.0",
     ],
     license="BSD",
     zip_safe=False,
