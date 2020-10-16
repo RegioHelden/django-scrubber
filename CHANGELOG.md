@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [0.5.0] - 2020-10-16
+### Added
+- Support for django-model-utils 4.x.x
+### Changed
+- Add compatibility for Faker 3.x.x, remove support for Faker < 0.8.0
+- Remove support for Python 2.7 and 3.5
+- Remove support for Django 1.x
+
 ## [0.4.4] - 2019-12-11
 ### Fixed
 - add the same version restrictions on faker to setup.py
