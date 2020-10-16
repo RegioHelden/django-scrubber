@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [0.5.1] - 2020-10-16
+### Changed
+- Fix travis setup
+
 ## [0.5.0] - 2020-10-16
 ### Added
 - Support for django-model-utils 4.x.x
