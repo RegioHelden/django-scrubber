@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - Add tests for Python 3.9
 - Add tests for Django 3.1
+- Support faker 5.x
+- Update dev package requirements 
 
 ## [0.5.1] - 2020-10-16
 ### Changed
