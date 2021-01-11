@@ -6,6 +6,7 @@ python:
   - "3.6"
   - "3.7"
   - "3.8"
+  - "3.9"
 
 env:
   - TOXENV=py-django22-mysql
@@ -14,6 +15,9 @@ env:
   - TOXENV=py-django30-mysql
   - TOXENV=py-django30-postgres
   - TOXENV=py-django30-sqlite
+  - TOXENV=py-django31-mysql
+  - TOXENV=py-django31-postgres
+  - TOXENV=py-django31-sqlite
 
 services:
   - mysql
