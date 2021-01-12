@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
-## [Unreleased]
+## [0.5.2] - 2021-01-12
+### Changed
 - Add tests for Python 3.9
 - Add tests for Django 3.1
 - Support faker 5.x
