@@ -1,5 +1,6 @@
+import os
+
 import django
-import dj_database_url
 
 DEBUG = True
 USE_TZ = True
@@ -7,9 +8,39 @@ USE_TZ = True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "uzbLoOIYlJnzGDYlUfynNyocjZH9NLSc3AAREwLDaugQkCzsQn"
 
-DATABASES = {
-    "default": dj_database_url.config(default='sqlite://:memory:')
+ATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+        'OPTIONS': {
+        }
+    }
 }
+
+if os.environ.get('GITHUB_WORKFLOW', False):
+    DATABASE_ENGINE = os.environ.get('DATABASE_ENGINE', 'sqlite')
+    if 'mysql' in DATABASE_ENGINE:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'test',
+                'USER': 'root',
+                'PASSWORD': '',
+                'HOST': '127.0.0.1',
+                'PORT': '3306',
+            },
+        }
+    elif 'postgres' in DATABASE_ENGINE:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'postgres',
+                'USER': 'postgres',
+                'PASSWORD': 'postgres',
+                'HOST': '127.0.0.1',
+                'PORT': '5432',
+            },
+        }
 
 ROOT_URLCONF = "tests.urls"
 
