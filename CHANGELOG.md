@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [0.5.3] - 2021-02-04
+### Changed
+- Support faker 6.x
+
 ## [0.5.2] - 2021-01-12
 ### Changed
 - Add tests for Python 3.9
