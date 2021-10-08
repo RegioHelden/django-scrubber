@@ -85,7 +85,7 @@ jobs:
         run: pip install mysqlclient>=2.0.1 django-mysql>=3.9.0
       - name: Install postgres libs
         if: matrix.database == 'postgres'
-        run: pip install psycopg2>=2.8.6
+        run: pip install psycopg2==2.8.6
 
       - name: Install requirements
         run: pip install -r requirements_test.txt

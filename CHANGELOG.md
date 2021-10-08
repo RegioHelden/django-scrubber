@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 <!--
 ## [Unreleased]
 -->
+## [0.5.6] - 2021-10-08
+### Changed
+- Pin psycopg2 in CI ti 2.8.6 as 2.9+ is incompatible with Django 2.2
 
 ## [0.5.5] - 2021-10-08
 ### Changed
