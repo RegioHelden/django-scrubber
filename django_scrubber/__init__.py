@@ -1,6 +1,6 @@
 from django.conf import settings
 
-__version__ = '0.5.4'
+__version__ = '0.5.5'
 
 defaults = {
     'SCRUBBER_RANDOM_SEED': 42,  # we prefer idempotent scrubbing
