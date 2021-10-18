@@ -114,7 +114,12 @@ class Faker(object):
 
     def _initialize_data(self):
         from .models import FakeData
-        faker_instance = faker.Faker(locale=to_locale(get_language()))
+
+        # get locale from config and fall back to django's default one
+        locale = settings_with_fallback('SCRUBBER_FAKER_LOCALE')
+        if not locale:
+            locale = to_locale(get_language())
+        faker_instance = faker.Faker(locale=locale)
 
         # load additional faker providers
         for provider_name in settings_with_fallback('SCRUBBER_ADDITIONAL_FAKER_PROVIDERS'):
