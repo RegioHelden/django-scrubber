@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 <!--
 ## [Unreleased]
 -->
+
+## [0.6.0] - 2021-10-18
+### Added
+- Add support to override Faker locale in scrubber settings
+### Changed
+- Publish coverage only on main repository
+
 ## [0.5.6] - 2021-10-08
 ### Changed
 - Pin psycopg2 in CI ti 2.8.6 as 2.9+ is incompatible with Django 2.2
