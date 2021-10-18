@@ -176,6 +176,11 @@ Add additional fake providers to be used by Faker. Must be noted as full dotted 
 
 (default: empty list) 
 
+### `SCRUBBER_FAKER_LOCALE`:
+Set an alternative locale for Faker used during the scrubbing process.
+
+(default: None, falls back to Django's default locale)
+
 ## Logging
 
 Scrubber uses the default django logger. The logger name is ``django_scrubber.scrubbers``. 
