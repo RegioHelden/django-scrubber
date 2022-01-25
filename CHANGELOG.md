@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [0.6.1] - 2022-01-25
+### Changed
+- Support faker 11.x
+
 ## [0.6.0] - 2021-10-18
 ### Added
 - Add support to override Faker locale in scrubber settings
