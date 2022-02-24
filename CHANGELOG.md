@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
-## [0.7.0] - 2022-02-08
+## [0.7.0] - 2022-02-24
 ### Changed
 - Remove upper boundary for Faker as they release non-breaking major upgrades way too often, please pin a working release in your own app
 
