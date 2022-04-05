@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import logging
 
 from django.conf import settings
+from django.contrib.sessions.models import Session
 from django.db.models import F
 from django.db.utils import IntegrityError, DataError
 from django.core.exceptions import FieldDoesNotExist
@@ -10,6 +11,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.apps import apps
 
 from ... import settings_with_fallback
+from ...models import FakeData
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +29,12 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--model', type=str, required=False,
                             help='Scrub only a single model (format <app_label>.<model_name>)')
+        parser.add_argument('--keep-sessions', type=bool, required=False,
+                            help='Will NOT truncate all (by definition critical) session data')
+        parser.add_argument('--remove-fake-data', type=bool, required=False,
+                            help='Will truncate the database table storing preprocessed data for the Faker library. '
+                                 'If you want to do multiple iterations of scrubbing, it will save you time to keep '
+                                 'them. If not, you will add a huge bunch of data to your dump size.')
 
     def handle(self, *args, **kwargs):
         if not settings.DEBUG:
@@ -43,6 +51,14 @@ class Command(BaseCommand):
                 models = [apps.get_model(app_label=app_label, model_name=model_name)]
             except LookupError:
                 raise CommandError('--model should be defined as <app_label>.<model_name>')
+
+        # Truncate session data
+        if not kwargs.get('keep-sessions', False):
+            Session.objects.all().delete()
+
+        # Truncate Faker data
+        if not kwargs.get('remove-fake-data', False):
+            FakeData.objects.all().delete()
 
         # run for all models of all apps
         else:
