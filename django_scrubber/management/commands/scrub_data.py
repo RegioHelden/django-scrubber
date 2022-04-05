@@ -21,9 +21,9 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--model', type=str, required=False,
                             help='Scrub only a single model (format <app_label>.<model_name>)')
-        parser.add_argument('--keep-sessions', type=bool, required=False,
+        parser.add_argument('--keep-sessions', action='store_true', required=False,
                             help='Will NOT truncate all (by definition critical) session data')
-        parser.add_argument('--remove-fake-data', type=bool, required=False,
+        parser.add_argument('--remove-fake-data', action='store_true', required=False,
                             help='Will truncate the database table storing preprocessed data for the Faker library. '
                                  'If you want to do multiple iterations of scrubbing, it will save you time to keep '
                                  'them. If not, you will add a huge bunch of data to your dump size.')
@@ -43,14 +43,6 @@ class Command(BaseCommand):
                 models = [apps.get_model(app_label=app_label, model_name=model_name)]
             except LookupError:
                 raise CommandError('--model should be defined as <app_label>.<model_name>')
-
-        # Truncate session data
-        if not kwargs.get('keep-sessions', False):
-            Session.objects.all().delete()
-
-        # Truncate Faker data
-        if not kwargs.get('remove-fake-data', False):
-            FakeData.objects.all().delete()
 
         # run for all models of all apps
         else:
@@ -90,6 +82,14 @@ class Command(BaseCommand):
                                    'SCRUBBER_ENTRIES_PER_PROVIDER?' % (model, e))
             except DataError as e:
                 raise CommandError('DataError while scrubbing %s (%s)' % (model, e))
+
+        # Truncate session data
+        if not kwargs.get('keep_sessions', True):
+            Session.objects.all().delete()
+
+        # Truncate Faker data
+        if not kwargs.get('remove_fake_data', False):
+            FakeData.objects.all().delete()
 
 
 def _call_callables(d):
