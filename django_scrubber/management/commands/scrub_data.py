@@ -40,13 +40,13 @@ class Command(BaseCommand):
         else:
             models = apps.get_models()
 
+        scrubber_apps_list = settings_with_fallback('SCRUBBER_APPS_LIST')
         for model in models:
             if model._meta.proxy:
                 continue
             if settings_with_fallback('SCRUBBER_SKIP_UNMANAGED') and not model._meta.managed:
                 continue
-            if (settings_with_fallback('SCRUBBER_APPS_LIST') and
-                    model._meta.app_config.name not in settings_with_fallback('SCRUBBER_APPS_LIST')):
+            if (scrubber_apps_list and model._meta.app_config.name not in scrubber_apps_list):
                 continue
 
             scrubbers = dict()
@@ -93,7 +93,7 @@ def _get_model_scrubbers(model):
     for k, v in _get_fields(scrubber_cls):
         try:
             field = model._meta.get_field(k)
-        except FieldDoesNotExist as e:
+        except FieldDoesNotExist:
             raise
 
         scrubbers[field] = v
