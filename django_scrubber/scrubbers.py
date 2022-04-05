@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from builtins import str as text
 
 import importlib
@@ -41,6 +39,14 @@ class FieldFunc(Func):
         pass
 
 
+class Empty(FieldFunc):
+    template = "''"
+
+
+class Null(FieldFunc):
+    template = 'NULL'
+
+
 class Hash(FieldFunc):
     """
     Simple md5 hashing of content.
@@ -72,7 +78,6 @@ class Lorem(FieldFunc):
     Simple fixed-text scrubber, which replaces content with one paragraph of the well-known "lorem ipsum" text.
     """
 
-    arity = 0
     template = (
         "'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore "
         "et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut "
@@ -104,12 +109,17 @@ class Faker(object):
         self.provider = provider
         self.provider_args = args
         self.provider_kwargs = kwargs
-        args_hash = hash(self.provider_args)^hash(tuple(self.provider_kwargs.items()))
+        args_hash = hash(self.provider_args) ^ hash(tuple(self.provider_kwargs.items()))
         self.provider_key = '%s - %s' % (self.provider, args_hash)
 
     def _initialize_data(self):
         from .models import FakeData
-        faker_instance = faker.Faker(locale=to_locale(get_language()))
+
+        # get locale from config and fall back to django's default one
+        locale = settings_with_fallback('SCRUBBER_FAKER_LOCALE')
+        if not locale:
+            locale = to_locale(get_language())
+        faker_instance = faker.Faker(locale=locale)
 
         # load additional faker providers
         for provider_name in settings_with_fallback('SCRUBBER_ADDITIONAL_FAKER_PROVIDERS'):
@@ -132,8 +142,8 @@ class Faker(object):
 
         provider_args_str = ', '.join(str(i) for i in self.provider_args)
         provider_kwargs_str = ', '.join(str(i) for i in self.provider_kwargs)
-        logger.info('Initializing fake scrub data for provider %s(%s, %s)' %
-            (self.provider, provider_args_str, provider_kwargs_str)
+        logger.info('Initializing fake scrub data for provider %s(%s, %s)',
+            self.provider, provider_args_str, provider_kwargs_str
         )
         # TODO: maybe be a bit smarter and only regenerate if needed?
         FakeData.objects.filter(provider=self.provider_key).delete()
@@ -141,7 +151,7 @@ class Faker(object):
 
         # if we don't reset the seed for each provider, registering a new one might change all
         # data for subsequent providers
-        faker_instance.seed(settings_with_fallback('SCRUBBER_RANDOM_SEED'))
+        faker.Generator.seed(settings_with_fallback('SCRUBBER_RANDOM_SEED'))
         for i in range(settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')):
             fakedata.append(FakeData(provider=self.provider_key, provider_offset=i,
                                      content=faker_instance.format(self.provider, *self.provider_args,

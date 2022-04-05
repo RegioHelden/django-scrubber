@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import os
 import re
 import sys
@@ -58,25 +57,24 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        "django-model-utils>=2.0",
+        "django-model-utils>=2.0,<5",
+        "faker>=0.8.0",
     ],
-    extras_require={":python_version<'3'": ["future>=0.16.0"]},
     license="BSD",
     zip_safe=False,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Django',
-        'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.0',
+        'Framework :: Django :: 3.0',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Topic :: Security',
         'Topic :: Software Development',
     ],

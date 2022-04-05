@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from datetime import date, timedelta
 
 import django
@@ -12,6 +10,22 @@ from .models import DataFactory, DataToBeScrubbed
 
 
 class TestScrubbers(TestCase):
+    def test_empty_scrubber(self):
+        data = DataFactory.create(first_name='Foo')
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'first_name': scrubbers.Empty}):
+            call_command('scrub_data')
+        data.refresh_from_db()
+
+        self.assertEqual(data.first_name, '')
+
+    def test_null_scrubber(self):
+        data = DataFactory.create(last_name='Foo')
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'last_name': scrubbers.Null}):
+            call_command('scrub_data')
+        data.refresh_from_db()
+
+        self.assertEqual(data.last_name, None)
+
     def test_hash_scrubber_max_length(self):
         data = DataFactory.create(first_name='Foo')
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'first_name': scrubbers.Hash}):
@@ -32,6 +46,15 @@ class TestScrubbers(TestCase):
         data.refresh_from_db()
 
         self.assertNotEqual(data.description, 'Foo')
+
+    def test_lorem_scrubber(self):
+        data = DataFactory.create(description='Foo')
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'description': scrubbers.Lorem}):
+            call_command('scrub_data')
+        data.refresh_from_db()
+
+        self.assertNotEqual(data.description, 'Foo')
+        self.assertEqual(data.description[:11], 'Lorem ipsum')
 
     def test_faker_scrubber_charfield(self):
         data = DataFactory.create(last_name='Foo')

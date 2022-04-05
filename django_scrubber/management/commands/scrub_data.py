@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import logging
 
 from django.conf import settings
@@ -14,12 +12,6 @@ from ... import settings_with_fallback
 from ...models import FakeData
 
 logger = logging.getLogger(__name__)
-
-# py2/3 compat; no need for six
-try:
-    range = xrange
-except NameError:
-    range = range
 
 
 class Command(BaseCommand):

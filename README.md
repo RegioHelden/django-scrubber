@@ -1,6 +1,6 @@
 # Django Scrubber
 
-[![Build Status](https://travis-ci.org/RegioHelden/django-scrubber.svg?branch=master)](https://travis-ci.org/RegioHelden/django-scrubber)
+[![Build Status](https://github.com/RegioHelden/django-scrubber/workflows/Build/badge.svg)](https://github.com/RegioHelden/django-scrubber/actions)
 [![PyPI](https://img.shields.io/pypi/v/django-scrubber.svg)](https://pypi.org/project/django-scrubber/)
 
 `django_scrubber` is a django app meant to help you anonymize your project's database data. It destructively alters data directly on the DB and therefore **should not be used on production**.
@@ -64,6 +64,17 @@ By default, `django_scrubber` will affect all models from all registered apps. T
 Finally just run `./manage.py scrub_data` to **destructively** scrub the registered fields.
 
 ## Built-In scrubbers
+
+### Empty/Null
+
+The simplest scrubbers: replace the field's content with the empty string or `NULL`, respectively.
+```python
+class Scrubbers:
+    somefield = scrubbers.Empty
+    someother = scrubbers.Null
+```
+
+These scrubbers have no options.
 
 ### Hash
 
@@ -164,6 +175,24 @@ Only scrub models belonging to these specific django apps. If unset, will scrub 
 Add additional fake providers to be used by Faker. Must be noted as full dotted path to the provider class.
 
 (default: empty list) 
+
+### `SCRUBBER_FAKER_LOCALE`:
+Set an alternative locale for Faker used during the scrubbing process.
+
+(default: None, falls back to Django's default locale)
+
+## Logging
+
+Scrubber uses the default django logger. The logger name is ``django_scrubber.scrubbers``. 
+So if you want to log - for example - to the console, you could set up the logger like this:
+
+````
+LOGGING['loggers']['django_scrubber'] = {
+    'handlers': ['console'],
+    'propagate': True,
+    'level': 'DEBUG',
+}
+````
 
 ## Making a new release
 

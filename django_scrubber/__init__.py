@@ -1,6 +1,6 @@
 from django.conf import settings
 
-__version__ = '0.4.1'
+__version__ = '0.7.0'
 
 defaults = {
     'SCRUBBER_RANDOM_SEED': 42,  # we prefer idempotent scrubbing
@@ -9,10 +9,11 @@ defaults = {
     'SCRUBBER_SKIP_UNMANAGED': True,
     'SCRUBBER_APPS_LIST': None,
     'SCRUBBER_ADDITIONAL_FAKER_PROVIDERS': [],
+    'SCRUBBER_FAKER_LOCALE': None,
 }
 
 
-# can be replaced with ChainMap if we only support py3
+# TODO: replace with ChainMap now that we only support py3
 def settings_with_fallback(key):
     return getattr(settings, key, defaults[key])
 
