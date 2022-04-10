@@ -13,7 +13,7 @@ from django.db.utils import IntegrityError
 from django_scrubber import models
 
 
-class TestDjango_scrubber(TestCase):
+class TestDjangoScrubber(TestCase):
 
     def test_uniqueness(self):
         models.FakeData.objects.create(provider='foo', provider_offset=0, content='bar')

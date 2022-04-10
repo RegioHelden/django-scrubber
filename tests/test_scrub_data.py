@@ -27,7 +27,7 @@ class TestScrubData(TestCase):
         err = StringIO()
 
         with self.settings(DEBUG=False):
-            call_command('scrub_data',  stderr=err)
+            call_command('scrub_data', stderr=err)
         output = err.getvalue()
         self.user.refresh_from_db()
 
