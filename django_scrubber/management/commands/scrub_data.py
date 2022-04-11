@@ -84,11 +84,11 @@ class Command(BaseCommand):
                 raise CommandError('DataError while scrubbing %s (%s)' % (model, e))
 
         # Truncate session data
-        if not kwargs.get('keep_sessions', True):
+        if not kwargs.get('keep_sessions', False):
             Session.objects.all().delete()
 
         # Truncate Faker data
-        if not kwargs.get('remove_fake_data', False):
+        if kwargs.get('remove_fake_data', False):
             FakeData.objects.all().delete()
 
 
