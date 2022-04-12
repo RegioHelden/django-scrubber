@@ -99,7 +99,18 @@ jobs:
           DATABASE_ENGINE: ${{ matrix.database }}
 
       - name: Publish coverage
-        if: github.repository == 'RegioHelden/django-scrubber'
+        if: |
+          github.repository == 'RegioHelden/django-scrubber' 
+          &&
+          (
+            github.event_name == 'push'
+            ||
+            (
+              github.event_name == 'pull_request'
+              && 
+              github.head_ref == 'master'
+            )
+          )
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
