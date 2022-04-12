@@ -1,11 +1,16 @@
+import argparse
 from datetime import date, timedelta
 
 import django
+from django.contrib.sessions.models import Session
 from django.core.management import call_command
 from django.db import connection
 from django.test import TestCase
+from django.test import override_settings
+from django.utils import timezone
 
 from django_scrubber import scrubbers
+from django_scrubber.models import FakeData
 from .models import DataFactory, DataToBeScrubbed
 
 
@@ -113,3 +118,71 @@ class TestScrubbers(TestCase):
 
         self.assertNotEqual(data.company, 'Foo')
         self.assertNotEqual(data.company, '')
+
+    @override_settings(DEBUG=True)
+    def test_faker_scrubber_run_clear_session_by_default(self):
+        """
+        Ensures that the session table will be emptied by default
+        """
+        # Create session object
+        Session.objects.create(session_key='foo', session_data='Lorem ipsum', expire_date=timezone.now())
+
+        # Sanity check
+        self.assertTrue(Session.objects.all().exists())
+
+        # Call command
+        call_command('scrub_data')
+
+        # Assertion that session table is empty now
+        self.assertFalse(Session.objects.all().exists())
+
+    @override_settings(DEBUG=True)
+    def test_faker_scrubber_run_disable_session_clearing(self):
+        """
+        Ensures that the session table will be emptied by default
+        """
+        # Create session object
+        Session.objects.create(session_key='foo', session_data='Lorem ipsum', expire_date=timezone.now())
+
+        # Sanity check
+        self.assertTrue(Session.objects.all().exists())
+
+        # Call command
+        call_command('scrub_data', keep_sessions=True)
+
+        # Assertion that session table is empty now
+        self.assertTrue(Session.objects.all().exists())
+
+    @override_settings(DEBUG=True)
+    def test_faker_scrubber_run_clear_faker_data_not_by_default(self):
+        """
+        Ensures that the session table will be emptied by default
+        """
+        # Create faker data object
+        FakeData.objects.create(provider='company', content='Foo', provider_offset=1)
+
+        # Sanity check
+        self.assertTrue(FakeData.objects.filter(provider='company', content='Foo').exists())
+
+        # Call command
+        call_command('scrub_data')
+
+        # Assertion that faker data still exists
+        self.assertTrue(FakeData.objects.filter(provider='company', content='Foo').exists())
+
+    @override_settings(DEBUG=True)
+    def test_faker_scrubber_run_clear_faker_data_works(self):
+        """
+        Ensures that the session table will be emptied by default
+        """
+        # Create faker data object
+        FakeData.objects.create(provider='company', content='Foo', provider_offset=1)
+
+        # Sanity check
+        self.assertTrue(FakeData.objects.filter(provider='company', content='Foo').exists())
+
+        # Call command
+        call_command('scrub_data', remove_fake_data=True)
+
+        # Assertion that faker data still exists
+        self.assertFalse(FakeData.objects.filter(provider='company', content='Foo').exists())
