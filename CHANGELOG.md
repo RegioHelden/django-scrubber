@@ -9,11 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 -->
 
 ## [0.8.0] - 2022-05-01
+### Added
+- Add `keep-sessions` argument to scrub_data command. Will NOT truncate all (by definition critical) session data. Thanks @GitRon
+- Add `remove-fake-data` argument to scrub_data command. Will truncate the database table storing preprocessed data for the Faker library. Thanks @GitRon
+- Add Django 3.2 and 4.0 to test matrix
 ### Changed
-- Add `keep-sessions` argument to scrub_data command. Will NOT truncate all (by definition critical) session data.
-- Add `remove-fake-data` argument to scrub_data command. Will truncate the database table storing preprocessed data for the Faker library.
-
-Thanks @GitRon
+- Remove Python 3.6 from test matrix
+- Remove Django 2.2 and 3.1 from test matrix
 
 ## [0.7.0] - 2022-02-24
 ### Changed
