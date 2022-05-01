@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [0.8.0] - 2022-05-01
+### Changed
+- Add `keep-sessions` argument to scrub_data command. Will NOT truncate all (by definition critical) session data.
+- Add `remove-fake-data` argument to scrub_data command. Will truncate the database table storing preprocessed data for the Faker library.
+
+Thanks @GitRon
+
 ## [0.7.0] - 2022-02-24
 ### Changed
 - Remove upper boundary for Faker as they release non-breaking major upgrades way too often, please pin a working release in your own app

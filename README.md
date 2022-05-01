@@ -63,6 +63,14 @@ By default, `django_scrubber` will affect all models from all registered apps. T
 
 Finally just run `./manage.py scrub_data` to **destructively** scrub the registered fields.
 
+### Arguments to the scrub_data command
+
+`--model` Scrub only a single model (format <app_label>.<model_name>)
+
+`--keep-sessions` Will NOT truncate all (by definition critical) session data.
+
+`--remove-fake-data` Will truncate the database table storing preprocessed data for the Faker library.
+
 ## Built-In scrubbers
 
 ### Empty/Null
