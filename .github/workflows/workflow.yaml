@@ -24,6 +24,8 @@ jobs:
           - 2.2
           - 3.0
           - 3.1
+          - 3.2
+          - 4.0
         database:
           - sqlite
           - mysql
@@ -80,12 +82,18 @@ jobs:
       - name: Install Django 3.1
         if: matrix.django == 3.1
         run: pip install "Django>=3.1,<3.2"
+      - name: Install Django 3.2
+        if: matrix.django == 3.2
+        run: pip install "Django>=3.2,<4.0"
+      - name: Install Django 4.0
+        if: matrix.django == 4.0
+        run: pip install "Django>=4.0,<4.1"
       - name: Install MySQL libs
         if: matrix.database == 'mysql'
-        run: pip install mysqlclient>=2.0.1 django-mysql>=3.9.0
+        run: pip install mysqlclient>=2.1.0 django-mysql>=4.5.0
       - name: Install postgres libs
         if: matrix.database == 'postgres'
-        run: pip install psycopg2==2.8.6
+        run: pip install psycopg2==2.9.3
 
       - name: Install requirements
         run: pip install -r requirements_test.txt
