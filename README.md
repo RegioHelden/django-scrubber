@@ -146,6 +146,39 @@ Unfortunately, for performance reasons, the source data for scrubbing with faker
 
 When using `django < 2.1` and working on `sqlite` a bug within django causes field-specific scrubbing (e.g. `date_object`) to fail. Please consider using a different database backend or upgrade to the latest django version.
 
+## Scrubbing of third-party models
+
+Sometimes you just don't have control over some code, but you still want to scrub the data of a given model.
+
+A good example is the Django user model. It contains sensitive data, and you would have to overwrite the whole model
+just to add the scrubber metaclass.
+
+If you want to do such a thing, just use the helper `scrub_model_with_scrubber` like this:
+
+1. Define your Scrubber class **somewhere** in your codebase (like a `scrubbers.py`)
+
+````
+class UserScrubbers:
+    scrubbers.Faker('de_DE')
+    first_name = scrubbers.Faker('first_name')
+    last_name = scrubbers.Faker('last_name')
+    username = scrubbers.Faker('uuid4')
+    password = scrubbers.Faker('sha1')
+    last_login = scrubbers.Null
+    email = scrubbers.Concat(first_name, models.Value('.'), last_name, models.Value('@'),
+                             models.Value(settings.SCRUBBER_DOMAIN))
+````
+
+2. Call the helper method and pass your target model class and your scrubber class
+
+       from django.contrib.auth.models import User
+       from django_scrubber.helpers import scrub_model_with_scrubber 
+       from my_project.my_app.scrubbers import UserScrubbers
+
+       scrub_model_with_scrubber(User, UserScrubbers)
+
+
+
 ## Settings
 
 ### `SCRUBBER_GLOBAL_SCRUBBERS`:

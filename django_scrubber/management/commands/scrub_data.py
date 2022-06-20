@@ -31,7 +31,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         if not settings.DEBUG:
             # avoid logger, otherwise we might silently fail if we're on live and logging is being sent somewhere else
-            self.stderr.write('this command should only be run with DEBUG=True, to avoid running on live systems')
+            self.stderr.write('This command should only be run with DEBUG=True, to avoid running on live systems')
             return False
 
         global_scrubbers = settings_with_fallback('SCRUBBER_GLOBAL_SCRUBBERS')
@@ -64,24 +64,8 @@ class Command(BaseCommand):
                 elif type(field) in global_scrubbers:
                     scrubbers[field] = global_scrubbers[type(field)]
 
-            scrubbers.update(_get_model_scrubbers(model))
-
-            if not scrubbers:
-                continue
-
-            realized_scrubbers = _filter_out_disabled(_call_callables(scrubbers))
-
-            logger.info('Scrubbing %s with %s', model._meta.label, realized_scrubbers)
-
-            try:
-                model.objects.annotate(
-                    mod_pk=F('pk') % settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')
-                ).update(**realized_scrubbers)
-            except IntegrityError as e:
-                raise CommandError('Integrity error while scrubbing %s (%s); maybe increase '
-                                   'SCRUBBER_ENTRIES_PER_PROVIDER?' % (model, e))
-            except DataError as e:
-                raise CommandError('DataError while scrubbing %s (%s)' % (model, e))
+            # Find scrubber class and scrub data
+            _handle_model_scrubbing(model, scrubbers)
 
         # Truncate session data
         if not kwargs.get('keep_sessions', False):
@@ -91,6 +75,30 @@ class Command(BaseCommand):
         if kwargs.get('remove_fake_data', False):
             FakeData.objects.all().delete()
 
+def _handle_model_scrubbing(model, scrubbers, scrubber_cls=None):
+    """
+    Takes care of scrubbing the data of one single model class
+    """
+
+    scrubbers.update(_get_model_scrubbers(model, scrubber_cls))
+
+    if not scrubbers:
+        return
+
+    realized_scrubbers = _filter_out_disabled(_call_callables(scrubbers))
+
+    logger.info('Scrubbing %s with %s', model._meta.label, realized_scrubbers)
+
+    try:
+        model.objects.annotate(
+            mod_pk=F('pk') % settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')
+        ).update(**realized_scrubbers)
+    except IntegrityError as e:
+        raise CommandError('Integrity error while scrubbing %s (%s); maybe increase '
+                           'SCRUBBER_ENTRIES_PER_PROVIDER?' % (model, e))
+    except DataError as e:
+        raise CommandError('DataError while scrubbing %s (%s)' % (model, e))
+
 
 def _call_callables(d):
     """
@@ -99,13 +107,17 @@ def _call_callables(d):
     return {k.name: (callable(v) and v(k) or v) for k, v in d.items()}
 
 
-def _get_model_scrubbers(model):
+def _get_model_scrubbers(model, scrubber_cls=None):
     scrubbers = dict()
-    try:
-        scrubber_cls = getattr(model, 'Scrubbers')
-    except AttributeError:
-        return scrubbers  # no model-specific scrubbers
 
+    # Get scrubber class if not passed as a parameter
+    if not scrubber_cls:
+        try:
+            scrubber_cls = getattr(model, 'Scrubbers')
+        except AttributeError:
+            return scrubbers  # no model-specific scrubbers
+
+    # Build scrubber dict
     for k, v in _get_fields(scrubber_cls):
         try:
             field = model._meta.get_field(k)
