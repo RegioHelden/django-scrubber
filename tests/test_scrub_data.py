@@ -31,7 +31,7 @@ class TestScrubData(TestCase):
         output = err.getvalue()
         self.user.refresh_from_db()
 
-        self.assertIn("this command should only be run with DEBUG=True, to avoid running on live systems", output)
+        self.assertIn("This command should only be run with DEBUG=True, to avoid running on live systems", output)
         self.assertEqual(self.user.first_name, 'test_first_name')
 
     def test_hash_simple_global_scrubber(self):
