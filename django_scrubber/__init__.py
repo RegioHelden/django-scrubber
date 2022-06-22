@@ -10,6 +10,7 @@ defaults = {
     'SCRUBBER_APPS_LIST': None,
     'SCRUBBER_ADDITIONAL_FAKER_PROVIDERS': [],
     'SCRUBBER_FAKER_LOCALE': None,
+    'SCRUBBER_MAPPING': dict(),
 }
 
 

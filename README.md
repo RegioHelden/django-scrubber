@@ -189,6 +189,19 @@ Set an alternative locale for Faker used during the scrubbing process.
 
 (default: None, falls back to Django's default locale)
 
+### `SCRUBBER_MAPPING`:
+
+Define a class and a mapper which does not have to live inside the given model. Useful, if you have no control over the
+models code you'd like to scrub.
+
+````python
+SCRUBBER_MAPPING = {
+    "auth.User": "my_app.scrubbers.UserScrubbers",
+}
+````
+
+(default: {})
+
 ## Logging
 
 Scrubber uses the default django logger. The logger name is ``django_scrubber.scrubbers``. 
