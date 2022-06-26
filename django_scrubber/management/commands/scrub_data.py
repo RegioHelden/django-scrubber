@@ -1,12 +1,13 @@
+import importlib
 import logging
 
+from django.apps import apps
 from django.conf import settings
 from django.contrib.sessions.models import Session
-from django.db.models import F
-from django.db.utils import IntegrityError, DataError
 from django.core.exceptions import FieldDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
-from django.apps import apps
+from django.db.models import F
+from django.db.utils import IntegrityError, DataError
 
 from ... import settings_with_fallback
 from ...models import FakeData
@@ -99,13 +100,37 @@ def _call_callables(d):
     return {k.name: (callable(v) and v(k) or v) for k, v in d.items()}
 
 
-def _get_model_scrubbers(model):
-    scrubbers = dict()
+def _parse_scrubber_class_from_string(path: str):
+    """
+    Takes a string to a certain scrubber class and returns a python class definition - not an instance.
+    """
     try:
-        scrubber_cls = getattr(model, 'Scrubbers')
-    except AttributeError:
-        return scrubbers  # no model-specific scrubbers
+        module_name, class_name = path.rsplit('.', 1)
+        module = importlib.import_module(module_name)
+        return getattr(module, class_name)
+    except (ImportError, ValueError) as e:
+        raise ImportError('Mapped scrubber class "%s" could not be found.' % path) from e
 
+
+def _get_model_scrubbers(model):
+    # Get model-scrubber-mapping from settings
+    scrubber_mapping = settings_with_fallback('SCRUBBER_MAPPING')
+
+    # Initialise scrubber list
+    scrubbers = dict()
+
+    # Check if model has a settings-defined...
+    if model._meta.label in scrubber_mapping:
+        scrubber_cls = _parse_scrubber_class_from_string(scrubber_mapping[model._meta.label])
+    # If not...
+    else:
+        # Try to get the scrubber metaclass from the given model
+        try:
+            scrubber_cls = getattr(model, 'Scrubbers')
+        except AttributeError:
+            return scrubbers  # no model-specific scrubbers
+
+    # Get field mappings from scrubber class
     for k, v in _get_fields(scrubber_cls):
         try:
             field = model._meta.get_field(k)
@@ -114,6 +139,7 @@ def _get_model_scrubbers(model):
 
         scrubbers[field] = v
 
+    # Return scrubber-field-mapping
     return scrubbers
 
 

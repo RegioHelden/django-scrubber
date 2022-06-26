@@ -146,6 +146,39 @@ Unfortunately, for performance reasons, the source data for scrubbing with faker
 
 When using `django < 2.1` and working on `sqlite` a bug within django causes field-specific scrubbing (e.g. `date_object`) to fail. Please consider using a different database backend or upgrade to the latest django version.
 
+## Scrubbing third-party models
+
+Sometimes you just don't have control over some code, but you still want to scrub the data of a given model.
+
+A good example is the Django user model. It contains sensitive data, and you would have to overwrite the whole model
+just to add the scrubber metaclass.
+
+That's the way to go:
+
+1. Define your Scrubber class **somewhere** in your codebase (like a `scrubbers.py`)
+
+```python
+# scrubbers.py
+class UserScrubbers:
+    scrubbers.Faker('de_DE')
+    first_name = scrubbers.Faker('first_name')
+    last_name = scrubbers.Faker('last_name')
+    username = scrubbers.Faker('uuid4')
+    password = scrubbers.Faker('sha1')
+    last_login = scrubbers.Null
+    email = scrubbers.Concat(first_name, models.Value('.'), last_name, models.Value('@'),
+                             models.Value(settings.SCRUBBER_DOMAIN))
+````
+
+2. Set up a mapping between your third-party model and your scrubber class
+
+```python
+# settings.py
+SCRUBBER_MAPPING = {
+    "auth.User": "apps.account.scrubbers.UserScrubbers",
+}
+```
+
 ## Settings
 
 ### `SCRUBBER_GLOBAL_SCRUBBERS`:
@@ -188,6 +221,19 @@ Add additional fake providers to be used by Faker. Must be noted as full dotted 
 Set an alternative locale for Faker used during the scrubbing process.
 
 (default: None, falls back to Django's default locale)
+
+### `SCRUBBER_MAPPING`:
+
+Define a class and a mapper which does not have to live inside the given model. Useful, if you have no control over the
+models code you'd like to scrub.
+
+````python
+SCRUBBER_MAPPING = {
+    "auth.User": "my_app.scrubbers.UserScrubbers",
+}
+````
+
+(default: {})
 
 ## Logging
 

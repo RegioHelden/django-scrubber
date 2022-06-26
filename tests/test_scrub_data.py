@@ -5,10 +5,12 @@ except ImportError:
 from io import StringIO
 
 from django.core.management import call_command
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from django_scrubber import scrubbers
+from django_scrubber.management.commands.scrub_data import _parse_scrubber_class_from_string, _get_model_scrubbers
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
 
 
@@ -50,3 +52,24 @@ class TestScrubData(TestCase):
         self.user.refresh_from_db()
 
         self.assertNotEqual(self.user.first_name, 'test_first_name')
+
+    @override_settings(SCRUBBER_MAPPING={"auth.User": "tests.scrubbers.UserScrubbers"})
+    def test_get_model_scrubbers_mapper_from_settings_used(self):
+        with patch('django_scrubber.management.commands.scrub_data._parse_scrubber_class_from_string',
+                   return_value={}) as mocked_method:
+            with patch('django_scrubber.management.commands.scrub_data._get_fields', return_value=[]):
+                test_scrubbers = _get_model_scrubbers(User)
+        mocked_method.assert_called_once()
+        self.assertEqual(test_scrubbers, {})
+
+    def test_parse_scrubber_class_from_string_regular(self):
+        class_type = _parse_scrubber_class_from_string('tests.test_models.TestDjangoScrubber')
+        self.assertIsInstance(class_type, type)
+
+    def test_parse_scrubber_class_from_string_wrong_path(self):
+        with self.assertRaises(ImportError):
+            _parse_scrubber_class_from_string('not.valid.path')
+
+    def test_parse_scrubber_class_from_string_path_no_separator(self):
+        with self.assertRaises(ImportError):
+            _parse_scrubber_class_from_string('broken_path')
