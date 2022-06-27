@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [0.9.0] - 2022-06-27
+### Added
+- Add functionality to scrub third party models like the Django user model, see https://github.com/RegioHelden/django-scrubber#scrubbing-third-party-models - Thanks @GitRon
+- Add tests for Python 3.10 - Thanks @costela
+
 ## [0.8.0] - 2022-05-01
 ### Added
 - Add `keep-sessions` argument to scrub_data command. Will NOT truncate all (by definition critical) session data. Thanks @GitRon
