@@ -57,6 +57,8 @@ Model scrubbers override field-name scrubbers, which in turn override field-type
 
 To disable global scrubbing in some specific model, simply set the respective field scrubber to `None`.
 
+Scrubbers defined for non-existing fields will raise a warning but not fail the scubbing process.
+
 Which mechanism will be used to scrub the selected data is determined by using one of the provided scrubbers in `django_scrubber.scrubbers`. See below for a list.
 Alternatively, values may be anything that can be used as a value in a `QuerySet.update()` call (like `Func` instances, string literals, etc), or any `callable` that returns such an object when called with a `Field` object as argument.
 
