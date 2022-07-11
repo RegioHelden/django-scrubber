@@ -14,6 +14,12 @@ DATABASES = {
         'NAME': ':memory:',
         'OPTIONS': {
         }
+    },
+    'other': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+        'OPTIONS': {
+        }
     }
 }
 

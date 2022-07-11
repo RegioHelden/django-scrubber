@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.core.exceptions import FieldDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
+from django.db import DEFAULT_DB_ALIAS
 from django.db.models import F
 from django.db.utils import IntegrityError, DataError
 
@@ -29,12 +30,18 @@ class Command(BaseCommand):
                             help='Will truncate the database table storing preprocessed data for the Faker library. '
                                  'If you want to do multiple iterations of scrubbing, it will save you time to keep '
                                  'them. If not, you will add a huge bunch of data to your dump size.')
+        parser.add_argument('--database', default=DEFAULT_DB_ALIAS,
+                            help='Nominates a database to scrub. Defaults to the "default" database.')
+
+
 
     def handle(self, *args, **kwargs):
         if not settings.DEBUG:
             # avoid logger, otherwise we might silently fail if we're on live and logging is being sent somewhere else
             self.stderr.write('this command should only be run with DEBUG=True, to avoid running on live systems')
             return False
+
+        database = kwargs['database']
 
         global_scrubbers = settings_with_fallback('SCRUBBER_GLOBAL_SCRUBBERS')
 
@@ -78,7 +85,7 @@ class Command(BaseCommand):
             try:
                 model.objects.annotate(
                     mod_pk=F('pk') % settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')
-                ).update(**realized_scrubbers)
+                ).using(database).update(**realized_scrubbers)
             except IntegrityError as e:
                 raise CommandError('Integrity error while scrubbing %s (%s); maybe increase '
                                    'SCRUBBER_ENTRIES_PER_PROVIDER?' % (model, e))
@@ -87,11 +94,11 @@ class Command(BaseCommand):
 
         # Truncate session data
         if not kwargs.get('keep_sessions', False):
-            Session.objects.all().delete()
+            Session.objects.using(database).all().delete()
 
         # Truncate Faker data
         if kwargs.get('remove_fake_data', False):
-            FakeData.objects.all().delete()
+            FakeData.objects.using(database).all().delete()
 
 
 def _call_callables(d):

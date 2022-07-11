@@ -11,12 +11,16 @@ from django.utils import timezone
 
 from django_scrubber import scrubbers
 from django_scrubber.models import FakeData
-from .models import DataFactory, DataToBeScrubbed
+from .models import DataFactory, OtherDatabaseDataFactory, DataToBeScrubbed
+from .test_scrub_data import BaseDatabaseTestCase, OtherDatabaseMixin
 
+class TestScrubbers(BaseDatabaseTestCase):
 
-class TestScrubbers(TestCase):
+    def _data_factory(self):
+        return DataFactory if self._db() == 'default' else OtherDatabaseDataFactory
+
     def test_empty_scrubber(self):
-        data = DataFactory.create(first_name='Foo')
+        data = self._data_factory().create(first_name='Foo')
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'first_name': scrubbers.Empty}):
             call_command('scrub_data')
         data.refresh_from_db()
@@ -24,17 +28,17 @@ class TestScrubbers(TestCase):
         self.assertEqual(data.first_name, '')
 
     def test_null_scrubber(self):
-        data = DataFactory.create(last_name='Foo')
+        data = self._data_factory().create(last_name='Foo')
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'last_name': scrubbers.Null}):
-            call_command('scrub_data')
+            call_command('scrub_data', database=self._db())
         data.refresh_from_db()
 
         self.assertEqual(data.last_name, None)
 
     def test_hash_scrubber_max_length(self):
-        data = DataFactory.create(first_name='Foo')
+        data = self._data_factory().create(first_name='Foo')
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'first_name': scrubbers.Hash}):
-            call_command('scrub_data')
+            call_command('scrub_data', database=self._db())
         data.refresh_from_db()
 
         self.assertNotEqual(data.first_name, 'Foo')
@@ -45,26 +49,26 @@ class TestScrubbers(TestCase):
         )
 
     def test_hash_scrubber_textfield(self):
-        data = DataFactory.create(description='Foo')
+        data = self._data_factory().create(description='Foo')
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'description': scrubbers.Hash}):
-            call_command('scrub_data')
+            call_command('scrub_data', database=self._db())
         data.refresh_from_db()
 
         self.assertNotEqual(data.description, 'Foo')
 
     def test_lorem_scrubber(self):
-        data = DataFactory.create(description='Foo')
+        data = self._data_factory().create(description='Foo')
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'description': scrubbers.Lorem}):
-            call_command('scrub_data')
+            call_command('scrub_data', database=self._db())
         data.refresh_from_db()
 
         self.assertNotEqual(data.description, 'Foo')
         self.assertEqual(data.description[:11], 'Lorem ipsum')
 
     def test_faker_scrubber_charfield(self):
-        data = DataFactory.create(last_name='Foo')
+        data = self._data_factory().create(last_name='Foo')
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'last_name': scrubbers.Faker('last_name')}):
-            call_command('scrub_data')
+            call_command('scrub_data', database=self._db())
         data.refresh_from_db()
 
         self.assertNotEqual(data.last_name, 'Foo')
@@ -74,9 +78,9 @@ class TestScrubbers(TestCase):
         """
         Use this as an example for Faker scrubbers with parameters passed along
         """
-        data = DataFactory.create(ean8='8')
+        data = self._data_factory().create(ean8='8')
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'ean8': scrubbers.Faker('ean', length=8)}):
-            call_command('scrub_data')
+            call_command('scrub_data', database=self._db())
         data.refresh_from_db()
 
         # The EAN Faker will by default emit ean13, so this would fail if the parameter was ignored
@@ -84,7 +88,7 @@ class TestScrubbers(TestCase):
 
         # Add a new scrubber for ean13
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'ean8': scrubbers.Faker('ean', length=13)}):
-            call_command('scrub_data')
+            call_command('scrub_data', database=self._db())
         data.refresh_from_db()
 
         # make sure it doesn't reuse the ean with length=8 scrubber
@@ -96,10 +100,10 @@ class TestScrubbers(TestCase):
         There is a bug with django < 2.1 and sqlite, that's why we don't run the test there.
         """
         if django.VERSION >= (2, 1) or connection.vendor != "sqlite":
-            data = DataFactory.create(date_past=date.today())
+            data = self._data_factory().create(date_past=date.today())
             with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={
                     'date_past': scrubbers.Faker('past_date', start_date="-30d", tzinfo=None)}):
-                call_command('scrub_data')
+                call_command('scrub_data', database=self._db())
             data.refresh_from_db()
 
             self.assertGreater(date.today(), data.date_past)
@@ -109,11 +113,11 @@ class TestScrubbers(TestCase):
         """
         Use this as an example of what happens when you want to run the same Faker scrubbers twice
         """
-        data = DataFactory.create(company='Foo')
+        data = self._data_factory().create(company='Foo')
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={
                 'company': scrubbers.Faker('company')}):
-            call_command('scrub_data')
-            call_command('scrub_data')
+            call_command('scrub_data', database=self._db())
+            call_command('scrub_data', database=self._db())
         data.refresh_from_db()
 
         self.assertNotEqual(data.company, 'Foo')
@@ -131,7 +135,7 @@ class TestScrubbers(TestCase):
         self.assertTrue(Session.objects.all().exists())
 
         # Call command
-        call_command('scrub_data')
+        call_command('scrub_data', database=self._db())
 
         # Assertion that session table is empty now
         self.assertFalse(Session.objects.all().exists())
@@ -148,7 +152,7 @@ class TestScrubbers(TestCase):
         self.assertTrue(Session.objects.all().exists())
 
         # Call command
-        call_command('scrub_data', keep_sessions=True)
+        call_command('scrub_data', keep_sessions=True, database=self._db())
 
         # Assertion that session table is empty now
         self.assertTrue(Session.objects.all().exists())
@@ -159,13 +163,13 @@ class TestScrubbers(TestCase):
         Ensures that the session table will be emptied by default
         """
         # Create faker data object
-        FakeData.objects.create(provider='company', content='Foo', provider_offset=1)
+        FakeData.objects.using(self._db()).create(provider='company', content='Foo', provider_offset=1)
 
         # Sanity check
         self.assertTrue(FakeData.objects.filter(provider='company', content='Foo').exists())
 
         # Call command
-        call_command('scrub_data')
+        call_command('scrub_data', database=self._db())
 
         # Assertion that faker data still exists
         self.assertTrue(FakeData.objects.filter(provider='company', content='Foo').exists())
@@ -176,13 +180,16 @@ class TestScrubbers(TestCase):
         Ensures that the session table will be emptied by default
         """
         # Create faker data object
-        FakeData.objects.create(provider='company', content='Foo', provider_offset=1)
+        FakeData.objects.using(self._db()).create(provider='company', content='Foo', provider_offset=1)
 
         # Sanity check
         self.assertTrue(FakeData.objects.filter(provider='company', content='Foo').exists())
 
         # Call command
-        call_command('scrub_data', remove_fake_data=True)
+        call_command('scrub_data', remove_fake_data=True, database=self._db())
 
         # Assertion that faker data still exists
         self.assertFalse(FakeData.objects.filter(provider='company', content='Foo').exists())
+
+class TestScrubbersOnOtherDatabase(OtherDatabaseMixin, TestScrubbers):
+    pass
