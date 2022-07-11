@@ -129,16 +129,16 @@ class TestScrubbers(BaseDatabaseTestCase):
         Ensures that the session table will be emptied by default
         """
         # Create session object
-        Session.objects.create(session_key='foo', session_data='Lorem ipsum', expire_date=timezone.now())
+        Session.objects.using(self._db()).create(session_key='foo', session_data='Lorem ipsum', expire_date=timezone.now())
 
         # Sanity check
-        self.assertTrue(Session.objects.all().exists())
+        self.assertTrue(Session.objects.using(self._db()).all().exists())
 
         # Call command
         call_command('scrub_data', database=self._db())
 
         # Assertion that session table is empty now
-        self.assertFalse(Session.objects.all().exists())
+        self.assertFalse(Session.objects.using(self._db()).all().exists())
 
     @override_settings(DEBUG=True)
     def test_faker_scrubber_run_disable_session_clearing(self):
@@ -146,16 +146,16 @@ class TestScrubbers(BaseDatabaseTestCase):
         Ensures that the session table will be emptied by default
         """
         # Create session object
-        Session.objects.create(session_key='foo', session_data='Lorem ipsum', expire_date=timezone.now())
+        Session.objects.using(self._db()).create(session_key='foo', session_data='Lorem ipsum', expire_date=timezone.now())
 
         # Sanity check
-        self.assertTrue(Session.objects.all().exists())
+        self.assertTrue(Session.objects.using(self._db()).all().exists())
 
         # Call command
         call_command('scrub_data', keep_sessions=True, database=self._db())
 
         # Assertion that session table is empty now
-        self.assertTrue(Session.objects.all().exists())
+        self.assertTrue(Session.objects.using(self._db()).all().exists())
 
     @override_settings(DEBUG=True)
     def test_faker_scrubber_run_clear_faker_data_not_by_default(self):
