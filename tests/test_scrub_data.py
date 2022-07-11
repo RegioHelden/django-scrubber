@@ -13,14 +13,25 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+class BaseDatabaseTestCase(TestCase):
+    databases = ['default']
 
-class TestScrubData(TestCase):
+    def _db(self):
+        # the frameworks transforms self.databases into a set...
+        return list(self.databases)[0]
+
+
+class OtherDatabaseMixin:
+    databases = ['other']
+
+class TestScrubData(BaseDatabaseTestCase):
+
     def setUp(self):
-        self.user = User.objects.create(first_name='test_first_name')
+        self.user = User.objects.using(self._db()).create(first_name='test_first_name')
 
     def test_scrub_data(self):
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'first_name': scrubbers.Faker('first_name')}):
-            call_command('scrub_data', verbosity=3)
+            call_command('scrub_data', verbosity=3, database=self._db())
         self.user.refresh_from_db()
 
         self.assertNotEqual(self.user.first_name, 'test_first_name')
@@ -29,7 +40,7 @@ class TestScrubData(TestCase):
         err = StringIO()
 
         with self.settings(DEBUG=False):
-            call_command('scrub_data', stderr=err)
+            call_command('scrub_data', stderr=err, database=self._db())
         output = err.getvalue()
         self.user.refresh_from_db()
 
@@ -38,7 +49,7 @@ class TestScrubData(TestCase):
 
     def test_hash_simple_global_scrubber(self):
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'first_name': scrubbers.Hash}):
-            call_command('scrub_data')
+            call_command('scrub_data', database=self._db())
         self.user.refresh_from_db()
 
         self.assertNotEqual(self.user.first_name, 'test_first_name')
@@ -48,7 +59,7 @@ class TestScrubData(TestCase):
             first_name = scrubbers.Hash
 
         with self.settings(DEBUG=True), patch.object(User, 'Scrubbers', Scrubbers, create=True):
-            call_command('scrub_data')
+            call_command('scrub_data', database=self._db())
         self.user.refresh_from_db()
 
         self.assertNotEqual(self.user.first_name, 'test_first_name')
@@ -61,7 +72,7 @@ class TestScrubData(TestCase):
             with self.assertWarnsRegex(
                 Warning, 'Scrubber defined for User.this_does_not_exist_382784 but field does not exist'
             ):
-                call_command('scrub_data')
+                call_command('scrub_data', database=self._db())
 
     @override_settings(SCRUBBER_MAPPING={"auth.User": "tests.scrubbers.UserScrubbers"})
     def test_get_model_scrubbers_mapper_from_settings_used(self):
@@ -83,3 +94,7 @@ class TestScrubData(TestCase):
     def test_parse_scrubber_class_from_string_path_no_separator(self):
         with self.assertRaises(ImportError):
             _parse_scrubber_class_from_string('broken_path')
+
+
+class TestScrubDataOnOtherDatabase(OtherDatabaseMixin, TestScrubData):
+    pass

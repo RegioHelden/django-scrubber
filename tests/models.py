@@ -15,3 +15,9 @@ class DataToBeScrubbed(models.Model):
 class DataFactory(DjangoModelFactory):
     class Meta:
         model = DataToBeScrubbed
+
+
+class OtherDatabaseDataFactory(DjangoModelFactory):
+    class Meta:
+        model = DataToBeScrubbed
+        database = 'other'
