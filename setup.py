@@ -54,7 +54,7 @@ setup(
     url='https://github.com/regiohelden/django-scrubber',
     project_urls={
         'Documentation': 'https://github.com/RegioHelden/django-scrubber/blob/master/README.md',
-        'Maintained by': 'https://stroeer-online-marketing.de',
+        'Maintained by': 'https://github.com/RegioHelden/django-scrubber/blob/master/AUTHORS.md',
         'Bugtracker': 'https://github.com/RegioHelden/django-scrubber/issues',
         'Changelog': 'https://github.com/RegioHelden/django-scrubber/blob/master/CHANGELOG.md',
     },
@@ -71,8 +71,6 @@ setup(
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         "Framework :: Django",
-        "Framework :: Django :: 2.2",
-        "Framework :: Django :: 3.1",
         "Framework :: Django :: 3.2",
         "Framework :: Django :: 4.0",
         'Intended Audience :: Developers',
