@@ -52,6 +52,12 @@ setup(
     author='RegioHelden GmbH',
     author_email='entwicklung@regiohelden.de',
     url='https://github.com/regiohelden/django-scrubber',
+    project_urls={
+        'Documentation': 'https://github.com/RegioHelden/django-scrubber/blob/master/README.md',
+        'Maintained by': 'https://github.com/RegioHelden/django-scrubber/blob/master/AUTHORS.md',
+        'Bugtracker': 'https://github.com/RegioHelden/django-scrubber/issues',
+        'Changelog': 'https://github.com/RegioHelden/django-scrubber/blob/master/CHANGELOG.md',
+    },
     packages=[
         'django_scrubber',
     ],
@@ -63,10 +69,10 @@ setup(
     license="BSD",
     zip_safe=False,
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Framework :: Django',
-        'Framework :: Django :: 2.0',
-        'Framework :: Django :: 3.0',
+        'Framework :: Django :: 3.2',
+        'Framework :: Django :: 4.0',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
