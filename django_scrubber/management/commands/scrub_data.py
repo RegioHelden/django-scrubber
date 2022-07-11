@@ -1,5 +1,6 @@
 import importlib
 import logging
+import warnings
 
 from django.apps import apps
 from django.conf import settings
@@ -134,10 +135,9 @@ def _get_model_scrubbers(model):
     for k, v in _get_fields(scrubber_cls):
         try:
             field = model._meta.get_field(k)
+            scrubbers[field] = v
         except FieldDoesNotExist:
-            raise
-
-        scrubbers[field] = v
+            warnings.warn(f'Scrubber defined for {model.__name__}.{k} but field does not exist')
 
     # Return scrubber-field-mapping
     return scrubbers

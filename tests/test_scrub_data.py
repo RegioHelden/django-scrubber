@@ -53,6 +53,16 @@ class TestScrubData(TestCase):
 
         self.assertNotEqual(self.user.first_name, 'test_first_name')
 
+    def test_scrub_invalid_field(self):
+        class Scrubbers:
+            this_does_not_exist_382784 = scrubbers.Null
+
+        with self.settings(DEBUG=True), patch.object(User, 'Scrubbers', Scrubbers, create=True):
+            with self.assertWarnsRegex(
+                Warning, 'Scrubber defined for User.this_does_not_exist_382784 but field does not exist'
+            ):
+                call_command('scrub_data')
+
     @override_settings(SCRUBBER_MAPPING={"auth.User": "tests.scrubbers.UserScrubbers"})
     def test_get_model_scrubbers_mapper_from_settings_used(self):
         with patch('django_scrubber.management.commands.scrub_data._parse_scrubber_class_from_string',
