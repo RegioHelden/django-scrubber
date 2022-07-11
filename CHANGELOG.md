@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [1.1.0] - 2022-07-11
+### Changed
+- Invalid fields on scrubbers will no longer raise exception but just trigger warnings now
+- Author list completed
+
+## [1.0.0] - 2022-07-11
+### Changed
+- Meta data for python package improved - Thanks @GitRon
+
 ## [0.9.0] - 2022-06-27
 ### Added
 - Add functionality to scrub third party models like the Django user model, see https://github.com/RegioHelden/django-scrubber#scrubbing-third-party-models - Thanks @GitRon
