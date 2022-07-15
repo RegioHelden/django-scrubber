@@ -8,6 +8,22 @@ env:
   GITHUB_WORKFLOW: true
 
 jobs:
+  flake8:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install required packages
+        run: pip install flake8 pep8-naming
+
+      - name: Run flake8
+        run: flake8
+
   test:
     name: Test and coverage
     runs-on: ubuntu-20.04
