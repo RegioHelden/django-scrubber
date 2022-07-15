@@ -1,4 +1,3 @@
-import argparse
 from datetime import date, timedelta
 
 import django
