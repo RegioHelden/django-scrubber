@@ -9,14 +9,14 @@ env:
 
 jobs:
   flake8:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: "3.10"
 
       - name: Install required packages
         run: pip install flake8 pep8-naming
@@ -26,29 +26,26 @@ jobs:
 
   test:
     name: Test and coverage
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       fail-fast: false
       matrix:
         python-version:
-          - "3.7"
           - "3.8"
           - "3.9"
           - "3.10"
+          - "3.11"
         django:
           - "3.2"
           - "4.0"
+          - "4.1"
         database:
           - sqlite
           - mysql
           - postgres
-        exclude:
-          - python-version: 3.7
-            django: 4.0
 
     services:
-
       # postgres service
       postgres:
         image: postgres:13-alpine
@@ -79,10 +76,10 @@ jobs:
           --health-retries=5
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -95,12 +92,15 @@ jobs:
       - name: Install Django 4.0
         if: matrix.django == 4.0
         run: pip install "Django>=4.0,<4.1"
+      - name: Install Django 4.1
+        if: matrix.django == 4.1
+        run: pip install "Django>=4.1,<4.2"
       - name: Install MySQL libs
         if: matrix.database == 'mysql'
         run: pip install mysqlclient>=2.1.0 django-mysql>=4.5.0
       - name: Install postgres libs
         if: matrix.database == 'postgres'
-        run: pip install psycopg2==2.8.6
+        run: pip install psycopg2==2.9.5
 
       - name: Install requirements
         run: pip install -r requirements_test.txt
@@ -135,15 +135,15 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
     name: Build and publish to PyPI
     needs: test
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: "3.10"
 
       - name: Install build packages
         run: python -m pip install -U setuptools wheel
