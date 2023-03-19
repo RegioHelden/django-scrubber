@@ -47,6 +47,10 @@ class Null(FieldFunc):
     template = 'NULL'
 
 
+class Keep(FieldFunc):
+    template = None
+
+
 class Hash(FieldFunc):
     """
     Simple md5 hashing of content.

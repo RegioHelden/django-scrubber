@@ -1,6 +1,7 @@
 from django.conf import settings
+from django.db import models
 
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 
 defaults = {
     'SCRUBBER_RANDOM_SEED': 42,  # we prefer idempotent scrubbing
@@ -11,6 +12,8 @@ defaults = {
     'SCRUBBER_ADDITIONAL_FAKER_PROVIDERS': [],
     'SCRUBBER_FAKER_LOCALE': None,
     'SCRUBBER_MAPPING': dict(),
+    'SCRUBBER_STRICT_MODE': False,
+    'SCRUBBER_REQUIRED_FIELD_TYPES': (models.CharField, models.TextField, models.URLField, models.JSONField),
 }
 
 
