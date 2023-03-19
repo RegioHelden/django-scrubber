@@ -12,6 +12,7 @@ class ScrubberValidatorService:
         from django_scrubber.management.commands.scrub_data import _get_model_scrubbers
 
         scrubber_required_field_types = settings_with_fallback('SCRUBBER_REQUIRED_FIELD_TYPES')
+        model_whitelist = settings_with_fallback('SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST')
 
         # Get a list of all registered models in your Django application
         model_list = apps.get_models()
@@ -21,6 +22,11 @@ class ScrubberValidatorService:
 
         # Iterate over each model in the list
         for model in model_list:
+
+            # Check if model is whitelisted
+            if model._meta.label in model_whitelist:
+                continue
+
             text_based_fields = []
             # Get the model's name and fields
             fields = model._meta.get_fields()

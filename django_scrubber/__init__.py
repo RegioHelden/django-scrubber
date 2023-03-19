@@ -14,6 +14,14 @@ defaults = {
     'SCRUBBER_MAPPING': dict(),
     'SCRUBBER_STRICT_MODE': False,
     'SCRUBBER_REQUIRED_FIELD_TYPES': (models.CharField, models.TextField, models.URLField, models.JSONField),
+    'SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST': [
+        'auth.Group',
+        'auth.Permission',
+        'contenttypes.ContentType',
+        'sessions.Session',
+        'sites.Site',
+        'django_scrubber.FakeData',
+    ],
 }
 
 

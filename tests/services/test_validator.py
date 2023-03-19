@@ -10,35 +10,46 @@ from django_scrubber.services.validator import ScrubberValidatorService
 
 
 class ScrubberValidatorServiceTest(TestCase):
-    class TestScrubbers:
-        name = scrubbers.Hash
+    class FullUserScrubbers:
+        first_name = scrubbers.Hash
+        last_name = scrubbers.Hash
+        password = scrubbers.Hash
+        username = scrubbers.Hash
+
+    class PartUserScrubbers:
+        first_name = scrubbers.Hash
+        last_name = scrubbers.Hash
+        password = scrubbers.Hash
 
     def test_process_no_scrubbing(self):
         service = ScrubberValidatorService()
         result = service.process()
 
-        self.assertEqual(len(result), 7)
+        self.assertEqual(len(result), 1)
 
         model_list = tuple(result.keys())
-        self.assertIn('auth.Permission', model_list)
-        self.assertIn('auth.Group', model_list)
         self.assertIn('auth.User', model_list)
-        self.assertIn('contenttypes.ContentType', model_list)
-        self.assertIn('sessions.Session', model_list)
-        self.assertIn('sites.Site', model_list)
-        self.assertIn('django_scrubber.FakeData', model_list)
 
-    @override_settings(SCRUBBER_MAPPING={"auth.Group": "TestScrubbers"})
+    @override_settings(SCRUBBER_MAPPING={"auth.User": "FullUserScrubbers"})
     @mock.patch('django_scrubber.management.commands.scrub_data._parse_scrubber_class_from_string',
-                return_value=TestScrubbers)
-    def test_process_scrubber_mapper(self, mocked_function):
+                return_value=FullUserScrubbers)
+    def test_process_scrubber_mapper_all_fields(self, mocked_function):
         service = ScrubberValidatorService()
         result = service.process()
 
-        self.assertEqual(len(result), 6)
+        self.assertEqual(len(result), 0)
+
+    @override_settings(SCRUBBER_MAPPING={"auth.User": "PartUserScrubbers"})
+    @mock.patch('django_scrubber.management.commands.scrub_data._parse_scrubber_class_from_string',
+                return_value=PartUserScrubbers)
+    def test_process_scrubber_mapper_some_fields(self, mocked_function):
+        service = ScrubberValidatorService()
+        result = service.process()
+
+        self.assertEqual(len(result), 1)
 
         model_list = tuple(result.keys())
-        self.assertNotIn('auth.Group', model_list)
+        self.assertIn('auth.User', model_list)
 
     @override_settings(SCRUBBER_REQUIRED_FIELD_TYPES=tuple())
     def test_process_scrubber_required_field_type_variable_used(self):
