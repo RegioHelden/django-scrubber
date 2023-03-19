@@ -8,9 +8,6 @@ class ScrubberValidatorService:
     Service to validate if all text-based fields are being scrubbed within your project and dependencies.
     """
 
-    def get_scrubbable_fields(self):
-        return
-
     def process(self) -> dict:
         from django_scrubber.management.commands.scrub_data import _get_model_scrubbers
 
