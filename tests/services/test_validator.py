@@ -25,10 +25,11 @@ class ScrubberValidatorServiceTest(TestCase):
         service = ScrubberValidatorService()
         result = service.process()
 
-        self.assertEqual(len(result), 1)
+        self.assertEqual(len(result), 2)
 
         model_list = tuple(result.keys())
         self.assertIn('auth.User', model_list)
+        self.assertIn('tests.DataToBeScrubbed', model_list)
 
     @override_settings(SCRUBBER_MAPPING={"auth.User": "FullUserScrubbers"})
     @mock.patch('django_scrubber.management.commands.scrub_data._parse_scrubber_class_from_string',
@@ -37,7 +38,10 @@ class ScrubberValidatorServiceTest(TestCase):
         service = ScrubberValidatorService()
         result = service.process()
 
-        self.assertEqual(len(result), 0)
+        self.assertEqual(len(result), 1)
+
+        model_list = tuple(result.keys())
+        self.assertIn('tests.DataToBeScrubbed', model_list)
 
     @override_settings(SCRUBBER_MAPPING={"auth.User": "PartUserScrubbers"})
     @mock.patch('django_scrubber.management.commands.scrub_data._parse_scrubber_class_from_string',
@@ -46,7 +50,7 @@ class ScrubberValidatorServiceTest(TestCase):
         service = ScrubberValidatorService()
         result = service.process()
 
-        self.assertEqual(len(result), 1)
+        self.assertEqual(len(result), 2)
 
         model_list = tuple(result.keys())
         self.assertIn('auth.User', model_list)
