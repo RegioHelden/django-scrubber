@@ -289,19 +289,27 @@ Set an alternative locale for Faker used during the scrubbing process.
 Define a class and a mapper which does not have to live inside the given model. Useful, if you have no control over the
 models code you'd like to scrub.
 
+### `SCRUBBER_STRICT_MODE`:
+
+When strict mode is activated, you have to define a scrubbing policy for every field of every type defined in
+`SCRUBBER_REQUIRED_FIELD_TYPES`. If you have unscrubbed fields and this flag is active, you can't run
+`pyhton manage.py scrub_data`.
+
 ### `SCRUBBER_REQUIRED_FIELD_TYPES`:
 
 Defaults to all text-based Django model fields. Usually, privacy-relevant data is only stored in text-fields, numbers
 and booleans (usually) can't contain sensitive personal data. These fields will be checked when running
 `python manage.py scub_validation`.
 
-(default: models.CharField, models.TextField, models.URLField, models.JSONField))
+(default: (models.CharField, models.TextField, models.URLField, models.JSONField))
 
-### `SCRUBBER_STRICT_MODE`:
+### `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST`:
 
-When strict mode is activated, you have to define a scrubbing policy for every field of every type defined in
-`SCRUBBER_REQUIRED_FIELD_TYPES`. If you have unscrubbed fields and this flag is active, you can't run
-`pyhton manage.py scrub_data`.
+Whitelists a list of models which will not be checked during `scrub_validation` and when 
+activating the strict mode. Defaults to the non-privacy-related Django base models.
+
+(default: ['auth.Group', 'auth.Permission', 'contenttypes.ContentType', 'sessions.Session', 'sites.Site', 
+'django_scrubber.FakeData',))
 
 ````python
 SCRUBBER_MAPPING = {
