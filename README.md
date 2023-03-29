@@ -301,7 +301,8 @@ Defaults to all text-based Django model fields. Usually, privacy-relevant data i
 and booleans (usually) can't contain sensitive personal data. These fields will be checked when running
 `python manage.py scub_validation`.
 
-(default: (models.CharField, models.TextField, models.URLField, models.JSONField))
+(default: (models.CharField, models.TextField, models.URLField, models.JSONField, models.GenericIPAddressField,
+           models.EmailField,))
 
 ### `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST`:
 
