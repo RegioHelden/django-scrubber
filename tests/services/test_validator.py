@@ -13,6 +13,7 @@ class ScrubberValidatorServiceTest(TestCase):
     class FullUserScrubbers:
         first_name = scrubbers.Hash
         last_name = scrubbers.Hash
+        email = scrubbers.Hash
         password = scrubbers.Hash
         username = scrubbers.Hash
 
