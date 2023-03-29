@@ -13,8 +13,14 @@ defaults = {
     'SCRUBBER_FAKER_LOCALE': None,
     'SCRUBBER_MAPPING': dict(),
     'SCRUBBER_STRICT_MODE': False,
-    'SCRUBBER_REQUIRED_FIELD_TYPES': (models.CharField, models.TextField, models.URLField, models.JSONField,
-                                      models.GenericIPAddressField, models.EmailField),
+    'SCRUBBER_REQUIRED_FIELD_TYPES': (
+        models.CharField,
+        models.TextField,
+        models.URLField,
+        models.JSONField,
+        models.GenericIPAddressField,
+        models.EmailField,
+    ),
     'SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST': [
         'auth.Group',
         'auth.Permission',
