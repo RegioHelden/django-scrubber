@@ -12,6 +12,8 @@ from django.db.utils import IntegrityError, DataError
 
 from ... import settings_with_fallback
 from ...models import FakeData
+from ...scrubbers import Keep
+from ...services.validator import ScrubberValidatorService
 
 logger = logging.getLogger(__name__)
 
@@ -33,8 +35,17 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         if not settings.DEBUG:
             # avoid logger, otherwise we might silently fail if we're on live and logging is being sent somewhere else
-            self.stderr.write('this command should only be run with DEBUG=True, to avoid running on live systems')
+            self.stderr.write('This command should only be run with DEBUG=True, to avoid running on live systems')
             return False
+
+        # Check STRICT mode
+        if settings_with_fallback('SCRUBBER_STRICT_MODE'):
+            service = ScrubberValidatorService()
+            non_scrubbed_field_list = service.process()
+            if len(non_scrubbed_field_list) > 0:
+                self.stderr.write('When "SCRUBBER_STRICT_MODE" is enabled, you have to define a scrubbing policy '
+                                  'for every text-based field.')
+                return False
 
         global_scrubbers = settings_with_fallback('SCRUBBER_GLOBAL_SCRUBBERS')
 
@@ -56,7 +67,7 @@ class Command(BaseCommand):
                 continue
             if settings_with_fallback('SCRUBBER_SKIP_UNMANAGED') and not model._meta.managed:
                 continue
-            if (scrubber_apps_list and model._meta.app_config.name not in scrubber_apps_list):
+            if scrubber_apps_list and model._meta.app_config.name not in scrubber_apps_list:
                 continue
 
             scrubbers = dict()
@@ -67,6 +78,13 @@ class Command(BaseCommand):
                     scrubbers[field] = global_scrubbers[type(field)]
 
             scrubbers.update(_get_model_scrubbers(model))
+
+            # Filter out all fields marked as "to be kept"
+            scrubbers_without_kept_fields = {}
+            for field, scrubbing_method in scrubbers.items():
+                if scrubbing_method != Keep:
+                    scrubbers_without_kept_fields[field] = scrubbing_method
+            scrubbers = scrubbers_without_kept_fields
 
             if not scrubbers:
                 continue
