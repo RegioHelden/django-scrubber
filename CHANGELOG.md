@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [1.2.0] - 2023-04-01
+### Changed
+- Added scrubber validation - Thanks @GitRon
+- Added strict mode - Thanks @GitRon
+
 ## [1.1.0] - 2022-07-11
 ### Changed
 - Invalid fields on scrubbers will no longer raise exception but just trigger warnings now
