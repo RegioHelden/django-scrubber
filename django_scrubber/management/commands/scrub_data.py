@@ -1,3 +1,4 @@
+import datetime
 import importlib
 import logging
 import warnings
@@ -7,7 +8,7 @@ from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.core.exceptions import FieldDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
-from django.db.models import F
+from django.db.models import F, signals
 from django.db.utils import IntegrityError, DataError
 
 from ... import settings_with_fallback
@@ -33,9 +34,9 @@ class Command(BaseCommand):
                                  'them. If not, you will add a huge bunch of data to your dump size.')
 
     def handle(self, *args, **kwargs):
-        if not settings.DEBUG:
+        if settings.ENVIRONMENT not in ['STAGING', 'DEVELOP'] :
             # avoid logger, otherwise we might silently fail if we're on live and logging is being sent somewhere else
-            self.stderr.write('This command should only be run with DEBUG=True, to avoid running on live systems')
+            self.stderr.write('This command should only be run in our STAGING environment, to avoid running on live systems')
             return False
 
         # Check STRICT mode
@@ -93,8 +94,31 @@ class Command(BaseCommand):
 
             logger.info('Scrubbing %s with %s', model._meta.label, realized_scrubbers)
 
+            options = dict(_get_options(model))
+
+            if 'disconnect_signals' in options:
+                disconnect_signals = options['disconnect_signals']
+
+                for signal_data in disconnect_signals:
+                    model_signal = getattr(signals, signal_data['type'])
+                    model_signal.disconnect(
+                        sender=signal_data['sender'],
+                        dispatch_uid=signal_data['dispatch_uid'],
+                    )
+
+            if 'trim_table' in options:
+                filter_kwargs = {options['trim_attribute'] + '__gte': datetime.datetime.now() - datetime.timedelta(days=30)}
+                delete_queryset = model.objects.filter(**filter_kwargs)
+
+                _large_delete(delete_queryset, model)
+            
+            records = model.objects.all()
+
+            if 'exclude' in options:
+                records = records.exclude(**options['exclude'])
+
             try:
-                model.objects.annotate(
+                records.annotate(
                     mod_pk=F('pk') % settings_with_fallback('SCRUBBER_ENTRIES_PER_PROVIDER')
                 ).update(**realized_scrubbers)
             except IntegrityError as e:
@@ -118,6 +142,29 @@ def _call_callables(d):
     """
     return {k.name: (callable(v) and v(k) or v) for k, v in d.items()}
 
+def _get_options(model):
+    try:
+        options = model.Scrubbers.Meta
+    except AttributeError:
+        return {}
+    
+    return _get_fields(options)
+
+def _large_delete(queryset, model):
+    counter = 0
+    slice_step = 1000
+    count = queryset.count()
+    iterations = int(count / slice_step)
+
+    while counter < iterations:
+        slice_start = counter * slice_step
+        slice_end = (counter + 1) * slice_step
+        logger.info('Deleting model {} {} {}'.format(model, slice_start, slice_end))
+        ids = queryset.values_list('id', flat=True)[slice_start:slice_end]
+        model.objects.filter(id__in=ids).delete()
+        counter += 1
+    
+    queryset.delete()
 
 def _parse_scrubber_class_from_string(path: str):
     """
@@ -151,6 +198,8 @@ def _get_model_scrubbers(model):
 
     # Get field mappings from scrubber class
     for k, v in _get_fields(scrubber_cls):
+        if k == 'Meta':
+            continue
         try:
             field = model._meta.get_field(k)
             scrubbers[field] = v
