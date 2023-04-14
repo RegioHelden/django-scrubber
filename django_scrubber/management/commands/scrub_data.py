@@ -111,7 +111,7 @@ class Command(BaseCommand):
                 delete_queryset = model.objects.filter(**filter_kwargs)
 
                 _large_delete(delete_queryset, model)
-            
+
             records = model.objects.all()
 
             if 'exclude' in options:
@@ -147,7 +147,7 @@ def _get_options(model):
         options = model.Scrubbers.Meta
     except AttributeError:
         return {}
-    
+
     return _get_fields(options)
 
 def _large_delete(queryset, model):
@@ -156,14 +156,16 @@ def _large_delete(queryset, model):
     count = queryset.count()
     iterations = int(count / slice_step)
 
+    logger.info('Deleting model {} with {} count will take {} iterations'.format(model._meta.label, count, iterations))
+
     while counter < iterations:
         slice_start = counter * slice_step
         slice_end = (counter + 1) * slice_step
-        logger.info('Deleting model {} {} {}'.format(model, slice_start, slice_end))
+        logger.info('Deleting model {} {} {}'.format(model._meta.label, slice_start, slice_end))
         ids = queryset.values_list('id', flat=True)[slice_start:slice_end]
         model.objects.filter(id__in=ids).delete()
         counter += 1
-    
+
     queryset.delete()
 
 def _parse_scrubber_class_from_string(path: str):
