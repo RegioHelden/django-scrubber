@@ -293,13 +293,13 @@ models code you'd like to scrub.
 
 When strict mode is activated, you have to define a scrubbing policy for every field of every type defined in
 `SCRUBBER_REQUIRED_FIELD_TYPES`. If you have unscrubbed fields and this flag is active, you can't run
-`pyhton manage.py scrub_data`.
+`python manage.py scrub_data`.
 
 ### `SCRUBBER_REQUIRED_FIELD_TYPES`:
 
 Defaults to all text-based Django model fields. Usually, privacy-relevant data is only stored in text-fields, numbers
 and booleans (usually) can't contain sensitive personal data. These fields will be checked when running
-`python manage.py scub_validation`.
+`python manage.py scrub_validation`.
 
 (default: (models.CharField, models.TextField, models.URLField, models.JSONField, models.GenericIPAddressField,
            models.EmailField,))
