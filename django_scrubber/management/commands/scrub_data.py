@@ -151,22 +151,29 @@ def _get_options(model):
     return _get_fields(options)
 
 def _large_delete(queryset, model):
-    counter = 0
+    qs_count = queryset.count()
     slice_step = 1000
-    count = queryset.count()
-    iterations = int(count / slice_step)
 
-    logger.info('Deleting model {} with {} count will take {} iterations'.format(model._meta.label, count, iterations))
+    for i, qs in enumerate(queryset):
+        if hasattr(qs, 'orders'):
+            if i % slice_step == 0:
+                logger.info('Deleting orders from model {} (progress: {}/{})'.format(model._meta.label, i, qs_count))
+            qs.orders.all().hard_delete()
+    logger.info('Deleting orders from model {} (progress: {}/{})'.format(model._meta.label, qs_count, qs_count))
 
-    while counter < iterations:
-        slice_start = counter * slice_step
-        slice_end = (counter + 1) * slice_step
-        logger.info('Deleting model {} {} {}'.format(model._meta.label, slice_start, slice_end))
+    for slice_start in range(0, qs_count, slice_step):
+        slice_end = slice_start + slice_step
+        logger.info('Deleting model {} (progress: {}/{})'.format(model._meta.label, slice_start, qs_count))
         ids = queryset.values_list('id', flat=True)[slice_start:slice_end]
         model.objects.filter(id__in=ids).delete()
-        counter += 1
+    logger.info('Deleting model {} (progress: {}/{})'.format(model._meta.label, qs_count, qs_count))
 
+    for i, qs in enumerate(queryset):
+        if i % slice_step == 0:
+            logger.info('Deleting queryset (progress: {}/{})'.format(i, qs_count))
+        qs.delete()
     queryset.delete()
+    logger.info('Deleting queryset (progress: {}/{})'.format(qs_count, qs_count))
 
 def _parse_scrubber_class_from_string(path: str):
     """
