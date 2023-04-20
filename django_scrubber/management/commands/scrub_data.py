@@ -34,7 +34,7 @@ class Command(BaseCommand):
                                  'them. If not, you will add a huge bunch of data to your dump size.')
 
     def handle(self, *args, **kwargs):
-        if settings.ENVIRONMENT not in ['STAGING', 'DEVELOP'] :
+        if settings.ENVIRONMENT not in ['STAGING', 'DEVELOP', 'NONPROD'] :
             # avoid logger, otherwise we might silently fail if we're on live and logging is being sent somewhere else
             self.stderr.write('This command should only be run in our STAGING environment, to avoid running on live systems')
             return False
