@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [1.2.1] - 2023-11-03
+### Changed
+- Set `default_auto_field` for `django-scrubber` to `django.db.models.AutoField` to prevent overrides from Django settings - Thanks @GitRon
+
 ## [1.2.0] - 2023-04-01
 ### Changed
 - Added scrubber validation - Thanks @GitRon
