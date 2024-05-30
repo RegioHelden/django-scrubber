@@ -79,7 +79,7 @@ class TestScrubbers(TestCase):
         data.refresh_from_db()
 
         # The EAN Faker will by default emit ean13, so this would fail if the parameter was ignored
-        self.assertEquals(8, len(data.ean8))
+        self.assertEqual(8, len(data.ean8))
 
         # Add a new scrubber for ean13
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={'ean8': scrubbers.Faker('ean', length=13)}):
@@ -87,7 +87,7 @@ class TestScrubbers(TestCase):
         data.refresh_from_db()
 
         # make sure it doesn't reuse the ean with length=8 scrubber
-        self.assertEquals(13, len(data.ean8))
+        self.assertEqual(13, len(data.ean8))
 
     def test_faker_scrubber_datefield(self):
         """
