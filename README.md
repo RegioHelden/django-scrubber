@@ -308,6 +308,8 @@ and booleans (usually) can't contain sensitive personal data. These fields will 
 
 Whitelists a list of models which will not be checked during `scrub_validation` and when 
 activating the strict mode. Defaults to the non-privacy-related Django base models.
+Items can either be full model names (e.g. `auth.Group`) or regular expression patterns matching
+against the full model name (e.g. `re.compile(auth.*)` to whitelist all auth models).
 
 (default: ['auth.Group', 'auth.Permission', 'contenttypes.ContentType', 'sessions.Session', 'sites.Site', 
 'django_scrubber.FakeData',))
