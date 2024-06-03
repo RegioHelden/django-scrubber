@@ -1,4 +1,5 @@
 import re
+from typing import Union
 
 from django.apps import apps
 
@@ -11,7 +12,7 @@ class ScrubberValidatorService:
     """
 
     @staticmethod
-    def check_pattern(pattern: str | re.Pattern, value):
+    def check_pattern(pattern: Union[str, re.Pattern], value):
         if isinstance(pattern, str):
             return pattern == value
         elif isinstance(pattern, re.Pattern):
