@@ -1,3 +1,6 @@
+import re
+from typing import Union
+
 from django.apps import apps
 
 from django_scrubber import settings_with_fallback
@@ -7,6 +10,15 @@ class ScrubberValidatorService:
     """
     Service to validate if all text-based fields are being scrubbed within your project and dependencies.
     """
+
+    @staticmethod
+    def check_pattern(pattern: Union[str, re.Pattern], value):
+        if isinstance(pattern, str):
+            return pattern == value
+        elif isinstance(pattern, re.Pattern):
+            return pattern.fullmatch(value)
+        else:
+            raise ValueError("Invalid pattern type")
 
     def process(self) -> dict:
         from django_scrubber.management.commands.scrub_data import _get_model_scrubbers
@@ -24,7 +36,10 @@ class ScrubberValidatorService:
         for model in model_list:
 
             # Check if model is whitelisted
-            if model._meta.label in model_whitelist:
+            if any(
+                self.check_pattern(pattern, model._meta.label)
+                for pattern in model_whitelist
+            ):
                 continue
 
             text_based_fields = []

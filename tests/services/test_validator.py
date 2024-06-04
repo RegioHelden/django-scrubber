@@ -1,3 +1,5 @@
+import re
+
 try:
     from unittest import mock
 except ImportError:
@@ -62,3 +64,14 @@ class ScrubberValidatorServiceTest(TestCase):
         result = service.process()
 
         self.assertEqual(len(result), 0)
+
+    @override_settings(
+        SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST=[re.compile("auth.*")],
+    )
+    def test_process_scrubber_required_field_model_whitelist_regex(self):
+        service = ScrubberValidatorService()
+        result = service.process()
+
+        model_list = tuple(result.keys())
+        self.assertNotIn('auth.User', model_list)
+        self.assertNotIn('auth.Permission', model_list)
