@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [1.3.0] - 2024-06-05
+### Added
+- Add support for regular expressions in `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST` - Thanks @fbinz
+
 ## [1.2.2] - 2023-11-04
 ### Changed
 - Set `default_auto_field` for `django-scrubber` to `django.db.models.AutoField` to prevent overrides from Django settings - Thanks @GitRon

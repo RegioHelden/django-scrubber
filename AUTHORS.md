@@ -1,9 +1,7 @@
 # Credits
 
-## Development Lead
-
-* [Ströer Online Marketing / RegioHelden GmbH](https://stroeer-online-marketing.de/)  
-  <entwicklung+opensource@regiohelden.de>
+[Ströer Online Marketing / RegioHelden GmbH](https://stroeer-online-marketing.de/)  
+<entwicklung+opensource@regiohelden.de>
 
 ## Contributors (in order of first contribution)
 
@@ -15,3 +13,4 @@
 * [Ronny Vedrilla](https://github.com/GitRon)
 * [Mounir Messelmeni](https://github.com/MounirMesselmeni)
 * [Mihaela Sofinet](https://github.com/airiulola)
+* [Fabian Binz](https://github.com/fbinz)
