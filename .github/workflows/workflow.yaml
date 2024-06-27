@@ -9,14 +9,14 @@ env:
 
 jobs:
   flake8:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       - name: Install required packages
         run: pip install flake8 pep8-naming
@@ -26,7 +26,7 @@ jobs:
 
   test:
     name: Test and coverage
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     strategy:
       fail-fast: false
@@ -36,19 +36,24 @@ jobs:
           - "3.9"
           - "3.10"
           - "3.11"
+          - "3.12"
         django:
-          - "3.2"
-          - "4.0"
-          - "4.1"
+          - "4.2"
+          - "5.0"
         database:
           - sqlite
           - mysql
           - postgres
+        exclude:
+          - python-version: "3.8"
+            django: "5.0"
+          - python-version: "3.9"
+            django: "5.0"
 
     services:
       # postgres service
       postgres:
-        image: postgres:13-alpine
+        image: postgres:16-alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -76,34 +81,31 @@ jobs:
           --health-retries=5
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Update pip
         run: python -m pip install --upgrade pip
 
-      - name: Install Django 3.2
-        if: matrix.django == 3.2
-        run: pip install "Django>=3.2,<4.0"
-      - name: Install Django 4.0
-        if: matrix.django == 4.0
-        run: pip install "Django>=4.0,<4.1"
-      - name: Install Django 4.1
-        if: matrix.django == 4.1
-        run: pip install "Django>=4.1,<4.2"
+      - name: Install Django 4.2
+        if: matrix.django == 4.2
+        run: pip install "Django>=4.2,<5.0"
+      - name: Install Django 5.0
+        if: matrix.django == 5.0
+        run: pip install "Django>=5.0,<5.1"
       - name: Install MySQL libs
         if: matrix.database == 'mysql'
-        run: pip install mysqlclient>=2.1.0 django-mysql>=4.5.0
+        run: pip install mysqlclient>=2.2.4 django-mysql>=4.14.0
       - name: Install postgres libs
         if: matrix.database == 'postgres'
-        run: pip install psycopg2==2.9.5
+        run: pip install psycopg==3.1.19
 
       - name: Install requirements
-        run: pip install -r requirements_test.txt
+        run: pip install -r requirements.txt
 
       - name: Install package
         run: pip install -e .
@@ -132,27 +134,25 @@ jobs:
         run: coveralls
 
   publish:
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-    name: Build and publish to PyPI
+    name: Build and publish Python 🐍 distributions 📦 to PyPI
     needs: test
-    runs-on: ubuntu-22.04
-
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: 3.12
 
-      - name: Install build packages
+      - name: Install deployment packages
         run: python -m pip install -U setuptools wheel
 
       - name: Build a binary wheel and a source tarball
         run: python setup.py sdist bdist_wheel
 
-      - name: Publish Package on Pypi
+      - name: Publish Package on PyPI
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@master
         with:
           user: __token__
-          password: ${{ secrets.PYPI_SECRET }}
+          password: ${{ secrets.PYPI_API_TOKEN }}

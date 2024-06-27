@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [Unreleased]
+### Changed
+- **BREAKING**: Remove support for `Django` below version `4.2`
+- **BREAKING**: Remove support for `Python` below version `3.8`
+- **BREAKING**: Minimum required `Faker` version is now `20.0.0`, released 11/2023
+- Added support for `Django` version `5.0`
+- Added support for `Python` version `3.12`
+- Add docker compose setup to run tests
+
 ## [1.3.0] - 2024-06-05
 ### Added
 - Add support for regular expressions in `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST` - Thanks @fbinz
