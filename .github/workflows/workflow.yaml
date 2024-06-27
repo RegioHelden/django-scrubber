@@ -111,7 +111,7 @@ jobs:
         run: pip install -e .
 
       - name: Run tests and coverage
-        run: coverage run --source=django_scrubber runtests.py
+        run: coverage run --source=django_scrubber manage.py test
         env:
           DATABASE_ENGINE: ${{ matrix.database }}
 

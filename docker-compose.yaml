@@ -2,7 +2,7 @@ services:
   app:
     build: .
     user: app
-    command: /app/manage.py test
+    command: coverage run --source=django_scrubber manage.py test
     volumes:
       - .:/app
     environment:
