@@ -1,7 +1,5 @@
 import os
 
-import django
-
 DEBUG = True
 USE_TZ = True
 
