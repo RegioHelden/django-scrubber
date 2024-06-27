@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
-## [Unreleased]
+## [2.0.0] - 2024-06-27
 ### Changed
 - **BREAKING**: Remove support for `Django` below version `4.2`
 - **BREAKING**: Remove support for `Python` below version `3.8`
