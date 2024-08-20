@@ -40,6 +40,7 @@ jobs:
         django:
           - "4.2"
           - "5.0"
+          - "5.1"
         database:
           - sqlite
           - mysql
@@ -49,6 +50,10 @@ jobs:
             django: "5.0"
           - python-version: "3.9"
             django: "5.0"
+          - python-version: "3.8"
+            django: "5.1"
+          - python-version: "3.9"
+            django: "5.1"
 
     services:
       # postgres service
@@ -97,6 +102,9 @@ jobs:
       - name: Install Django 5.0
         if: matrix.django == 5.0
         run: pip install "Django>=5.0,<5.1"
+      - name: Install Django 5.1
+        if: matrix.django == 5.1
+        run: pip install "Django>=5.1,<5.2"
       - name: Install MySQL libs
         if: matrix.database == 'mysql'
         run: pip install mysqlclient>=2.2.4 django-mysql>=4.14.0
