@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
                 if model_path in whitelisted_models:
                     print(f'Model {model_path!r} was excluded via \'SCRUBBER_VALIDATION_WHITELIST\' and will '
-                          f'not be validated.')
+                          'not be validated.')
                     continue
 
                 print(f'Model {model_path!r}:')
