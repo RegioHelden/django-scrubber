@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 - Added support for `Django` version `5.1`
+- Added `SCRUBBER_VALIDATION_WHITELIST` and excluded Django core test model
 -->
 
 ## [2.0.0] - 2024-06-27

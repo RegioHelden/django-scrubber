@@ -322,6 +322,13 @@ SCRUBBER_MAPPING = {
 
 (default: {})
 
+### `SCRUBBER_VALIDATION_WHITELIST`:
+
+Whitelist models you want to exclude from the `scrub_validation` checker command for scrubber-wise undeclared models.
+By default, it contains only a test model from Django core which doesn't have to be anonymised. 
+
+(default: ['db.TestModel',])
+
 ## Logging
 
 Scrubber uses the default django logger. The logger name is ``django_scrubber.scrubbers``.
