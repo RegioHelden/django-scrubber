@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - 
 -->
 
+## [2.1.1] - 2024-08-20
+### Changed
+- Fixed an issue where the management command `scrub_validation` could fail even though all models were skipped - Thanks @GitRon
+
 ## [2.1.0] - 2024-08-20
 ### Changed
 - Added support for `Django` version `5.1` - Thanks @GitRon
