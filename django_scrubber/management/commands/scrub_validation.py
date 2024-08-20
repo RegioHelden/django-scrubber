@@ -31,7 +31,8 @@ class Command(BaseCommand):
                     print(f"- {field}")
                     found_fields += 1
 
-            print(f'{found_models} model(s) having {found_fields} unscrubbed field(s) detected.')
-            sys.exit(1)
+            if found_models > 0 or found_fields > 0:
+                print(f'{found_models} model(s) having {found_fields} unscrubbed field(s) detected.')
+                sys.exit(1)
 
         print('No unscrubbed fields detected. Yeah!')
