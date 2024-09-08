@@ -311,8 +311,8 @@ activating the strict mode. Defaults to the non-privacy-related Django base mode
 Items can either be full model names (e.g. `auth.Group`) or regular expression patterns matching
 against the full model name (e.g. `re.compile(auth.*)` to whitelist all auth models).
 
-(default: ['auth.Group', 'auth.Permission', 'contenttypes.ContentType', 'sessions.Session', 'sites.Site', 
-'django_scrubber.FakeData',))
+(default: `('auth.Group', 'auth.Permission', 'contenttypes.ContentType', 'sessions.Session', 'sites.Site', 
+'django_scrubber.FakeData', 'db.TestModel',)`)
 
 ````python
 SCRUBBER_MAPPING = {
@@ -322,12 +322,6 @@ SCRUBBER_MAPPING = {
 
 (default: {})
 
-### `SCRUBBER_VALIDATION_WHITELIST`:
-
-Whitelist models you want to exclude from the `scrub_validation` checker command for scrubber-wise undeclared models.
-By default, it contains only a test model from Django core which doesn't have to be anonymised. 
-
-(default: ['db.TestModel',])
 
 ## Logging
 
