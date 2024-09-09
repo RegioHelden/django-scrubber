@@ -25,12 +25,10 @@ defaults = {
         'auth.Group',
         'auth.Permission',
         'contenttypes.ContentType',
+        'db.TestModel',
         'sessions.Session',
         'sites.Site',
         'django_scrubber.FakeData',
-    ],
-    'SCRUBBER_VALIDATION_WHITELIST': [
-        'db.TestModel',  # Test model from Django core
     ],
 }
 

@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 <!--
 ## [Unreleased]
 
-- 
+- Removed `SCRUBBER_VALIDATION_WHITELIST` in favour of `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST`
+- Added Django test model `db.TestModel` to default whitelist of `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST`
 -->
 
 ## [2.1.1] - 2024-08-20
