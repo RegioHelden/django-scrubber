@@ -1,7 +1,4 @@
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
+from unittest.mock import patch
 from io import StringIO
 
 from django.core.management import call_command
