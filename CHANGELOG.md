@@ -6,10 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!--
 ## [Unreleased]
-
-- Removed `SCRUBBER_VALIDATION_WHITELIST` in favour of `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST`
-- Added Django test model `db.TestModel` to default whitelist of `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST`
 -->
+
+## [3.0.0] - 2024-09-10
+### Breaking
+- Removed `SCRUBBER_VALIDATION_WHITELIST` in favour of `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST` - Thanks @GitRon
+### Changed
+- Added Django test model `db.TestModel` to default whitelist of `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST` - Thanks @GitRon
+- Removed support for the `mock` package in unit tests
+- Adjusted some default settings
 
 ## [2.1.1] - 2024-08-20
 ### Changed
