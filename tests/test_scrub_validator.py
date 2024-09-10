@@ -1,9 +1,6 @@
 from django_scrubber.services.validator import ScrubberValidatorService
 
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from unittest import mock
 
 from django.core.management import call_command
 from django.test import TestCase
