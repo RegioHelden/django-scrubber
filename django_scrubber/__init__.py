@@ -9,9 +9,9 @@ defaults = {
     'SCRUBBER_GLOBAL_SCRUBBERS': {},
     'SCRUBBER_SKIP_UNMANAGED': True,
     'SCRUBBER_APPS_LIST': None,
-    'SCRUBBER_ADDITIONAL_FAKER_PROVIDERS': [],
+    'SCRUBBER_ADDITIONAL_FAKER_PROVIDERS': {*()},
     'SCRUBBER_FAKER_LOCALE': None,
-    'SCRUBBER_MAPPING': dict(),
+    'SCRUBBER_MAPPING': {},
     'SCRUBBER_STRICT_MODE': False,
     'SCRUBBER_REQUIRED_FIELD_TYPES': (
         models.CharField,
@@ -21,7 +21,7 @@ defaults = {
         models.GenericIPAddressField,
         models.EmailField,
     ),
-    'SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST': [
+    'SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST': (
         'auth.Group',
         'auth.Permission',
         'contenttypes.ContentType',
@@ -29,11 +29,10 @@ defaults = {
         'sessions.Session',
         'sites.Site',
         'django_scrubber.FakeData',
-    ],
+    ),
 }
 
 
-# TODO: replace with ChainMap now that we only support py3
 def settings_with_fallback(key):
     return getattr(settings, key, defaults[key])
 

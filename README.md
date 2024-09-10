@@ -251,43 +251,51 @@ SCRUBBER_GLOBAL_SCRUBBERS = {
 The seed used when generating random content by the Faker scrubber. Setting this to `None` means each scrubbing will
 generate different data.
 
-(default: 42)
+(default: `42`)
 
 ### `SCRUBBER_ENTRIES_PER_PROVIDER`:
 
 Number of entries to use as source for Faker scrubber. Increasing this value will increase the randomness of generated
 data, but decrease performance.
 
-(default: 1000)
+(default: `1000`)
 
 ### `SCRUBBER_SKIP_UNMANAGED`:
 
 Do not attempt to scrub models which are not managed by the ORM.
 
-(default: True)
+(default: `True`)
 
 ### `SCRUBBER_APPS_LIST`:
 
 Only scrub models belonging to these specific django apps. If unset, will scrub all installed apps.
 
-(default: None)
+(default: `None`)
 
 ### `SCRUBBER_ADDITIONAL_FAKER_PROVIDERS`:
 
 Add additional fake providers to be used by Faker. Must be noted as full dotted path to the provider class.
 
-(default: empty list)
+(default: `{*()}`, empty set)
 
 ### `SCRUBBER_FAKER_LOCALE`:
 
 Set an alternative locale for Faker used during the scrubbing process.
 
-(default: None, falls back to Django's default locale)
+(default: `None`, falls back to Django's default locale)
 
 ### `SCRUBBER_MAPPING`:
 
 Define a class and a mapper which does not have to live inside the given model. Useful, if you have no control over the
 models code you'd like to scrub.
+
+````python
+SCRUBBER_MAPPING = {
+    "auth.User": "my_app.scrubbers.UserScrubbers",
+}
+````
+
+(default: `{}`)
 
 ### `SCRUBBER_STRICT_MODE`:
 
@@ -295,14 +303,16 @@ When strict mode is activated, you have to define a scrubbing policy for every f
 `SCRUBBER_REQUIRED_FIELD_TYPES`. If you have unscrubbed fields and this flag is active, you can't run
 `python manage.py scrub_data`.
 
+(default: `False`)
+
 ### `SCRUBBER_REQUIRED_FIELD_TYPES`:
 
 Defaults to all text-based Django model fields. Usually, privacy-relevant data is only stored in text-fields, numbers
 and booleans (usually) can't contain sensitive personal data. These fields will be checked when running
 `python manage.py scrub_validation`.
 
-(default: (models.CharField, models.TextField, models.URLField, models.JSONField, models.GenericIPAddressField,
-           models.EmailField,))
+(default: `(models.CharField, models.TextField, models.URLField, models.JSONField, models.GenericIPAddressField,
+           models.EmailField,)`)
 
 ### `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST`:
 
@@ -314,14 +324,7 @@ against the full model name (e.g. `re.compile(auth.*)` to whitelist all auth mod
 (default: `('auth.Group', 'auth.Permission', 'contenttypes.ContentType', 'sessions.Session', 'sites.Site', 
 'django_scrubber.FakeData', 'db.TestModel',)`)
 
-````python
-SCRUBBER_MAPPING = {
-    "auth.User": "my_app.scrubbers.UserScrubbers",
-}
-````
-
 (default: {})
-
 
 ## Logging
 
