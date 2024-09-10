@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-__version__ = '2.1.1'
+__version__ = '3.0.0'
 
 defaults = {
     'SCRUBBER_RANDOM_SEED': 42,  # we prefer idempotent scrubbing
