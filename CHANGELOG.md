@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 -->
 
+## [Unreleased]
+
+### Changed
+- Improved documentation on concatenation of different field types.
+
 ## [3.0.0] - 2024-09-10
 ### Breaking
 - Removed `SCRUBBER_VALIDATION_WHITELIST` in favour of `SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST` - Thanks @GitRon

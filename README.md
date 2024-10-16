@@ -144,11 +144,13 @@ class Scrubbers:
 Wrapper around `django.db.functions.Concat` to enable simple concatenation of scrubbers. This is useful if you want to
 ensure a fields uniqueness through composition of, for instance, the `Hash` and `Faker` (see below) scrubbers.
 
+When using different input field types, make sure to explicitly state an `output_field` type.
+
 The following will generate random email addresses by hashing the user-part and using `faker` for the domain part:
 
 ```python
 class Scrubbers:
-    email = scrubbers.Concat(scrubbers.Hash('email'), models.Value('@'), scrubbers.Faker('domain_name'))
+    email = scrubbers.Concat(scrubbers.Hash('email'), models.Value('@'), scrubbers.Faker('domain_name'), output_field=models.EmailField())
 ```
 
 ### Faker
