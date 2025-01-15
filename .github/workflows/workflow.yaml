@@ -37,6 +37,7 @@ jobs:
           - "3.10"
           - "3.11"
           - "3.12"
+          - "3.13"
         django:
           - "4.2"
           - "5.0"
@@ -54,6 +55,10 @@ jobs:
             django: "5.1"
           - python-version: "3.9"
             django: "5.1"
+          - python-version: "3.13"
+            django: "4.2"
+          - python-version: "3.13"
+            django: "5.0"
 
     services:
       # postgres service
