@@ -32,7 +32,6 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.8"
           - "3.9"
           - "3.10"
           - "3.11"
@@ -47,23 +46,19 @@ jobs:
           - mysql
           - postgres
         exclude:
-          - python-version: "3.8"
-            django: "5.0"
-          - python-version: "3.9"
-            django: "5.0"
-          - python-version: "3.8"
-            django: "5.1"
-          - python-version: "3.9"
-            django: "5.1"
-          - python-version: "3.13"
-            django: "4.2"
-          - python-version: "3.13"
-            django: "5.0"
+          - django: "4.2"
+            python-version: "3.13"
+          - django: "5.0"
+            python-version: "3.9"
+          - django: "5.0"
+            python-version: "3.13"
+          - django: "5.1"
+            python-version: "3.9"          
 
     services:
       # postgres service
       postgres:
-        image: postgres:16-alpine
+        image: postgres:17-alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -78,7 +73,7 @@ jobs:
 
       # mysql service
       mysql:
-        image: mysql:8
+        image: mysql:9
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: test
@@ -112,10 +107,10 @@ jobs:
         run: pip install "Django>=5.1,<5.2"
       - name: Install MySQL libs
         if: matrix.database == 'mysql'
-        run: pip install mysqlclient>=2.2.4 django-mysql>=4.14.0
+        run: pip install mysqlclient>=2.2.7 django-mysql>=4.16.0
       - name: Install postgres libs
         if: matrix.database == 'postgres'
-        run: pip install psycopg==3.1.19
+        run: pip install psycopg>=3.2.4
 
       - name: Install requirements
         run: pip install -r requirements.txt
@@ -146,26 +141,86 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         run: coveralls
 
-  publish:
-    name: Build and publish Python 🐍 distributions 📦 to PyPI
-    needs: test
+  build:
+    name: Build package
+    needs:
+      - test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.12
 
-      - name: Install deployment packages
-        run: python -m pip install -U setuptools wheel
+      - name: Install pypa/build
+        run: python -m pip install build --user
 
       - name: Build a binary wheel and a source tarball
-        run: python setup.py sdist bdist_wheel
+        run: python3 -m build
 
-      - name: Publish Package on PyPI
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-        uses: pypa/gh-action-pypi-publish@master
+      - name: Store artifacts
+        uses: actions/upload-artifact@v4
         with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          name: python-package-distributions
+          path: dist/
+
+  publish:
+    name: Publish to PyPI
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/django-scrubber
+    permissions:
+      id-token: write # IMPORTANT: mandatory for trusted publishing
+    steps:
+      - name: Download dists from artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Publish
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    name: Sign packages and upload to GitHub releases
+    needs:
+      - publish
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # IMPORTANT: mandatory for making GitHub Releases
+      id-token: write # IMPORTANT: mandatory for sigstore
+
+    steps:
+      - name: Download dists from artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Sign dists
+        uses: sigstore/gh-action-sigstore-python@v3.0.0
+        with:
+          inputs: >-
+            ./dist/*.tar.gz
+            ./dist/*.whl
+
+      - name: Create GitHub Release
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --notes ""
+
+      - name: Upload artifact signatures to GitHub release
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: gh release upload "$GITHUB_REF_NAME" dist/** --repo "$GITHUB_REPOSITORY"

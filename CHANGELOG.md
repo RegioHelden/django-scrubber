@@ -6,12 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <!--
 ## [Unreleased]
-- Added Python 3.13 support
+### Breaking
+- Nothing
+### Changed
+- Nothing
 -->
 
-## [Unreleased]
-
+## [4.0.0] - 2025-02-19
+### Breaking
+- Removed support for Python 3.8
 ### Changed
+- Added support for Python 3.13 - Thanks @GitRon
+- Updates to GitHub actions
 - Improved documentation on concatenation of different field types.
 
 ## [3.0.0] - 2024-09-10
