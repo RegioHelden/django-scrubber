@@ -6,6 +6,9 @@ on:
 
 env:
   GITHUB_WORKFLOW: true
+  COVERAGE_PYTHON_VERSION: 3.12
+  COVERAGE_DJANGO_VERSION: 5.1
+  COVERAGE_DATABASE: postgres
 
 jobs:
   linting:
@@ -129,13 +132,19 @@ jobs:
       - name: Install package
         run: pip install -e .
 
-      - name: Run tests and coverage
-        run: coverage run --source=django_scrubber manage.py test
+      - name: Run tests
+        run: python manage.py test
         env:
           DATABASE_ENGINE: ${{ matrix.database }}
 
-      - name: Publish coverage
+      - name: Coverage
         if: |
+          matrix.python == env.COVERAGE_PYTHON_VERSION
+          &&
+          matrix.django == env.COVERAGE_DJANGO_VERSION
+          &&
+          matrix.database == env.COVERAGE_DATABASE
+          &&
           github.repository == 'RegioHelden/django-scrubber'
           &&
           (
@@ -147,10 +156,11 @@ jobs:
               github.head_ref == 'master'
             )
           )
+        run: pip install coverage coveralls && coverage run --source=django_scrubber manage.py test && coveralls
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: coveralls
+          DATABASE_ENGINE: ${{ matrix.database }}
 
   build:
     name: Build package
