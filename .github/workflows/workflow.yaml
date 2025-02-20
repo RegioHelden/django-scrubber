@@ -8,24 +8,33 @@ env:
   GITHUB_WORKFLOW: true
 
 jobs:
-  flake8:
+  linting:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install required packages
-        run: pip install flake8 pep8-naming
+      - name: Install ruff
+        uses: astral-sh/ruff-action@v3
+        with:
+          version: "0.9.6" # updates to ruff must be in sync with the vscode plugin
 
-      - name: Run flake8
-        run: flake8
+      - name: Check for ruff issues
+        run: ruff check --diff --output-format=github .
+
+      - name: Check format
+        run: ruff format --check
 
   test:
     name: Test and coverage
+    needs:
+      - linting
     runs-on: ubuntu-24.04
 
     strategy:
@@ -53,7 +62,7 @@ jobs:
           - django: "5.0"
             python-version: "3.13"
           - django: "5.1"
-            python-version: "3.9"          
+            python-version: "3.9"
 
     services:
       # postgres service
@@ -87,6 +96,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
