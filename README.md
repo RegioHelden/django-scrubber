@@ -343,7 +343,7 @@ LOGGING['loggers']['django_scrubber'] = {
 
 ## Making a new release
 
-[bumpversion](https://github.com/peritus/bumpversion) is used to manage releases.
+[bump-my-version](https://github.com/callowayproject/bump-my-version) is used to manage releases.
 
-Add your changes to the [CHANGELOG](./CHANGELOG.md) and run `bumpversion <major|minor|patch>`, then push (including
-tags)
+Add your changes to the [CHANGELOG](./CHANGELOG.md) and run `bump-my-version bump  <major|minor|patch>`,
+then push (including tags)

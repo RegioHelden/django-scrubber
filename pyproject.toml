@@ -1,0 +1,63 @@
+[tool.ruff]
+exclude = [
+    ".cache",
+    ".git",
+    "__pycache",
+    "docs",
+    "migrations",
+    "rh_django_shared",
+    "src",
+]
+line-length = 119
+
+[tool.ruff.lint]
+dummy-variable-rgx = "_|dummy"
+# See https://docs.astral.sh/ruff/rules/ for all supported rules
+select = [
+    "A",   # flake8-builtins
+    "B",   # flake8-bugbear
+    "BLE", # flake8-blind-except
+    "C4",  # flake8-comprehensions
+    "C90", # mccabe
+    "COM", # flake8-commas
+    "DJ",  # flake8-django
+    "DTZ", # flake8-datetimez
+    "E",   # pycodestyle
+    "ERA", # eradicate
+    "F",   # pyflakes
+    "G",   # flake8-logging-format
+    "I",   # isort
+    "ICN", # flake8-import-conventions
+    "INP", # flake8-no-pep420
+    "N",   # pep8-naming
+    "PIE", # flake8-pie
+    "PGH", # pygrep-hooks
+    "PL",  # pylint
+    "PTH", # flake8-use-pathlib
+    "RET", # flake8-return
+    "RSE", # flake8-raise
+    "RUF", # ruff-specific rules
+    "S",   # flake8-bandit
+    "SIM", # flake8-simplify
+    "T20", # flake8-print
+    "TID", # flake8-tidy-imports
+    "UP",  # pyupgrade
+    "W",   # pycodestyle
+    "YTT", # flake8-2020
+]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 119
+
+[tool.ruff.lint.mccabe]
+max-complexity = 16
+
+[tool.bumpversion]
+current_version = "3.0.0"
+tag = true
+commit = true
+
+[[tool.bumpversion.files]]
+filename = "django_scrubber/__init__.py"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
