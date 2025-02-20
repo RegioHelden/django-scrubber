@@ -1,6 +1,6 @@
 from django.test import TestCase, override_settings
 
-from django_scrubber import settings_with_fallback, defaults
+from django_scrubber import defaults, settings_with_fallback
 
 
 class TestScrubbers(TestCase):

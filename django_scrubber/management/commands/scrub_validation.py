@@ -6,7 +6,6 @@ from django_scrubber.services.validator import ScrubberValidatorService
 
 
 class Command(BaseCommand):
-
     def handle(self, *args, **options):
         service = ScrubberValidatorService()
         non_scrubbed_field_list = service.process()
@@ -16,15 +15,9 @@ class Command(BaseCommand):
 
         if len(non_scrubbed_field_list):
             for model_path, affected_field_list in non_scrubbed_field_list.items():
-
-                print(f'Model {model_path!r}:')
                 found_models += 1
-                for field in affected_field_list:
-                    print(f"- {field}")
+                for _field in affected_field_list:
                     found_fields += 1
 
             if found_models > 0:
-                print(f'{found_models} model(s) having {found_fields} unscrubbed field(s) detected.')
                 sys.exit(1)
-
-        print('No unscrubbed fields detected. Yeah!')

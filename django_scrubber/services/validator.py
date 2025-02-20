@@ -15,16 +15,15 @@ class ScrubberValidatorService:
     def check_pattern(pattern: Union[str, re.Pattern], value):
         if isinstance(pattern, str):
             return pattern == value
-        elif isinstance(pattern, re.Pattern):
+        if isinstance(pattern, re.Pattern):
             return pattern.fullmatch(value)
-        else:
-            raise ValueError("Invalid pattern type")
+        raise ValueError("Invalid pattern type")
 
     def process(self) -> dict:
         from django_scrubber.management.commands.scrub_data import _get_model_scrubbers
 
-        scrubber_required_field_types = settings_with_fallback('SCRUBBER_REQUIRED_FIELD_TYPES')
-        model_whitelist = settings_with_fallback('SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST')
+        scrubber_required_field_types = settings_with_fallback("SCRUBBER_REQUIRED_FIELD_TYPES")
+        model_whitelist = settings_with_fallback("SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST")
 
         # Get a list of all registered models in your Django application
         model_list = apps.get_models()
@@ -34,12 +33,8 @@ class ScrubberValidatorService:
 
         # Iterate over each model in the list
         for model in model_list:
-
             # Check if model is whitelisted
-            if any(
-                self.check_pattern(pattern, model._meta.label)
-                for pattern in model_whitelist
-            ):
+            if any(self.check_pattern(pattern, model._meta.label) for pattern in model_whitelist):
                 continue
 
             text_based_fields = []
