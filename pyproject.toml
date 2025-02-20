@@ -61,3 +61,11 @@ commit = true
 filename = "django_scrubber/__init__.py"
 search = '__version__ = "{current_version}"'
 replace = '__version__ = "{new_version}"'
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+omit = ["*site-packages*", "*tests*", "*.tox*"]
+show_missing = true
+exclude_lines = ["raise NotImplementedError"]
