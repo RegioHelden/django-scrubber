@@ -1,0 +1,189 @@
+{
+    // name of the devcontainer
+    "name": "django_scrubber",
+    // define the docker compose file to use for the devcontainer
+    "dockerComposeFile": [
+        "../compose.yaml",
+        "./compose.yaml"
+    ],
+    // define which services from the compose file to start and stop
+    "runServices": [
+        "app"
+    ],
+    // define the docker-compose service to use for the dev container
+    "service": "app",
+    // define the workspace folder our app is located in
+    "workspaceFolder": "/app",
+    // set the remote user to connect as
+    "remoteUser": "app",
+    // features to be installed in the dev container
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {},
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+    // configure vscode
+    "customizations": {
+        // Configure properties specific to VS Code.
+        "vscode": {
+            "settings": {
+                // terminal settings
+                "terminal.integrated.profiles.linux": {
+                    "bash": {
+                        "path": "/bin/bash"
+                    }
+                },
+                "terminal.integrated.defaultProfile.linux": "bash",
+                // language specific editor settings
+                "[python]": {
+                    "editor.defaultFormatter": "charliermarsh.ruff"
+                },
+                "[markdown]": {
+                    "files.trimTrailingWhitespace": false
+                },
+                // allow tasks to run on editor startup
+                "task.allowAutomaticTasks": "on",
+                // python environment
+                "python.defaultInterpreterPath": "/home/app/venv/bin/python",
+                "python.analysis.extraPaths": [
+                    "/home/app/venv/lib/python3.12/site-packages/"
+                ],
+                "python.analysis.useImportHeuristic": true,
+                "python.analysis.autoSearchPaths": true,
+                "python.analysis.autoImportCompletions": true,
+                "python.analysis.indexing": true,
+                "python.analysis.packageIndexDepths": [
+                    {
+                        "name": "",
+                        "depth": 10,
+                        "includeAllSymbols": true
+                    }
+                ],
+                // don't activate the virtual environment every time as we're using the env binary
+                "python.terminal.activateEnvironment": false,
+                "python.terminal.activateEnvInCurrentTerminal": true,
+                // used for autocomplete etc
+                "python.languageServer": "Pylance",
+                // editor settings
+                "editor.formatOnPaste": true,
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.fixAll": "always",
+                    "source.organizeImports": "always"
+                },
+                "editor.rulers": [
+                    88,
+                    120
+                ],
+                // shows the nested current scopes during the scroll at the top of the editor
+                "editor.stickyScroll.enabled": true,
+                // file formatting options
+                "files.trimTrailingWhitespace": true,
+                "files.insertFinalNewline": true,
+                "files.associations": {
+                    "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+                },
+                // files to exclude from search results
+                "search.exclude": {
+                    "**/__pycache__": true,
+                    "**/.bash_aliases": true,
+                    "**/.git": true,
+                    "**/.ipython": true,
+                    "**/.mypy_cache": true,
+                    "**/logs": true,
+                    "**/node_modules": true,
+                    "**/tmp": true
+                },
+                // files to exclude from all checks
+                "files.exclude": {
+                    "**/*.pyc": true,
+                    "**/.git": false,
+                    "**/migrations/*": false
+                },
+                // gitlens settings
+                "gitlens.codeLens.enabled": false,
+                "gitlens.advanced.blame.customArguments": [
+                    "--ignore-revs-file",
+                    ".git-blame-ignore-revs"
+                ],
+                // copilot settings
+                "github.copilot.editor.enableAutoCompletions": true,
+                "github.copilot.enable": {
+                    "*": true,
+                    "plaintext": false,
+                    "markdown": false,
+                    "scminput": false
+                }
+            },
+            // list all extensions that should be installed when the container is created
+            "extensions": [
+                // ---------------------------------------
+                // CODING SUPPORT
+                // ---------------------------------------
+                // Visual Studio IntelliCode - AI-assisted development
+                // https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode
+                "visualstudioexptteam.vscodeintellicode",
+                // ---------------------------------------
+                // PYTHON
+                // ---------------------------------------
+                // Python extension for Visual Studio Code
+                // https://marketplace.visualstudio.com/items?itemName=ms-python.python
+                "ms-python.python",
+                // Pylance - A performant, feature-rich language server for Python in VS Code
+                // https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance
+                "ms-python.vscode-pylance",
+                // Python docstring generator
+                // https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring
+                "njpwerner.autodocstring",
+                // Proper indentation for Python
+                // https://marketplace.visualstudio.com/items?itemName=KevinRose.vsc-python-indent
+                "KevinRose.vsc-python-indent",
+                // Visually highlight indentation depth
+                // https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow
+                "oderwat.indent-rainbow",
+                // Code comment highlights
+                // https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
+                "aaron-bond.better-comments",
+                // Linting with ruff
+                // https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
+                // updates to the ruff vscode plugin must be in sync with github actions
+                "charliermarsh.ruff@2025.8.0",
+                // Linting with mypy
+                // https://marketplace.visualstudio.com/items?itemName=ms-python.mypy-type-checker
+                "ms-python.mypy-type-checker",
+                // ---------------------------------------
+                // GIT
+                // ---------------------------------------
+                // View git log, file history, compare branches or commits
+                // https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory
+                "donjayamanne.githistory",
+                // Supercharge the Git capabilities built into Visual Studio Code
+                // https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens
+                "eamodio.gitlens",
+                // GitLab Workflow
+                // https://marketplace.visualstudio.com/items?itemName=GitLab.gitlab-workflow
+                "GitLab.gitlab-workflow",
+                // create / apply git patches
+                // https://marketplace.visualstudio.com/items?itemName=paragdiwan.gitpatch
+                "paragdiwan.gitpatch",
+                // ---------------------------------------
+                // FILE TYPE SUPPORT
+                // ---------------------------------------
+                // Support for dotenv file syntax
+                // https://marketplace.visualstudio.com/items?itemName=mikestead.dotenv
+                "mikestead.dotenv",
+                // Syntax highlighting for .po files
+                // https://marketplace.visualstudio.com/items?itemName=mrorz.language-gettext
+                "mrorz.language-gettext",
+                // Duplicate translation error marking for .po files
+                // https://marketplace.visualstudio.com/items?itemName=ovcharik.gettext-duplicate-error
+                "ovcharik.gettext-duplicate-error",
+                // YAML language support
+                // https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
+                "redhat.vscode-yaml",
+                // TOML language support
+                // https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml
+                "tamasfe.even-better-toml"
+            ]
+        }
+    }
+}

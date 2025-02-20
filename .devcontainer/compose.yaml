@@ -1,0 +1,6 @@
+services:
+  app:
+    entrypoint: ""
+    command: sleep infinity
+    build:
+      context: .
