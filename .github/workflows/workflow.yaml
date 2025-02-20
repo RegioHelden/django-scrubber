@@ -139,7 +139,7 @@ jobs:
 
       - name: Coverage
         if: |
-          matrix.python == env.COVERAGE_PYTHON_VERSION
+          matrix.python-version == env.COVERAGE_PYTHON_VERSION
           &&
           matrix.django == env.COVERAGE_DJANGO_VERSION
           &&
