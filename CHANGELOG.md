@@ -17,8 +17,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Removed support for Python 3.8
 ### Changed
 - Added support for Python 3.13 - Thanks @GitRon
+- Improved documentation on concatenation of different field types
+- Removed outdated sqlite workaround
+### Organizational changes
+- Switch linting and formatting to ruff
+- Add devcontainer setup for VSCode
 - Updates to GitHub actions
-- Improved documentation on concatenation of different field types.
 
 ## [3.0.0] - 2024-09-10
 ### Breaking
