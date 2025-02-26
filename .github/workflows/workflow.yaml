@@ -110,15 +110,8 @@ jobs:
       - name: Update pip
         run: python -m pip install --upgrade pip
 
-      - name: Install Django 4.2
-        if: matrix.django == 4.2
-        run: pip install "Django>=4.2,<5.0"
-      - name: Install Django 5.0
-        if: matrix.django == 5.0
-        run: pip install "Django>=5.0,<5.1"
-      - name: Install Django 5.1
-        if: matrix.django == 5.1
-        run: pip install "Django>=5.1,<5.2"
+      - name: Install Django ${{ matrix.django }}
+        run: pip install "Django~=${{ matrix.django }}"
       - name: Install MySQL libs
         if: matrix.database == 'mysql'
         run: pip install mysqlclient>=2.2.7 django-mysql>=4.16.0
