@@ -15,9 +15,16 @@ class Command(BaseCommand):
 
         if len(non_scrubbed_field_list):
             for model_path, affected_field_list in non_scrubbed_field_list.items():
+                self.stdout.write(f"Model {model_path!r}:")
+
                 found_models += 1
                 for _field in affected_field_list:
+                    self.stdout.write(f"- {_field}")
                     found_fields += 1
 
+            self.stdout.write("")
             if found_models > 0:
+                self.stdout.write(f"{found_models} model(s) having {found_fields} unscrubbed field(s) detected.")
                 sys.exit(1)
+
+        self.stdout.write("No unscrubbed fields detected. Yeah!")

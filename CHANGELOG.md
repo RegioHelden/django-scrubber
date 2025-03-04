@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Nothing
 -->
 
+## [4.1.0] - 2025-03-04
+### Changed
+- Restore output in `scrub_validation` command
+- Move back to annotation, instead of Subquery for performance reasons
+
 ## [4.0.0] - 2025-02-19
 ### Breaking
 - Removed support for Python 3.8

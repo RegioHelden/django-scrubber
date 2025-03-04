@@ -6,7 +6,7 @@ from typing import ClassVar
 import faker
 from django.db import connections, router
 from django.db.models import Field, Func, OuterRef, Subquery
-from django.db.models.functions import Cast, Mod
+from django.db.models.functions import Cast
 from django.db.models.functions import Concat as DjangoConcat
 from django.db.utils import IntegrityError
 from django.utils.translation import get_language, to_locale
@@ -200,10 +200,7 @@ class Faker:
             Subquery(
                 FakeData.objects.filter(
                     provider=self.provider_key,
-                    provider_offset=Mod(
-                        OuterRef("pk"),
-                        Subquery(FakeData.objects.provider_count(OuterRef("provider"))),
-                    ),
+                    provider_offset=OuterRef("mod_pk"),
                 ).values("content")[:1],
             ),
             field,

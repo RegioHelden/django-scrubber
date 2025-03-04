@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.core.exceptions import FieldDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
+from django.db.models import F
 from django.db.utils import DataError, IntegrityError
 
 from django_scrubber import settings_with_fallback
@@ -120,7 +121,9 @@ class Command(BaseCommand):
         logger.info("Scrubbing %s with %s", model_class._meta.label, realized_scrubbers)
 
         try:
-            model_class.objects.update(**realized_scrubbers)
+            model_class.objects.annotate(
+                mod_pk=F("pk") % settings_with_fallback("SCRUBBER_ENTRIES_PER_PROVIDER"),
+            ).update(**realized_scrubbers)
         except IntegrityError as e:
             raise CommandError(
                 f"Integrity error while scrubbing {model_class} ({e}); maybe increase SCRUBBER_ENTRIES_PER_PROVIDER?",
