@@ -104,7 +104,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
 
       - name: Install requirements
-        run: uv pip install --system -r requirements.txt
+        run: uv pip install --system -r requirements-ci.txt
 
       - name: Install Django ${{ matrix.django }}
         run: uv pip install --system "Django~=${{ matrix.django }}"
