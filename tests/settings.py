@@ -14,7 +14,7 @@ DATABASES = {
     },
 }
 
-if os.environ.get("GITHUB_WORKFLOW", False):
+if os.environ.get("GITHUB_WORKFLOW", None):
     DATABASE_ENGINE = os.environ.get("DATABASE_ENGINE", "sqlite")
     if "mysql" in DATABASE_ENGINE:
         DATABASES = {
