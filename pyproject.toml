@@ -1,3 +1,61 @@
+[project]
+name = "django-scrubber"
+version = "4.1.0"
+license = "MIT"
+requires-python = ">=3.9"
+description = "Data anonymizer for Django"
+readme = "README.md"
+keywords = [
+    "django",
+    "data protection",
+    "scrubber",
+    "scrub",
+    "anonymize",
+    "gdpr",
+]
+authors = [{ name = "RegioHelden GmbH", email = "opensource@regiohelden.de" }]
+maintainers = [
+    { name = "RegioHelden GmbH", email = "opensource@regiohelden.de" },
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Security",
+    "Topic :: System :: Archiving :: Backup",
+]
+dependencies = ["Faker>=20.0.0"]
+
+[project.urls]
+Homepage = "https://github.com/RegioHelden/django-scrubber"
+Documentation = "https://github.com/RegioHelden/django-scrubber/blob/master/README.md"
+Repository = "https://github.com/RegioHelden/django-scrubber.git"
+Issues = "https://github.com/RegioHelden/django-scrubber/issues"
+Changelog = "https://github.com/RegioHelden/django-scrubber/blob/main/CHANGELOG.md"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["django_scrubber"]
+include = ["LICENSE", "README.md", "CHANGELOG.md"]
+
+[tool.hatch.build.targets.sdist]
+packages = ["django_scrubber"]
+include = ["LICENSE", "README.md", "CHANGELOG.md"]
+
 [tool.ruff]
 exclude = [
     ".cache",

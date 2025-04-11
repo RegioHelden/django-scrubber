@@ -1,5 +1,0 @@
-include AUTHORS.md
-include CHANGELOG.md
-include LICENSE
-include README.md
-recursive-include django_scrubber *.html *.png *.gif *js *.css *jpg *jpeg *svg *py

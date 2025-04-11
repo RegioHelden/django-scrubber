@@ -1,0 +1,17 @@
+---
+name: Check pull request
+
+on:
+  # when labels are added/removed or draft status gets changed to ready for review
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled, ready_for_review]
+
+jobs:
+  # make sure the pull request matches our guidelines like having at least one label assigned
+  # see https://github.com/RegioHelden/github-reusable-workflows/blob/main/.github/workflows/check-pull-request.yaml
+  check-pull-request:
+    name: Check pull request
+    permissions:
+      issues: write
+      pull-requests: write
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/check-pull-request.yaml@main

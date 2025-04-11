@@ -1,3 +1,0 @@
-bump-my-version==0.32.1
-factory_boy==3.3.3
-faker==36.1.1

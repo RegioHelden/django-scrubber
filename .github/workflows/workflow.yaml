@@ -1,43 +1,36 @@
-name: Build
+name: Test
 
 on:
-  - push
-  - pull_request
+  # code pushed to pull request branch
+  push:
+    branches-ignore:
+      - main
+  # when draft state is removed (needed as automatically created PRs are not triggering this action)
+  pull_request:
+    types: [ready_for_review]
 
 env:
   GITHUB_WORKFLOW: true
   COVERAGE_PYTHON_VERSION: 3.12
-  COVERAGE_DJANGO_VERSION: 5.1
+  COVERAGE_DJANGO_VERSION: 5.2
   COVERAGE_DATABASE: postgres
 
 jobs:
-  linting:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install ruff
-        uses: astral-sh/ruff-action@v3
-        with:
-          version: "0.9.6" # updates to ruff must be in sync with the vscode plugin
-
-      - name: Check for ruff issues
-        run: ruff check --diff --output-format=github .
-
-      - name: Check format
-        run: ruff format --check
+  # lint code for errors
+  # see https://github.com/RegioHelden/github-reusable-workflows/blob/main/.github/workflows/python-ruff.yaml
+  lint:
+    name: Lint
+    permissions:
+      contents: read
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/python-ruff.yaml@main
+    with:
+      ruff-version: "0.11.5"
+      python-version: "3.12"
 
   test:
     name: Test and coverage
     needs:
-      - linting
+      - lint
     runs-on: ubuntu-24.04
 
     strategy:
@@ -107,23 +100,23 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Update pip
-        run: python -m pip install --upgrade pip
-
-      - name: Install Django ${{ matrix.django }}
-        run: pip install "Django~=${{ matrix.django }}"
-      - name: Install MySQL libs
-        if: matrix.database == 'mysql'
-        run: pip install mysqlclient>=2.2.7 django-mysql>=4.16.0
-      - name: Install postgres libs
-        if: matrix.database == 'postgres'
-        run: pip install psycopg>=3.2.4
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v5
 
       - name: Install requirements
-        run: pip install -r requirements.txt
+        run: uv pip install --system -r requirements-ci.txt
+
+      - name: Install Django ${{ matrix.django }}
+        run: uv pip install --system "Django~=${{ matrix.django }}"
+      - name: Install MySQL libs
+        if: matrix.database == 'mysql'
+        run: uv pip install --system mysqlclient>=2.2.7 django-mysql>=4.16.0
+      - name: Install postgres libs
+        if: matrix.database == 'postgres'
+        run: uv pip install --system psycopg>=3.2.6
 
       - name: Install package
-        run: pip install -e .
+        run: uv pip install --system -e .
 
       - name: Run tests
         run: python manage.py test
@@ -149,92 +142,8 @@ jobs:
               github.head_ref == 'master'
             )
           )
-        run: pip install coverage coveralls && coverage run --source=django_scrubber manage.py test && coveralls
+        run: uv pip install --system coverage coveralls && coverage run --source=django_scrubber manage.py test && coveralls
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           DATABASE_ENGINE: ${{ matrix.database }}
-
-  build:
-    name: Build package
-    needs:
-      - test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.12
-
-      - name: Install pypa/build
-        run: python -m pip install build --user
-
-      - name: Build a binary wheel and a source tarball
-        run: python3 -m build
-
-      - name: Store artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: python-package-distributions
-          path: dist/
-
-  publish:
-    name: Publish to PyPI
-    needs:
-      - build
-    runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: https://pypi.org/p/django-scrubber
-    permissions:
-      id-token: write # IMPORTANT: mandatory for trusted publishing
-    steps:
-      - name: Download dists from artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: python-package-distributions
-          path: dist/
-
-      - name: Publish
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-        uses: pypa/gh-action-pypi-publish@release/v1
-
-  github-release:
-    name: Sign packages and upload to GitHub releases
-    needs:
-      - publish
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: write # IMPORTANT: mandatory for making GitHub Releases
-      id-token: write # IMPORTANT: mandatory for sigstore
-
-    steps:
-      - name: Download dists from artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: python-package-distributions
-          path: dist/
-
-      - name: Sign dists
-        uses: sigstore/gh-action-sigstore-python@v3.0.0
-        with:
-          inputs: >-
-            ./dist/*.tar.gz
-            ./dist/*.whl
-
-      - name: Create GitHub Release
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --notes ""
-
-      - name: Upload artifact signatures to GitHub release
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: gh release upload "$GITHUB_REF_NAME" dist/** --repo "$GITHUB_REPOSITORY"

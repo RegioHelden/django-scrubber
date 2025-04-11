@@ -343,7 +343,5 @@ LOGGING['loggers']['django_scrubber'] = {
 
 ## Making a new release
 
-[bump-my-version](https://github.com/callowayproject/bump-my-version) is used to manage releases.
-
-Add your changes to the [CHANGELOG](./CHANGELOG.md) and run `bump-my-version bump  <major|minor|patch>`,
-then push (including tags)
+This project makes use of [RegioHelden's reusable GitHub workflows](https://github.com/RegioHelden/github-reusable-workflows). \
+Make a new release by manually triggering the `Open release PR` workflow.

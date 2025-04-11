@@ -57,7 +57,7 @@ class ScrubberValidatorService:
                         text_based_fields.remove(scrubbed_field.name)
 
             # Store per model all non-scrubbed, text-based fields
-            if len(text_based_fields):
+            if len(text_based_fields) > 0:
                 non_scrubbed_field_list[model._meta.label] = text_based_fields
 
         return non_scrubbed_field_list
