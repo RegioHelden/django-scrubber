@@ -1,35 +1,33 @@
 FROM python:3.12-slim-bookworm
 
-ENV PYTHONUNBUFFERED 1
-ENV LC_ALL=C.UTF-8
 ARG DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=x LC_ALL=C.UTF-8 UV_COMPILE_BYTECODE=0
 
 RUN apt-get -y update && apt-get -y install \
-      build-essential \
-      gcc \
-      python3-venv \
-      python3-dev \
-      libffi-dev \
-      libssl-dev \
+        build-essential \
+        gcc \
+        python3-venv \
+        python3-dev \
+        libffi-dev \
+        libssl-dev \
+        pipx \
     && \
-    apt-get clean && \
-    mkdir /app && \
-    useradd -m app
-
-USER app
+    apt-get clean
 
 WORKDIR /app
 
-ADD requirements.txt /app/
+RUN grep -q -w 1000 /etc/group || groupadd --gid 1000 app && \
+    id -u app >/dev/null 2>&1 || useradd --gid 1000 --uid 1000 -m app && \
+    chown app:app /app
 
-ENV PATH /home/app/venv/bin:${PATH}
+USER app
 
-RUN python3 -m venv ~/venv && \
-    pip install --upgrade pip && \
-    pip install wheel && \
-    pip install -r requirements.txt && \
-    pip install Django
+COPY --chown=app requirements* /app/
 
-ENV DJANGO_SETTINGS_MODULE tests.settings
+ENV PATH=/home/app/.local/bin:/home/app/venv/bin:${PATH} DJANGO_SETTINGS_MODULE=tests.settings
+
+RUN pipx install --force uv==0.6.14 && uv venv ~/venv && \
+    uv pip install --no-cache --upgrade --requirements /app/requirements.txt && \
+    uv cache clean
 
 EXPOSE 8000

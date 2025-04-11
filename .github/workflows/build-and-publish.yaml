@@ -1,0 +1,45 @@
+---
+name: Build and publish
+
+on:
+  push:
+    tags:
+      - "**"
+
+jobs:
+  # build package, make release on github and upload to pypi when a new tag is pushed
+  # see https://github.com/RegioHelden/github-reusable-workflows/blob/main/.github/workflows/build-and-publish.yaml
+  build-and-release:
+    name: Build and publish
+    permissions:
+      contents: write
+      id-token: write
+    uses: regiohelden/github-reusable-workflows/.github/workflows/build-and-publish.yaml@main
+
+  # must be defined in the repo as trusted publishing does not work with reusable workflows yet
+  # see https://github.com/pypi/warehouse/issues/11096
+  publish-pypi:
+    name: Publish on PyPI
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    needs:
+      - build-and-release
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Download the distribution packages
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Publish
+        run: uv publish --trusted-publishing always

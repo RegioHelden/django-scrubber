@@ -1,0 +1,16 @@
+---
+name: Cron actions
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  # synchronize labels from central definition at https://github.com/RegioHelden/.github/blob/main/labels.yaml
+  # see https://github.com/RegioHelden/github-reusable-workflows/blob/main/.github/workflows/sync-labels.yaml
+  update-labels:
+    name: Update labels
+    permissions:
+      issues: write
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/sync-labels.yaml@main

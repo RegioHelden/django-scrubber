@@ -35,6 +35,8 @@ htmlcov
 .mr.developer.cfg
 .project
 .pydevproject
+.mypy_cache
+.ruff_cache
 
 # Pycharm/Intellij
 .idea
