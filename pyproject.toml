@@ -35,7 +35,7 @@ classifiers = [
     "Topic :: Security",
     "Topic :: System :: Archiving :: Backup",
 ]
-dependencies = ["Faker>=20.0.0"]
+dependencies = ["Faker>=20.0.0", "Django>=4.2,<6.0"]
 
 [project.urls]
 Homepage = "https://github.com/RegioHelden/django-scrubber"
