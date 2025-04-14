@@ -1,8 +1,6 @@
 from django.conf import settings
 from django.db import models
 
-__version__ = "4.1.0"
-
 defaults = {
     "SCRUBBER_RANDOM_SEED": 42,  # we prefer idempotent scrubbing
     "SCRUBBER_ENTRIES_PER_PROVIDER": 1000,
