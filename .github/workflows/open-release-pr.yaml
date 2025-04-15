@@ -12,6 +12,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    uses: RegioHelden/github-reusable-workflows/.github/workflows/release-pull-request.yaml@main
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/release-pull-request.yaml@v1.0.0
     secrets:
       personal-access-token: "${{ secrets.COMMIT_KEY }}"

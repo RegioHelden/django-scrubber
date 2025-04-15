@@ -13,6 +13,6 @@ jobs:
     name: Create tag
     permissions:
       contents: write
-    uses: RegioHelden/github-reusable-workflows/.github/workflows/tag-release.yaml@main
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/tag-release.yaml@v1.0.0
     secrets:
       personal-access-token: "${{ secrets.COMMIT_KEY }}"
