@@ -1,3 +1,7 @@
+# -------------------------------------------------
+# Managed by modulesync - DO NOT EDIT
+# -------------------------------------------------
+
 ---
 name: Build and publish
 
@@ -14,7 +18,7 @@ jobs:
     permissions:
       contents: write
       id-token: write
-    uses: regiohelden/github-reusable-workflows/.github/workflows/build-and-publish.yaml@v2.0.0
+    uses: regiohelden/github-reusable-workflows/.github/workflows/build-and-publish.yaml@v2.1.0
 
   # must be defined in the repo as trusted publishing does not work with reusable workflows yet
   # see https://github.com/pypi/warehouse/issues/11096

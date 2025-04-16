@@ -1,3 +1,7 @@
+# -------------------------------------------------
+# Managed by modulesync - DO NOT EDIT
+# -------------------------------------------------
+
 FROM python:3.12-slim-bookworm
 
 ARG DEBIAN_FRONTEND=noninteractive

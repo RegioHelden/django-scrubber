@@ -1,15 +1,17 @@
+// -------------------------------------------------
+// Managed by modulesync - DO NOT EDIT
+// -------------------------------------------------
+
 {
     // name of the devcontainer
-    "name": "django_scrubber",
+    "name": "django-scrubber",
     // define the docker compose file to use for the devcontainer
     "dockerComposeFile": [
         "../compose.yaml",
         "./compose.yaml"
     ],
     // define which services from the compose file to start and stop
-    "runServices": [
-        "app"
-    ],
+    "runServices": ["app"],
     // define the docker-compose service to use for the dev container
     "service": "app",
     // define the workspace folder our app is located in
@@ -36,6 +38,12 @@
                 // language specific editor settings
                 "[python]": {
                     "editor.defaultFormatter": "charliermarsh.ruff"
+                },
+                "[django-html]": {
+                    "editor.defaultFormatter": "monosans.djlint"
+                },
+                "[html]": {
+                    "editor.defaultFormatter": "monosans.djlint"
                 },
                 "[markdown]": {
                     "files.trimTrailingWhitespace": false
@@ -80,7 +88,12 @@
                 "files.trimTrailingWhitespace": true,
                 "files.insertFinalNewline": true,
                 "files.associations": {
+                    "**/*.html": "html",
+                    "**/templates/*": "django-html",
                     "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+                },
+                "emmet.includeLanguages": {
+                    "django-html": "html"
                 },
                 // files to exclude from search results
                 "search.exclude": {
@@ -145,7 +158,6 @@
                 "aaron-bond.better-comments",
                 // Linting with ruff
                 // https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
-                // updates to the ruff vscode plugin must be in sync with github actions
                 "charliermarsh.ruff@2025.8.0",
                 // Linting with mypy
                 // https://marketplace.visualstudio.com/items?itemName=ms-python.mypy-type-checker
@@ -177,12 +189,21 @@
                 // Duplicate translation error marking for .po files
                 // https://marketplace.visualstudio.com/items?itemName=ovcharik.gettext-duplicate-error
                 "ovcharik.gettext-duplicate-error",
+                // Formatter and linter for Jinja2 templates
+                // https://marketplace.visualstudio.com/items?itemName=monosans.djlint
+                "monosans.djlint",
                 // YAML language support
                 // https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml
                 "redhat.vscode-yaml",
                 // TOML language support
                 // https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml
-                "tamasfe.even-better-toml"
+                "tamasfe.even-better-toml",
+                // ---------------------------------------
+                // DJANGO
+                // ---------------------------------------
+                // Django template support
+                // https://marketplace.visualstudio.com/items?itemName=batisteo.vscode-django
+                "batisteo.vscode-django"
             ]
         }
     }
