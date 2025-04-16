@@ -30,7 +30,7 @@ And add `django_scrubber` to your django `INSTALLED_APPS`. I.e.: in `settings.py
 ```
 INSTALLED_APPS = [
   ...
-  'django_scrubber',
+  'django_scrubber.apps.DjangoScrubberConfig',
   ...
 ]
 ```

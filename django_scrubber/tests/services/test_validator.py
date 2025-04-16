@@ -28,7 +28,7 @@ class ScrubberValidatorServiceTest(TestCase):
 
         model_list = tuple(result.keys())
         self.assertIn("auth.User", model_list)
-        self.assertIn("tests.DataToBeScrubbed", model_list)
+        self.assertIn("example.DataToBeScrubbed", model_list)
 
     @override_settings(SCRUBBER_MAPPING={"auth.User": "FullUserScrubbers"})
     @mock.patch(
@@ -42,7 +42,7 @@ class ScrubberValidatorServiceTest(TestCase):
         self.assertEqual(len(result), 1)
 
         model_list = tuple(result.keys())
-        self.assertIn("tests.DataToBeScrubbed", model_list)
+        self.assertIn("example.DataToBeScrubbed", model_list)
 
     @override_settings(SCRUBBER_MAPPING={"auth.User": "PartUserScrubbers"})
     @mock.patch(

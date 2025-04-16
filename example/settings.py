@@ -39,15 +39,13 @@ if os.environ.get("GITHUB_WORKFLOW", None):
             },
         }
 
-ROOT_URLCONF = "tests.urls"
-
 INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.sites",
-    "django_scrubber",
-    "tests",
+    "django_scrubber.apps.DjangoScrubberConfig",
+    "example.apps.ExampleConfig",
 ]
 
 SITE_ID = 1

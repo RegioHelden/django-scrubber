@@ -9,8 +9,7 @@ from django.utils import timezone
 
 from django_scrubber import scrubbers
 from django_scrubber.models import FakeData
-
-from .models import DataFactory, DataToBeScrubbed
+from example.models import DataFactory, DataToBeScrubbed
 
 
 class TestScrubbers(TestCase):
