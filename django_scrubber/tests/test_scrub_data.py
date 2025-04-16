@@ -76,7 +76,7 @@ class TestScrubData(TestCase):
         ):
             call_command("scrub_data")
 
-    @override_settings(SCRUBBER_MAPPING={"auth.User": "tests.scrubbers.UserScrubbers"})
+    @override_settings(SCRUBBER_MAPPING={"auth.User": "example.scrubbers.UserScrubbers"})
     def test_get_model_scrubbers_mapper_from_settings_used(self):
         with (
             patch(
@@ -90,7 +90,7 @@ class TestScrubData(TestCase):
         self.assertEqual(test_scrubbers, {})
 
     def test_parse_scrubber_class_from_string_regular(self):
-        class_type = _parse_scrubber_class_from_string("tests.test_models.TestDjangoScrubber")
+        class_type = _parse_scrubber_class_from_string("django_scrubber.tests.test_models.TestDjangoScrubber")
         self.assertIsInstance(class_type, type)
 
     def test_parse_scrubber_class_from_string_wrong_path(self):

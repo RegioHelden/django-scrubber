@@ -1,0 +1,8 @@
+---
+:global:
+  module_rootname: "django_scrubber"
+  module_description: "Data anonymizer for Django"
+  module_keywords:
+    ["django", "data protection", "scrubber", "scrub", "anonymize", "gdpr"]
+  dependencies: ["Faker>=20.0.0", "Django>=4.2,<6.0"]
+  max_line_length: 119

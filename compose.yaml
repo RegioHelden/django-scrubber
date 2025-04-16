@@ -1,13 +1,15 @@
+---
 services:
   app:
-    build:
-      context: .
+    build: .
     user: app
     entrypoint: /app/manage.py
-    command: coverage run --source=django_scrubber manage.py test
+    command: test
     volumes:
       - .:/app:cached
     environment:
+      SHELL: /bin/bash
       IPYTHONDIR: /app/.ipython
       HISTFILE: /app/.bash_history
+      PYTHONPATH: /app  # make app available without installation
     restart: "no"
