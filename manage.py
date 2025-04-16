@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+# -------------------------------------------
+# Managed by modulesync - DO NOT EDIT
+# -------------------------------------------
+
 import os
 import sys
 

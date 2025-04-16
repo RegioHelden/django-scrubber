@@ -1,3 +1,7 @@
+# -------------------------------------------
+# Managed by modulesync - DO NOT EDIT
+# -------------------------------------------
+
 [project]
 name = "django-scrubber"
 dynamic = ["version"]
@@ -5,41 +9,33 @@ license = "MIT"
 requires-python = ">=3.9"
 description = "Data anonymizer for Django"
 readme = "README.md"
-keywords = [
-    "django",
-    "data protection",
-    "scrubber",
-    "scrub",
-    "anonymize",
-    "gdpr",
+keywords = ["django", "data protection", "scrubber", "scrub", "anonymize", "gdpr"]
+authors = [
+    { name = "RegioHelden GmbH", email = "opensource@regiohelden.de" },
 ]
-authors = [{ name = "RegioHelden GmbH", email = "opensource@regiohelden.de" }]
 maintainers = [
     { name = "RegioHelden GmbH", email = "opensource@regiohelden.de" },
 ]
 classifiers = [
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
     "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
+    "Framework :: Django",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Software Development",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: Security",
-    "Topic :: System :: Archiving :: Backup",
 ]
 dependencies = ["Faker>=20.0.0", "Django>=4.2,<6.0"]
 
 [project.urls]
 Homepage = "https://github.com/RegioHelden/django-scrubber"
-Documentation = "https://github.com/RegioHelden/django-scrubber/blob/master/README.md"
+Documentation = "https://github.com/RegioHelden/django-scrubber/blob/main/README.md"
 Repository = "https://github.com/RegioHelden/django-scrubber.git"
 Issues = "https://github.com/RegioHelden/django-scrubber/issues"
 Changelog = "https://github.com/RegioHelden/django-scrubber/blob/main/CHANGELOG.md"
@@ -67,7 +63,6 @@ exclude = [
     "__pycache",
     "docs",
     "migrations",
-    "rh_django_shared",
     "src",
 ]
 line-length = 119

@@ -1,3 +1,7 @@
+# -------------------------------------------------
+# Managed by modulesync - DO NOT EDIT
+# -------------------------------------------------
+
 ---
 name: Cron actions
 
@@ -13,4 +17,4 @@ jobs:
     name: Update labels
     permissions:
       issues: write
-    uses: RegioHelden/github-reusable-workflows/.github/workflows/sync-labels.yaml@v2.0.0
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/sync-labels.yaml@v2.1.0

@@ -1,5 +1,6 @@
-*.py[cod]
-__pycache__
+# -------------------------------------------------
+# Managed by modulesync - DO NOT EDIT
+# -------------------------------------------------
 
 # C extensions
 *.so
@@ -31,15 +32,25 @@ htmlcov
 # Translations
 *.mo
 
-# Mr Developer
+# dev env
 .mr.developer.cfg
 .project
 .pydevproject
 .mypy_cache
 .ruff_cache
+.ipython
+.bash_history
+compose.override.yaml
+
+# Language specific
+__pycache__
+*.pyc
+*.py[cod]
+*.sw*
 
 # Pycharm/Intellij
 .idea
+.pycharm_helpers
 
 # Complexity
 output/*.html
@@ -50,3 +61,6 @@ docs/_build
 
 # OS
 .bash_history
+
+# database
+db.sqlite3

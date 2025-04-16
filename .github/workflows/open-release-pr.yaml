@@ -1,3 +1,7 @@
+# -------------------------------------------------
+# Managed by modulesync - DO NOT EDIT
+# -------------------------------------------------
+
 ---
 name: Open release PR
 
@@ -12,6 +16,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    uses: RegioHelden/github-reusable-workflows/.github/workflows/release-pull-request.yaml@v2.0.0
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/release-pull-request.yaml@v2.1.0
     secrets:
       personal-access-token: "${{ secrets.COMMIT_KEY }}"
