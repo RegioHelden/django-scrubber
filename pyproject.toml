@@ -1,6 +1,6 @@
 [project]
 name = "django-scrubber"
-version = "4.2.0"
+dynamic = ["version"]
 license = "MIT"
 requires-python = ">=3.9"
 description = "Data anonymizer for Django"
@@ -47,6 +47,10 @@ Changelog = "https://github.com/RegioHelden/django-scrubber/blob/main/CHANGELOG.
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "version"
+pattern = "(?P<version>.+)"
 
 [tool.hatch.build.targets.wheel]
 packages = ["django_scrubber"]

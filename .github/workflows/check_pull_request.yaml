@@ -14,4 +14,4 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-    uses: RegioHelden/github-reusable-workflows/.github/workflows/check-pull-request.yaml@v1.0.0
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/check-pull-request.yaml@v2.0.0
