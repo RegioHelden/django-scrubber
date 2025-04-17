@@ -1,6 +1,7 @@
 ---
 :global:
   python_min_version: "3.9"
+  python_supported_versions: ["3.9", "3.10", "3.11", "3.12", "3.13"]
   module_rootname: "django_scrubber"
   module_description: "Data anonymizer for Django"
   module_keywords:
