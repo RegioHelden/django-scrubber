@@ -7,8 +7,7 @@ services:
   app:
     build: .
     user: app
-    entrypoint: /app/manage.py
-    command: test
+    command: /app/manage.py test
     volumes:
       - .:/app:cached
     environment:
