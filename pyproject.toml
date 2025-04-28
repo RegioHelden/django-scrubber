@@ -51,12 +51,10 @@ path = "version"
 pattern = "(?P<version>.+)"
 
 [tool.hatch.build.targets.wheel]
-packages = ["django_scrubber"]
-include = ["LICENSE", "README.md", "CHANGELOG.md"]
+include = ["LICENSE", "README.md", "CHANGELOG.md", "django_scrubber/*"]
 
 [tool.hatch.build.targets.sdist]
-packages = ["django_scrubber"]
-include = ["LICENSE", "README.md", "CHANGELOG.md"]
+include = ["LICENSE", "README.md", "CHANGELOG.md", "django_scrubber/*"]
 
 [tool.ruff]
 exclude = [
