@@ -37,27 +37,27 @@ class ScrubberValidatorService:
             if any(self.check_pattern(pattern, model._meta.label) for pattern in model_whitelist):
                 continue
 
-            text_based_fields = []
+            fields_need_scrubbing = []
             # Get the model's name and fields
             fields = model._meta.get_fields()
 
-            # Gather list of all text-based files of the given model
+            # Gather list of all fields of the given model that require scrubbing
             for field in fields:
                 if type(field) in scrubber_required_field_types:
-                    text_based_fields.append(field.name)
+                    fields_need_scrubbing.append(field.name)
 
             # Get scrubber class
             scrubber_class = _get_model_scrubbers(model)
 
             # If we did find a scrubber class...
             if scrubber_class:
-                # We check for every text-based field, if it's set to be scrubbed
+                # We check for every scrubbing requiring field, if it's set to be scrubbed
                 for scrubbed_field in scrubber_class:
-                    if scrubbed_field.name in text_based_fields:
-                        text_based_fields.remove(scrubbed_field.name)
+                    if scrubbed_field.name in fields_need_scrubbing:
+                        fields_need_scrubbing.remove(scrubbed_field.name)
 
-            # Store per model all non-scrubbed, text-based fields
-            if len(text_based_fields) > 0:
-                non_scrubbed_field_list[model._meta.label] = text_based_fields
+            # Store per model all non-scrubbed but scrubbing requiring fields
+            if len(fields_need_scrubbing) > 0:
+                non_scrubbed_field_list[model._meta.label] = fields_need_scrubbing
 
         return non_scrubbed_field_list
