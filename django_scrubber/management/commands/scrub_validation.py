@@ -24,15 +24,15 @@ class Command(BaseCommand):
                     found_fields += 1
 
             self.stdout.write("")
+
             if found_models > 0:
+                self.stdout.write(f"{found_models} model(s) having {found_fields} unscrubbed field(s) detected.")
+
+                # strict mode should fail with a non-zero exit code
                 if settings_with_fallback("SCRUBBER_STRICT_MODE"):
-                    self.stdout.write(f"{found_models} model(s) having {found_fields} unscrubbed field(s) detected.")
                     sys.exit(1)
-                else:
-                    self.stdout.write(
-                        f"{found_models} model(s) having {found_fields} unscrubbed field(s) detected."
-                        "However strict mode is deactivated and scrubbing is not enforced.",
-                    )
-                    sys.exit(0)
+
+                self.stdout.write("However strict mode is deactivated and scrubbing is not enforced.")
+                sys.exit(0)
 
         self.stdout.write("No unscrubbed fields detected. Yeah!")
