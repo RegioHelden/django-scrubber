@@ -2,6 +2,7 @@ import sys
 
 from django.core.management.base import BaseCommand
 
+from django_scrubber import settings_with_fallback
 from django_scrubber.services.validator import ScrubberValidatorService
 
 
@@ -23,8 +24,15 @@ class Command(BaseCommand):
                     found_fields += 1
 
             self.stdout.write("")
+
             if found_models > 0:
                 self.stdout.write(f"{found_models} model(s) having {found_fields} unscrubbed field(s) detected.")
-                sys.exit(1)
+
+                # strict mode should fail with a non-zero exit code
+                if settings_with_fallback("SCRUBBER_STRICT_MODE"):
+                    sys.exit(1)
+
+                self.stdout.write("However strict mode is deactivated and scrubbing is not enforced.")
+                sys.exit(0)
 
         self.stdout.write("No unscrubbed fields detected. Yeah!")
