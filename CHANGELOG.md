@@ -1,13 +1,34 @@
 # Changelog
 
-## [v4.2.0](https://github.com/RegioHelden/django-scrubber/tree/v4.2.0) (2025-04-11)
+## [v5.0.0](https://github.com/RegioHelden/django-scrubber/tree/v5.0.0) (2025-05-26)
 
-[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v4.1.0...v4.2.0)
+[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v4.2.0...v5.0.0)
 
-**Implemented enhancements:**
+**Breaking changes:**
 
-- Add support for django 5.2 [\#65](https://github.com/RegioHelden/django-scrubber/pull/65) (@lociii)
-- Switch to reusable github workflows [\#63](https://github.com/RegioHelden/django-scrubber/pull/63) (@lociii)
+- Only fail validation with an non-zero exit code if strict mode is active [\#88](https://github.com/RegioHelden/django-scrubber/pull/88) (@lociii)
+
+**Merged pull requests:**
+
+- Update uv to 0.7.8 [\#91](https://github.com/RegioHelden/django-scrubber/pull/91) (@regiohelden-dev)
+- Update uv to 0.7.7 [\#90](https://github.com/RegioHelden/django-scrubber/pull/90) (@regiohelden-dev)
+- Update uv to 0.7.6 [\#89](https://github.com/RegioHelden/django-scrubber/pull/89) (@regiohelden-dev)
+- Update uv to 0.7.5 [\#87](https://github.com/RegioHelden/django-scrubber/pull/87) (@regiohelden-dev)
+- Update uv to 0.7.4 [\#86](https://github.com/RegioHelden/django-scrubber/pull/86) (@regiohelden-dev)
+- Update uv to 0.7.3 [\#85](https://github.com/RegioHelden/django-scrubber/pull/85) (@regiohelden-dev)
+- Update uv to 0.7.0 [\#84](https://github.com/RegioHelden/django-scrubber/pull/84) (@regiohelden-dev)
+- Update github-reusable-workflows to 2.2.1 [\#83](https://github.com/RegioHelden/django-scrubber/pull/83) (@regiohelden-dev)
+- Updates from modulesync [\#82](https://github.com/RegioHelden/django-scrubber/pull/82) (@regiohelden-dev)
+- Update github-reusable-workflows to 2.2.0 and uv to 0.6.17 [\#81](https://github.com/RegioHelden/django-scrubber/pull/81) (@regiohelden-dev)
+- Update github-reusable-workflows to 2.1.1 [\#80](https://github.com/RegioHelden/django-scrubber/pull/80) (@regiohelden-dev)
+- Update ruff VSCode integration to 2025.22.0, remove classifiers for unsupported Python versions [\#79](https://github.com/RegioHelden/django-scrubber/pull/79) (@regiohelden-dev)
+- Remove dependabot integration, set Python version for GitHub actions [\#77](https://github.com/RegioHelden/django-scrubber/pull/77) (@regiohelden-dev)
+- Add supported python versions to sync config [\#76](https://github.com/RegioHelden/django-scrubber/pull/76) (@lociii)
+- Make dependabot set a proper label [\#75](https://github.com/RegioHelden/django-scrubber/pull/75) (@regiohelden-dev)
+- Bump regiohelden/github-reusable-workflows from 2.0.0 to 2.1.0 [\#74](https://github.com/RegioHelden/django-scrubber/pull/74) (@dependabot[bot])
+- Integrate with modulesync [\#73](https://github.com/RegioHelden/django-scrubber/pull/73) (@regiohelden-dev)
+- Set python min version for modulesync [\#72](https://github.com/RegioHelden/django-scrubber/pull/72) (@lociii)
+- Align test setup with other libraries, prepare for modulesync rollout [\#71](https://github.com/RegioHelden/django-scrubber/pull/71) (@lociii)
 
 ## [4.1.0] - 2025-03-04
 
