@@ -1,2 +1,2 @@
 -r requirements-ci.txt
-Django==5.2
+Django==5.2.2
