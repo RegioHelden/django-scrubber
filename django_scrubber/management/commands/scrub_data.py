@@ -133,7 +133,7 @@ def _call_callables(d):
     """
     Helper to realize lazy scrubbers, like Faker, or global field-type scrubbers
     """
-    return {k.name: ((callable(v) and v(k)) or v) for k, v in d.items()}
+    return {k.name: (v(k) if callable(v) else v) for k, v in d.items()}
 
 
 def _parse_scrubber_class_from_string(path: str):
