@@ -43,7 +43,8 @@ class TestScrubData(TestCase):
         self.user.refresh_from_db()
 
         self.assertIn(
-            'When "SCRUBBER_STRICT_MODE" is enabled, you have to define a scrubbing policy for every text-based field.',
+            'When "SCRUBBER_STRICT_MODE" is enabled, '
+            "you have to define a scrubbing policy for every text-based field.",
             output,
         )
         self.assertEqual(self.user.first_name, "test_first_name")
