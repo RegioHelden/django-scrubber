@@ -17,7 +17,7 @@ class TestScrubData(TestCase):
 
     def test_scrub_data(self):
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"first_name": scrubbers.Faker("first_name")}):
-            call_command("scrub_data", verbosity=3)
+            call_command("scrub_data", stdout=StringIO())
         self.user.refresh_from_db()
 
         self.assertNotEqual(self.user.first_name, "test_first_name")
@@ -26,7 +26,7 @@ class TestScrubData(TestCase):
         err = StringIO()
 
         with self.settings(DEBUG=False):
-            call_command("scrub_data", stderr=err)
+            call_command("scrub_data", stdout=StringIO(), stderr=err)
         output = err.getvalue()
         self.user.refresh_from_db()
 
@@ -38,7 +38,7 @@ class TestScrubData(TestCase):
         err = StringIO()
 
         with self.settings(DEBUG=False):
-            call_command("scrub_data", stderr=err)
+            call_command("scrub_data", stdout=StringIO(), stderr=err)
         output = err.getvalue()
         self.user.refresh_from_db()
 
@@ -47,7 +47,7 @@ class TestScrubData(TestCase):
 
     def test_hash_simple_global_scrubber(self):
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"first_name": scrubbers.Hash}):
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
         self.user.refresh_from_db()
 
         self.assertNotEqual(self.user.first_name, "test_first_name")
@@ -57,7 +57,7 @@ class TestScrubData(TestCase):
             first_name = scrubbers.Hash
 
         with self.settings(DEBUG=True), patch.object(User, "Scrubbers", Scrubbers, create=True):
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
         self.user.refresh_from_db()
 
         self.assertNotEqual(self.user.first_name, "test_first_name")
@@ -74,7 +74,7 @@ class TestScrubData(TestCase):
                 "Scrubber defined for User.this_does_not_exist_382784 but field does not exist",
             ),
         ):
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
 
     @override_settings(SCRUBBER_MAPPING={"auth.User": "example.scrubbers.UserScrubbers"})
     def test_get_model_scrubbers_mapper_from_settings_used(self):

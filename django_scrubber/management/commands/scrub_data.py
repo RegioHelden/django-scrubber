@@ -1,5 +1,4 @@
 import importlib
-import logging
 import warnings
 
 from django.apps import apps
@@ -14,8 +13,6 @@ from django_scrubber import settings_with_fallback
 from django_scrubber.models import FakeData
 from django_scrubber.scrubbers import Keep
 from django_scrubber.services.validator import ScrubberValidatorService
-
-logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -118,7 +115,7 @@ class Command(BaseCommand):
 
         realized_scrubbers = _filter_out_disabled(_call_callables(scrubbers))
 
-        logger.info("Scrubbing %s with %s", model_class._meta.label, realized_scrubbers)
+        self.stdout.write(f"Scrubbing {model_class._meta.label} with {realized_scrubbers}")
 
         try:
             model_class.objects.annotate(
