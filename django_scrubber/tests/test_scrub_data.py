@@ -33,16 +33,19 @@ class TestScrubData(TestCase):
         self.assertIn("This command should only be run with DEBUG=True, to avoid running on live systems", output)
         self.assertEqual(self.user.first_name, "test_first_name")
 
-    @override_settings(SCRUBBERS_STRICT_MODE=True)
+    @override_settings(SCRUBBER_STRICT_MODE=True)
     def test_scrub_data_strict_mode_enabled_scrubbing_blocked(self):
         err = StringIO()
 
-        with self.settings(DEBUG=False):
+        with self.settings(DEBUG=True):
             call_command("scrub_data", stdout=StringIO(), stderr=err)
         output = err.getvalue()
         self.user.refresh_from_db()
 
-        self.assertIn("This command should only be run with DEBUG=True, to avoid running on live systems", output)
+        self.assertIn(
+            'When "SCRUBBER_STRICT_MODE" is enabled, you have to define a scrubbing policy for every text-based field.',
+            output,
+        )
         self.assertEqual(self.user.first_name, "test_first_name")
 
     def test_hash_simple_global_scrubber(self):
