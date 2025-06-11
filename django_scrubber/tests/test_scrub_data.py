@@ -22,6 +22,16 @@ class TestScrubData(TestCase):
 
         self.assertNotEqual(self.user.first_name, "test_first_name")
 
+    def test_scrub_data_callable_scrubber(self):
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"first_name": scrubbers.Hash}):
+            call_command("scrub_data", stdout=StringIO())
+        self.user.refresh_from_db()
+
+        self.assertNotEqual(self.user.first_name, "test_first_name")
+
+        # make sure it's a md5 hash
+        self.assertRegex(self.user.first_name, "[a-f0-9]{32}")
+
     def test_scrub_data_debug_is_false(self):
         err = StringIO()
 
