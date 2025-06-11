@@ -164,7 +164,7 @@ class TestScrubbers(TestCase):
     @override_settings(DEBUG=True)
     def test_faker_scrubber_run_clear_faker_data_not_by_default(self):
         """
-        Ensures that the session table will be emptied by default
+        Ensure that scrubbing does not delete stored faker data unless explicitly requested.
         """
         # Create faker data object
         FakeData.objects.create(provider="company", content="Foo", provider_offset=1)
@@ -181,7 +181,7 @@ class TestScrubbers(TestCase):
     @override_settings(DEBUG=True)
     def test_faker_scrubber_run_clear_faker_data_works(self):
         """
-        Ensures that the session table will be emptied by default
+        Ensures that fake data is cleared when requested
         """
         # Create faker data object
         FakeData.objects.create(provider="company", content="Foo", provider_offset=1)
@@ -192,5 +192,5 @@ class TestScrubbers(TestCase):
         # Call command
         call_command("scrub_data", remove_fake_data=True, stdout=StringIO())
 
-        # Assertion that faker data still exists
+        # Assertion that the faker data was removed
         self.assertFalse(FakeData.objects.filter(provider="company", content="Foo").exists())
