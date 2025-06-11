@@ -1,4 +1,5 @@
 from datetime import timedelta
+from io import StringIO
 
 import django
 from django.contrib.sessions.models import Session
@@ -16,7 +17,7 @@ class TestScrubbers(TestCase):
     def test_empty_scrubber(self):
         data = DataFactory.create(first_name="Foo")
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"first_name": scrubbers.Empty}):
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
         data.refresh_from_db()
 
         self.assertEqual(data.first_name, "")
@@ -24,7 +25,7 @@ class TestScrubbers(TestCase):
     def test_null_scrubber(self):
         data = DataFactory.create(date_past=timezone.now().date())
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"date_past": scrubbers.Null}):
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
         data.refresh_from_db()
 
         self.assertEqual(data.date_past, None)
@@ -32,7 +33,7 @@ class TestScrubbers(TestCase):
     def test_hash_scrubber_max_length(self):
         data = DataFactory.create(first_name="Foo")
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"first_name": scrubbers.Hash}):
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
         data.refresh_from_db()
 
         self.assertNotEqual(data.first_name, "Foo")
@@ -45,7 +46,7 @@ class TestScrubbers(TestCase):
     def test_hash_scrubber_textfield(self):
         data = DataFactory.create(description="Foo")
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"description": scrubbers.Hash}):
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
         data.refresh_from_db()
 
         self.assertNotEqual(data.description, "Foo")
@@ -53,7 +54,7 @@ class TestScrubbers(TestCase):
     def test_lorem_scrubber(self):
         data = DataFactory.create(description="Foo")
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"description": scrubbers.Lorem}):
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
         data.refresh_from_db()
 
         self.assertNotEqual(data.description, "Foo")
@@ -62,7 +63,7 @@ class TestScrubbers(TestCase):
     def test_faker_scrubber_charfield(self):
         data = DataFactory.create(last_name="Foo")
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"last_name": scrubbers.Faker("last_name")}):
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
         data.refresh_from_db()
 
         self.assertNotEqual(data.last_name, "Foo")
@@ -74,7 +75,7 @@ class TestScrubbers(TestCase):
         """
         data = DataFactory.create(ean8="8")
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"ean8": scrubbers.Faker("ean", length=8)}):
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
         data.refresh_from_db()
 
         # The EAN Faker will by default emit ean13, so this would fail if the parameter was ignored
@@ -82,7 +83,7 @@ class TestScrubbers(TestCase):
 
         # Add a new scrubber for ean13
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"ean8": scrubbers.Faker("ean", length=13)}):
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
         data.refresh_from_db()
 
         # make sure it doesn't reuse the ean with length=8 scrubber
@@ -107,7 +108,7 @@ class TestScrubbers(TestCase):
                     ),
                 },
             ):
-                call_command("scrub_data")
+                call_command("scrub_data", stdout=StringIO())
             data.refresh_from_db()
 
             self.assertGreater(today, data.date_past)
@@ -119,8 +120,8 @@ class TestScrubbers(TestCase):
         """
         data = DataFactory.create(company="Foo")
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"company": scrubbers.Faker("company")}):
-            call_command("scrub_data")
-            call_command("scrub_data")
+            call_command("scrub_data", stdout=StringIO())
+            call_command("scrub_data", stdout=StringIO())
         data.refresh_from_db()
 
         self.assertNotEqual(data.company, "Foo")
@@ -138,7 +139,7 @@ class TestScrubbers(TestCase):
         self.assertTrue(Session.objects.all().exists())
 
         # Call command
-        call_command("scrub_data")
+        call_command("scrub_data", stdout=StringIO())
 
         # Assertion that session table is empty now
         self.assertFalse(Session.objects.all().exists())
@@ -155,7 +156,7 @@ class TestScrubbers(TestCase):
         self.assertTrue(Session.objects.all().exists())
 
         # Call command
-        call_command("scrub_data", keep_sessions=True)
+        call_command("scrub_data", keep_sessions=True, stdout=StringIO())
 
         # Assertion that session table is empty now
         self.assertTrue(Session.objects.all().exists())
@@ -172,7 +173,7 @@ class TestScrubbers(TestCase):
         self.assertTrue(FakeData.objects.filter(provider="company", content="Foo").exists())
 
         # Call command
-        call_command("scrub_data")
+        call_command("scrub_data", stdout=StringIO())
 
         # Assertion that faker data still exists
         self.assertTrue(FakeData.objects.filter(provider="company", content="Foo").exists())
@@ -189,7 +190,7 @@ class TestScrubbers(TestCase):
         self.assertTrue(FakeData.objects.filter(provider="company", content="Foo").exists())
 
         # Call command
-        call_command("scrub_data", remove_fake_data=True)
+        call_command("scrub_data", remove_fake_data=True, stdout=StringIO())
 
         # Assertion that faker data still exists
         self.assertFalse(FakeData.objects.filter(provider="company", content="Foo").exists())
