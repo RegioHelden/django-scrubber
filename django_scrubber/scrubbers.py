@@ -68,19 +68,6 @@ class Hash(FieldFunc):
         else:
             self.template = "MD5(%(expressions)s)"
 
-    def connection_setup(self, db_connection):
-        if db_connection.vendor == "sqlite":
-            # add MD5 support for sqlite; this calls back to python and will probably have a performance impact
-            import hashlib
-            import sqlite3
-
-            sqlite3.enable_callback_tracebacks(True)  # otherwise errors get ignored
-            db_connection.connection.create_function(
-                "MD5",
-                1,
-                lambda c: hashlib.md5(c.encode("utf8")).hexdigest(),  # noqa: S324
-            )
-
 
 class Lorem(FieldFunc):
     """
