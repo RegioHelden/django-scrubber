@@ -6,13 +6,56 @@ from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.core.exceptions import FieldDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
-from django.db.models import F
+from django.db.models import (
+    BigIntegerField,
+    F,
+    IntegerField,
+    Model,
+    PositiveBigIntegerField,
+    PositiveIntegerField,
+    PositiveSmallIntegerField,
+    SmallIntegerField,
+)
+from django.db.models.expressions import Func
 from django.db.utils import DataError, IntegrityError
 
 from django_scrubber import settings_with_fallback
 from django_scrubber.models import FakeData
 from django_scrubber.scrubbers import Keep
 from django_scrubber.services.validator import ScrubberValidatorService
+
+
+class StringToInt(Func):
+    """
+    database-specific implementations for reproducible conversion of a field value to an integer
+    """
+
+    def as_sqlite(self, compiler, connection, **extra_context):
+        return self.as_sql(
+            compiler,
+            connection,
+            template="ABS(CAST(SUBSTR(UPPER(MD5(CAST(%(expressions)s AS VARCHAR))), 1, 15) AS BIGINT))",
+            **extra_context,
+        )
+
+    def as_mysql(self, compiler, connection, **extra_context):
+        return self.as_sql(
+            compiler,
+            connection,
+            template="ABS(CONV(SUBSTRING(MD5(CONCAT('x', %(expressions)s)), 1, 16), 16, 10))",
+            **extra_context,
+        )
+
+    def as_postgresql(self, compiler, connection, **extra_context):
+        return self.as_sql(
+            compiler,
+            connection,
+            template="ABS(CAST(CAST(('x' || MD5(CAST(%(expressions)s AS VARCHAR))) AS BIT(64)) AS BIGINT))",
+            **extra_context,
+        )
+
+    def as_oracle(self, compiler, connection, **extra_context):
+        raise Exception("No custom implementation for Oracle (yet)")
 
 
 class Command(BaseCommand):
@@ -118,15 +161,36 @@ class Command(BaseCommand):
         self.stdout.write(f"Scrubbing {model_class._meta.label} with {realized_scrubbers}")
 
         try:
-            model_class.objects.annotate(
-                mod_pk=F("pk") % settings_with_fallback("SCRUBBER_ENTRIES_PER_PROVIDER"),
-            ).update(**realized_scrubbers)
+            if is_primary_key_integer(model_class):
+                model_class.objects.annotate(
+                    mod_pk=F("pk") % settings_with_fallback("SCRUBBER_ENTRIES_PER_PROVIDER"),
+                ).update(**realized_scrubbers)
+            else:
+                model_class.objects.annotate(
+                    mod_pk=StringToInt(F("pk")) % settings_with_fallback("SCRUBBER_ENTRIES_PER_PROVIDER"),
+                ).update(**realized_scrubbers)
         except IntegrityError as e:
             raise CommandError(
                 f"Integrity error while scrubbing {model_class} ({e}); maybe increase SCRUBBER_ENTRIES_PER_PROVIDER?",
             ) from e
         except DataError as e:
             raise CommandError(f"DataError while scrubbing {model_class} ({e})") from e
+
+
+def is_primary_key_integer(model_class: Model):
+    # checks if the primary key of a model is an integer or integer-derived (e.g. AutoField) field
+    for field in model_class._meta.concrete_fields:
+        if field.primary_key is True:
+            return isinstance(
+                field,
+                SmallIntegerField
+                | IntegerField
+                | BigIntegerField
+                | PositiveSmallIntegerField
+                | PositiveIntegerField
+                | PositiveBigIntegerField,
+            )
+    raise Exception("no primary key defined in model")
 
 
 def _call_callables(d):
