@@ -183,12 +183,14 @@ def is_primary_key_integer(model_class: Model):
         if field.primary_key is True:
             return isinstance(
                 field,
-                SmallIntegerField
-                | IntegerField
-                | BigIntegerField
-                | PositiveSmallIntegerField
-                | PositiveIntegerField
-                | PositiveBigIntegerField,
+                (
+                    SmallIntegerField,
+                    IntegerField,
+                    BigIntegerField,
+                    PositiveSmallIntegerField,
+                    PositiveIntegerField,
+                    PositiveBigIntegerField,
+                ),
             )
     raise Exception("no primary key defined in model")
 
