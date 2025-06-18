@@ -130,11 +130,11 @@ class Command(BaseCommand):
         return None
 
     def _scrub_model(self, model_class, scrubber_apps_list, global_scrubbers):
-        if model_class._meta.proxy:
-            return
-        if settings_with_fallback("SCRUBBER_SKIP_UNMANAGED") and not model_class._meta.managed:
-            return
-        if scrubber_apps_list and model_class._meta.app_config.name not in scrubber_apps_list:
+        if (
+            model_class._meta.proxy
+            or (settings_with_fallback("SCRUBBER_SKIP_UNMANAGED") and not model_class._meta.managed)
+            or (scrubber_apps_list and model_class._meta.app_config.name not in scrubber_apps_list)
+        ):
             return
 
         scrubbers = {}
@@ -161,7 +161,7 @@ class Command(BaseCommand):
         self.stdout.write(f"Scrubbing {model_class._meta.label} with {realized_scrubbers}")
 
         try:
-            if is_primary_key_integer(model_class):
+            if is_primary_key_integer(model_class=model_class):
                 model_class.objects.annotate(
                     mod_pk=F("pk") % settings_with_fallback("SCRUBBER_ENTRIES_PER_PROVIDER"),
                 ).update(**realized_scrubbers)
