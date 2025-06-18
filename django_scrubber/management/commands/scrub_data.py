@@ -6,16 +6,7 @@ from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.core.exceptions import FieldDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
-from django.db.models import (
-    BigIntegerField,
-    F,
-    IntegerField,
-    Model,
-    PositiveBigIntegerField,
-    PositiveIntegerField,
-    PositiveSmallIntegerField,
-    SmallIntegerField,
-)
+from django.db.models import F, IntegerField, Model
 from django.db.models.expressions import Func
 from django.db.utils import DataError, IntegrityError
 
@@ -181,17 +172,7 @@ def is_primary_key_integer(model_class: Model):
     # checks if the primary key of a model is an integer or integer-derived (e.g. AutoField) field
     for field in model_class._meta.concrete_fields:
         if field.primary_key is True:
-            return isinstance(
-                field,
-                (
-                    SmallIntegerField,
-                    IntegerField,
-                    BigIntegerField,
-                    PositiveSmallIntegerField,
-                    PositiveIntegerField,
-                    PositiveBigIntegerField,
-                ),
-            )
+            return isinstance(field, IntegerField)
     raise Exception("no primary key defined in model")
 
 
