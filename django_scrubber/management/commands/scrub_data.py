@@ -34,7 +34,7 @@ class StringToInt(Func):
         return self.as_sql(
             compiler,
             connection,
-            template="ABS(CAST(SUBSTR(UPPER(MD5(CAST(%(expressions)s AS VARCHAR))), 1, 15) AS BIGINT))",
+            template="ABS(CAST(SUBSTR(UPPER(MD5(CAST(%(expressions)s AS VARCHAR))), 1, 16) AS BIGINT))",
             **extra_context,
         )
 
