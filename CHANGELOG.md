@@ -1,24 +1,18 @@
 # Changelog
 
-## [v5.1.0](https://github.com/RegioHelden/django-scrubber/tree/v5.1.0) (2025-06-11)
+## [v5.2.0](https://github.com/RegioHelden/django-scrubber/tree/v5.2.0) (2025-06-23)
 
-[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v5.0.0...v5.1.0)
+[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v5.1.0...v5.2.0)
 
 **Implemented enhancements:**
 
-- Remove ambiguity around callables and a logical operator [\#101](https://github.com/RegioHelden/django-scrubber/pull/101) (@lociii)
--  Commands should use stdout instead of logging [\#98](https://github.com/RegioHelden/django-scrubber/pull/98) (@lociii)
-- Bump django in test dependencies from 5.2 to 5.2.2 [\#95](https://github.com/RegioHelden/django-scrubber/pull/95) (@lociii)
-
-**Fixed bugs:**
-
-- Fix strict mode test [\#100](https://github.com/RegioHelden/django-scrubber/pull/100) (@lociii)
+- Add support for non-integer primary keys [\#106](https://github.com/RegioHelden/django-scrubber/pull/106) (@lociii)
+- Drop SQLite MD5 workaround [\#105](https://github.com/RegioHelden/django-scrubber/pull/105) (@lociii)
 
 **Merged pull requests:**
 
-- Fix documentation comments on some tests [\#99](https://github.com/RegioHelden/django-scrubber/pull/99) (@lociii)
-- Update uv to 0.7.12 [\#96](https://github.com/RegioHelden/django-scrubber/pull/96) (@regiohelden-dev)
-- Update uv to 0.7.11 [\#94](https://github.com/RegioHelden/django-scrubber/pull/94) (@regiohelden-dev)
+- Updates ruff VSCode integration to 2025.24.0 [\#107](https://github.com/RegioHelden/django-scrubber/pull/107) (@regiohelden-dev)
+- Update uv to 0.7.13 [\#103](https://github.com/RegioHelden/django-scrubber/pull/103) (@regiohelden-dev)
 
 ## [4.1.0] - 2025-03-04
 
