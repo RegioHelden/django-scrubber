@@ -20,4 +20,4 @@ jobs:
     secrets:
       personal-access-token: "${{ secrets.COMMIT_KEY }}"
     with:
-      changelog-since-tag: "v4.2.0"
+      changelog-since-tag: "v4.1.0"
