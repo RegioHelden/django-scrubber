@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: write
       id-token: write
-    uses: RegioHelden/github-reusable-workflows/.github/workflows/build-and-publish.yaml@v2.2.1
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/build-and-publish.yaml@v2.2.3
     with:
       python-version: "3.12"
 
