@@ -1,6 +1,6 @@
 # Changelog
 
-## [v5.2.0](https://github.com/RegioHelden/django-scrubber/tree/v5.2.0) (2025-06-24)
+## [v5.2.0](https://github.com/RegioHelden/django-scrubber/tree/v5.2.0) (2025-06-25)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v5.1.0...v5.2.0)
 
