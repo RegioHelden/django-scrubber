@@ -5,7 +5,7 @@ from typing import ClassVar
 
 import faker
 from django.db import connections, router
-from django.db.models import Field, Func, OuterRef, Subquery
+from django.db.models import Case, ExpressionWrapper, F, Field, Func, OuterRef, Q, Subquery, When
 from django.db.models.functions import Cast
 from django.db.models.functions import Concat as DjangoConcat
 from django.db.utils import IntegrityError
@@ -191,4 +191,30 @@ class Faker:
                 ).values("content")[:1],
             ),
             field,
+        )
+
+
+class IfNotEmpty:
+    """
+    wrapper around other scrubber expressions that will only be executed if the field already contained a value
+    """
+
+    def __init__(self, expression, **kwargs):
+        self.expression = expression
+        self.kwargs = kwargs
+
+    def __call__(self, field):
+        # fall back to field class for output field
+        if "output_field" not in self.kwargs:
+            self.kwargs["output_field"] = field.__class__()
+
+        return Case(
+            When(
+                ~Q(**{field.name: ""}),
+                then=ExpressionWrapper(
+                    expression=self.expression(field) if callable(self.expression) else self.expression,
+                    **self.kwargs,
+                ),
+            ),
+            default=F(field.name),
         )

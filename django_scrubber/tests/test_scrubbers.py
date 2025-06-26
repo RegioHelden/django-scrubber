@@ -194,3 +194,26 @@ class TestScrubbers(TestCase):
 
         # Assertion that the faker data was removed
         self.assertFalse(FakeData.objects.filter(provider="company", content="Foo").exists())
+
+    def test_ifnotempty_no_data(self):
+        data = DataFactory.create(description="")
+        with self.settings(
+            DEBUG=True,
+            SCRUBBER_GLOBAL_SCRUBBERS={"description": scrubbers.IfNotEmpty(scrubbers.Lorem)},
+        ):
+            call_command("scrub_data", stdout=StringIO())
+        data.refresh_from_db()
+
+        self.assertEqual(data.description, "")
+
+    def test_ifnotempty_has_data(self):
+        data = DataFactory.create(description="bla")
+        with self.settings(
+            DEBUG=True,
+            SCRUBBER_GLOBAL_SCRUBBERS={"description": scrubbers.IfNotEmpty(scrubbers.Lorem)},
+        ):
+            call_command("scrub_data", stdout=StringIO())
+        data.refresh_from_db()
+
+        self.assertNotEqual(data.description, "bla")
+        self.assertEqual(data.description[:11], "Lorem ipsum")
