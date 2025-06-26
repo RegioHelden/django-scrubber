@@ -1,5 +1,18 @@
 # Changelog
 
+## [v5.3.0](https://github.com/RegioHelden/django-scrubber/tree/v5.3.0) (2025-06-26)
+
+[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v5.2.0...v5.3.0)
+
+**Implemented enhancements:**
+
+- Add conditional scrubber that only executes on non-empty fields [\#121](https://github.com/RegioHelden/django-scrubber/pull/121) (@lociii)
+
+**Merged pull requests:**
+
+- Update uv to 0.7.15 [\#122](https://github.com/RegioHelden/django-scrubber/pull/122) (@regiohelden-dev)
+- Updates GitHub reusable workflows to 2.2.4 [\#120](https://github.com/RegioHelden/django-scrubber/pull/120) (@regiohelden-dev)
+
 ## [v5.2.0](https://github.com/RegioHelden/django-scrubber/tree/v5.2.0) (2025-06-25)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v5.1.0...v5.2.0)
