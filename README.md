@@ -139,6 +139,18 @@ class Scrubbers:
     somefield = scrubbers.Lorem
 ```
 
+### IfNotEmpty
+
+Wrapper around another single scrubber that only cleans the field if it already contains data before cleaning.
+
+```python
+class Scrubbers:
+    somefield = scrubbers.IfNotEmpty(scrubbers.Lorem)
+
+class Scrubbers:
+    somefield = scrubbers.IfNotEmpty(scrubbers.Concat(scrubbers.Faker('city'), models.Value('@'), scrubbers.Faker('domain_name'), output_field=models.TextField()))
+```
+
 ### Concat
 
 Wrapper around `django.db.functions.Concat` to enable simple concatenation of scrubbers. This is useful if you want to
