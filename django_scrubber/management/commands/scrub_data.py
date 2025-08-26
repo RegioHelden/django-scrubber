@@ -1,5 +1,6 @@
 import importlib
 import warnings
+from inspect import getmembers
 
 from django.apps import apps
 from django.conf import settings
@@ -230,7 +231,7 @@ def _get_fields(d):
     Helper to get "normal" (i.e.: non-magic and non-dunder) instance attributes.
     Returns an iterator of (field_name, field) tuples.
     """
-    return ((k, v) for k, v in vars(d).items() if not k.startswith("_"))
+    return ((k, v) for k, v in getmembers(d) if not k.startswith("_"))
 
 
 def _filter_out_disabled(d):
