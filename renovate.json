@@ -1,0 +1,72 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "enabled": true,
+    "timezone": "Europe/Berlin",
+    "extends": [
+        "config:recommended",
+        ":semanticPrefixFixDepsChoreOthers",
+        ":prConcurrentLimitNone",
+        ":prHourlyLimitNone"
+    ],
+    "enabledManagers": [
+        "custom.regex",
+        "github-actions"
+    ],
+    "dockerfile": {
+        "enabled": false
+    },
+    "docker-compose": {
+        "enabled": false
+    },
+    "github-actions": {
+        "managerFilePatterns": [
+            "/^\\.github/workflows/workflow\\.yaml$/"
+        ]
+    },
+    "configMigration": false,
+    "rangeStrategy": "pin",
+    "vulnerabilityAlerts": {
+        "labels": [
+            "security"
+        ]
+    },
+    "branchConcurrentLimit": 0,
+    "rebaseWhen": "conflicted",
+    "updateNotScheduled": true,
+    "separateMajorMinor": false,
+    "separateMultipleMajor": false,
+    "separateMinorPatch": true,
+    "autoApprove": false,
+    "automerge": false,
+    "labels": [
+        "infrastructure"
+    ],
+    "draftPR": false,
+    "prCreation": "immediate",
+    "gitAuthor": "Renovate bot <server@regiohelden.de>",
+    "ignoreDeps": [],
+    "customManagers": [
+        {
+            "description": "regex match for workflow.yaml with datasource definition",
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/^\\.github/workflows/workflow\\.yaml$/"
+            ],
+            "matchStrings": [
+                "# renovate: datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\s+\\S+:\\s+['\"](?<currentValue>[\\w+\\.]*)['\"]"
+            ]
+        }
+    ],
+    "packageRules": [
+        {
+            "matchUpdateTypes": [
+                "major",
+                "minor",
+                "patch"
+            ],
+            "schedule": [
+                "before 5am"
+            ]
+        }
+    ]
+}
