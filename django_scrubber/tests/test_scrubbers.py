@@ -23,7 +23,7 @@ class TestScrubbers(TestCase):
         self.assertEqual(data.first_name, "")
 
     def test_null_scrubber(self):
-        data = DataFactory.create(date_past=timezone.now().date())
+        data = DataFactory.create(date_past=timezone.localtime().date())
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"date_past": scrubbers.Null}):
             call_command("scrub_data", stdout=StringIO())
         data.refresh_from_db()
@@ -95,7 +95,7 @@ class TestScrubbers(TestCase):
         There is a bug with django < 2.1 and sqlite, that's why we don't run the test there.
         """
         if django.VERSION >= (2, 1) or connection.vendor != "sqlite":
-            today = timezone.now().date()
+            today = timezone.localtime().date()
 
             data = DataFactory.create(date_past=today)
             with self.settings(
@@ -133,7 +133,7 @@ class TestScrubbers(TestCase):
         Ensures that the session table will be emptied by default
         """
         # Create session object
-        Session.objects.create(session_key="foo", session_data="Lorem ipsum", expire_date=timezone.now())
+        Session.objects.create(session_key="foo", session_data="Lorem ipsum", expire_date=timezone.localtime())
 
         # Sanity check
         self.assertTrue(Session.objects.all().exists())
@@ -150,7 +150,7 @@ class TestScrubbers(TestCase):
         Ensures that the session table will be emptied by default
         """
         # Create session object
-        Session.objects.create(session_key="foo", session_data="Lorem ipsum", expire_date=timezone.now())
+        Session.objects.create(session_key="foo", session_data="Lorem ipsum", expire_date=timezone.localtime())
 
         # Sanity check
         self.assertTrue(Session.objects.all().exists())

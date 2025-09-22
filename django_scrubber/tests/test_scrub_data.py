@@ -28,7 +28,7 @@ class TestScrubData(TestCase):
         self.session = Session.objects.create(
             session_key=uuid4(),
             session_data=self.DEFAULT_SESSION_DATA,
-            expire_date=timezone.now() + timedelta(days=1),
+            expire_date=timezone.localtime() + timedelta(days=1),
         )
 
     def test_scrub_data(self):
