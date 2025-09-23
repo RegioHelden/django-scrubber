@@ -21,7 +21,7 @@
     "github-actions": {
         "managerFilePatterns": [
             ".github/workflows/workflow.yaml"
-        ]
+        ],
         "ignorePaths": [
             ".github/workflows/!(workflow).yaml"
         ]
