@@ -19,8 +19,12 @@
         "enabled": false
     },
     "github-actions": {
+        # only match the custom workflow file, ignore all others that are managed by modulsync
         "managerFilePatterns": [
-            "/^\\.github/workflows/workflow\\.yaml$/"
+            ".github/workflows/workflow.yaml"
+        ]
+        "ignorePaths": [
+            ".github/workflows/!(workflow).yaml"
         ]
     },
     "configMigration": false,
