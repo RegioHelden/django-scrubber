@@ -158,7 +158,7 @@
                 "aaron-bond.better-comments",
                 // Linting with ruff
                 // https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
-                "charliermarsh.ruff@2025.26.0",
+                "charliermarsh.ruff@2025.28.0",
                 // Linting with mypy
                 // https://marketplace.visualstudio.com/items?itemName=ms-python.mypy-type-checker
                 "ms-python.mypy-type-checker",
