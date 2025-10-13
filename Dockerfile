@@ -28,7 +28,7 @@ COPY --chown=app requirements* /app/
 
 ENV PATH=/home/app/.local/bin:/home/app/venv/bin:${PATH} DJANGO_SETTINGS_MODULE=example.settings
 
-RUN pipx install --force uv==0.8.22 && uv venv ~/venv && \
+RUN pipx install --force uv==0.9.2 && uv venv ~/venv && \
     uv pip install --no-cache --upgrade --requirements /app/requirements-test.txt && \
     uv cache clean
 
