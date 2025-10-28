@@ -17,7 +17,7 @@ jobs:
     name: Create tag
     permissions:
       contents: write
-    uses: RegioHelden/github-reusable-workflows/.github/workflows/tag-release.yaml@v2.5.0
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/tag-release.yaml@v2.6.0
     with:
       python-version: "3.12"
     secrets:
