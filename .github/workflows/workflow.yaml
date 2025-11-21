@@ -37,11 +37,11 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
         django:
           - "4.2"
           - "5.0"
@@ -54,14 +54,14 @@ jobs:
         exclude:
           - django: "4.2"
             python-version: "3.13"
-          - django: "5.0"
-            python-version: "3.9"
+          - django: "4.2"
+            python-version: "3.14"
           - django: "5.0"
             python-version: "3.13"
+          - django: "5.0"
+            python-version: "3.14"
           - django: "5.1"
-            python-version: "3.9"
-          - django: "5.2"
-            python-version: "3.9"
+            python-version: "3.14"
 
     services:
       # postgres service
@@ -94,7 +94,7 @@ jobs:
           --health-retries=5
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
 
