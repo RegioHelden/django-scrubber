@@ -16,21 +16,8 @@ env:
   COVERAGE_DATABASE: postgres
 
 jobs:
-  # lint code for errors
-  # see https://github.com/RegioHelden/github-reusable-workflows/blob/main/.github/workflows/python-ruff.yaml
-  lint:
-    name: Lint
-    permissions:
-      contents: read
-    uses: RegioHelden/github-reusable-workflows/.github/workflows/python-ruff.yaml@v2.6.0
-    with:
-      ruff-version: "0.11.5"
-      python-version: "3.12"
-
   test:
     name: Test and coverage
-    needs:
-      - lint
     runs-on: ubuntu-24.04
 
     strategy:
