@@ -110,7 +110,7 @@ class Faker:
         self.provider_key = f"{self.provider} - {args_hash}"
 
     def _initialize_data(self):
-        from .models import FakeData
+        from .models import FakeData  # noqa: PLC0415
 
         # get locale from config and fall back to django's default one
         locale = settings_with_fallback("SCRUBBER_FAKER_LOCALE")
@@ -181,7 +181,7 @@ class Faker:
             self._initialize_data()
 
         # import it here to enable global scrubbers in settings.py
-        from .models import FakeData
+        from .models import FakeData  # noqa: PLC0415
 
         return Cast(
             Subquery(

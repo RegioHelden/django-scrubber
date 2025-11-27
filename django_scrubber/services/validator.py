@@ -20,7 +20,7 @@ class ScrubberValidatorService:
         raise ValueError("Invalid pattern type")
 
     def process(self) -> dict:
-        from django_scrubber.management.commands.scrub_data import _get_model_scrubbers
+        from django_scrubber.management.commands.scrub_data import _get_model_scrubbers  # noqa: PLC0415
 
         scrubber_required_field_types = settings_with_fallback("SCRUBBER_REQUIRED_FIELD_TYPES")
         model_whitelist = settings_with_fallback("SCRUBBER_REQUIRED_FIELD_MODEL_WHITELIST")

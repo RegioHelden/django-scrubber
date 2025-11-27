@@ -1,0 +1,21 @@
+name: Lint
+
+on:
+  # code pushed to pull request branch
+  push:
+    branches-ignore:
+      - main
+  # when draft state is removed (needed as automatically created PRs are not triggering this action)
+  pull_request:
+    types: [ready_for_review]
+
+jobs:
+  # lint code for errors
+  # see https://github.com/RegioHelden/github-reusable-workflows/blob/main/.github/workflows/python-ruff.yaml
+  lint:
+    name: Lint
+    permissions:
+      contents: read
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/python-ruff.yaml@v2.7.0
+    with:
+      ruff-version: "0.14.6"

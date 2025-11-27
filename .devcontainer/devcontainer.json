@@ -21,7 +21,10 @@
     // features to be installed in the dev container
     "features": {
         "ghcr.io/devcontainers/features/common-utils:2": {},
-        "ghcr.io/devcontainers/features/git:1": {}
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/jsburckhardt/devcontainer-features/ruff:1": {
+            "version": "v0.14.6"
+        }
     },
     // configure vscode
     "customizations": {
@@ -66,6 +69,8 @@
                         "includeAllSymbols": true
                     }
                 ],
+                // use ruff from environment to keep control of version
+                "ruff.importStrategy": "fromEnvironment",
                 // don't activate the virtual environment every time as we're using the env binary
                 "python.terminal.activateEnvironment": false,
                 "python.terminal.activateEnvInCurrentTerminal": true,
@@ -158,7 +163,7 @@
                 "aaron-bond.better-comments",
                 // Linting with ruff
                 // https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
-                "charliermarsh.ruff@2025.28.0",
+                "charliermarsh.ruff@2025.30.0",
                 // Linting with mypy
                 // https://marketplace.visualstudio.com/items?itemName=ms-python.mypy-type-checker
                 "ms-python.mypy-type-checker",
