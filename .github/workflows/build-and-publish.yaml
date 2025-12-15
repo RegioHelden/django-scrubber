@@ -42,7 +42,7 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Download the distribution packages
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: python-package-distributions
           path: dist/
