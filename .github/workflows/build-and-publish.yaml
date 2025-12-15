@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: write
       id-token: write
-    uses: RegioHelden/github-reusable-workflows/.github/workflows/build-and-publish.yaml@v2.7.0
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/build-and-publish.yaml@v2.8.0
     with:
       python-version: "3.12"
 
@@ -42,7 +42,7 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Download the distribution packages
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: python-package-distributions
           path: dist/
