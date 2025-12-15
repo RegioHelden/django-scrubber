@@ -16,6 +16,6 @@ jobs:
     name: Lint
     permissions:
       contents: read
-    uses: RegioHelden/github-reusable-workflows/.github/workflows/python-ruff.yaml@v2.7.0
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/python-ruff.yaml@v2.8.0
     with:
       ruff-version: "0.14.9"
