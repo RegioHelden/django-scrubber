@@ -23,7 +23,7 @@
         "ghcr.io/devcontainers/features/common-utils:2": {},
         "ghcr.io/devcontainers/features/git:1": {},
         "ghcr.io/jsburckhardt/devcontainer-features/ruff:1": {
-            "version": "v0.14.9"
+            "version": "v0.14.10"
         }
     },
     // configure vscode
