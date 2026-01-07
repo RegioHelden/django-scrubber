@@ -42,6 +42,10 @@ jobs:
             python-version: "3.13"
           - django: "4.2"
             python-version: "3.14"
+          - django: "6.0"
+            python-version: "3.10"
+          - django: "6.0"
+            python-version: "3.11"
 
     services:
       # postgres service
