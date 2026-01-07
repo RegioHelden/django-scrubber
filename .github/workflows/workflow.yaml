@@ -12,7 +12,7 @@ on:
 env:
   GITHUB_WORKFLOW: true
   COVERAGE_PYTHON_VERSION: 3.12
-  COVERAGE_DJANGO_VERSION: 5.2
+  COVERAGE_DJANGO_VERSION: 6.0
   COVERAGE_DATABASE: postgres
 
 jobs:
@@ -31,9 +31,8 @@ jobs:
           - "3.14"
         django:
           - "4.2"
-          - "5.0"
-          - "5.1"
           - "5.2"
+          - "6.0"
         database:
           - sqlite
           - mysql
@@ -42,12 +41,6 @@ jobs:
           - django: "4.2"
             python-version: "3.13"
           - django: "4.2"
-            python-version: "3.14"
-          - django: "5.0"
-            python-version: "3.13"
-          - django: "5.0"
-            python-version: "3.14"
-          - django: "5.1"
             python-version: "3.14"
 
     services:
@@ -100,10 +93,10 @@ jobs:
         run: uv pip install --system "Django~=${{ matrix.django }}"
       - name: Install MySQL libs
         if: matrix.database == 'mysql'
-        run: uv pip install --system mysqlclient>=2.2.7 django-mysql>=4.16.0
+        run: uv pip install --system mysqlclient>=2.2.7 django-mysql>=4.19.0
       - name: Install postgres libs
         if: matrix.database == 'postgres'
-        run: uv pip install --system psycopg>=3.2.6
+        run: uv pip install --system psycopg>=3.3.2
 
       - name: Install package
         run: uv pip install --system -e .

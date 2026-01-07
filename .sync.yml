@@ -1,11 +1,11 @@
 ---
 :global:
-  python_min_version: "3.9"
-  python_supported_versions: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+  python_min_version: "3.10"
+  python_supported_versions: ["3.10", "3.11", "3.12", "3.13", "3.14"]
   module_rootname: "django_scrubber"
   module_description: "Data anonymizer for Django"
   module_keywords:
     ["django", "data protection", "scrubber", "scrub", "anonymize", "gdpr"]
-  dependencies: ["Faker>=20.0.0", "Django>=4.2,<6.0"]
+  dependencies: ["Faker>=20.0.0", "Django>=4.2,<6.1"]
   max_line_length: 119
   changelog_since_tag: "v4.1.0"
