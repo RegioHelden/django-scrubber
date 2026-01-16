@@ -20,10 +20,13 @@
     "remoteUser": "app",
     // features to be installed in the dev container
     "features": {
-        "ghcr.io/devcontainers/features/common-utils:2": {},
-        "ghcr.io/devcontainers/features/git:1": {},
-        "ghcr.io/jsburckhardt/devcontainer-features/ruff:1": {
-            "version": "v0.14.13"
+        "ghcr.io/devcontainers/features/common-utils:2.5.5": {},
+        "ghcr.io/devcontainers/features/git:1.3.4": {},
+        "ghcr.io/devcontainers-extra/features/ruff:2.0.0": {
+            "version": "0.14.13"
+        },
+        "ghcr.io/devcontainers-extra/features/ty:1.0.0": {
+            "version": "0.0.12"
         }
     },
     // configure vscode
@@ -69,13 +72,16 @@
                         "includeAllSymbols": true
                     }
                 ],
-                // use ruff from environment to keep control of version
+                // make ruff and ty extensions use the system binaries instead of the bundled ones.
+                // those are managed by the vscode features defined above.
                 "ruff.importStrategy": "fromEnvironment",
+                "ty.importStrategy": "fromEnvironment",
                 // don't activate the virtual environment every time as we're using the env binary
                 "python.terminal.activateEnvironment": false,
                 "python.terminal.activateEnvInCurrentTerminal": true,
-                // used for autocomplete etc
-                "python.languageServer": "Pylance",
+                // ty extension is used as the language server
+                // instead of pylance from the ms-python extension
+                "python.languageServer": "None",
                 // editor settings
                 "editor.formatOnPaste": true,
                 "editor.formatOnSave": true,
@@ -146,9 +152,9 @@
                 // Python extension for Visual Studio Code
                 // https://marketplace.visualstudio.com/items?itemName=ms-python.python
                 "ms-python.python",
-                // Pylance - A performant, feature-rich language server for Python in VS Code
-                // https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance
-                "ms-python.vscode-pylance",
+                // ty - A fast Python language server and linter written in Rust
+                // https://marketplace.visualstudio.com/items?itemName=astral-sh.ty
+                "astral-sh.ty@2026.2.0",
                 // Python docstring generator
                 // https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring
                 "njpwerner.autodocstring",
