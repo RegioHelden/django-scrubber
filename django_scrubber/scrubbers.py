@@ -157,10 +157,22 @@ class Faker:
             FakeData(
                 provider=self.provider_key,
                 provider_offset=i,
-                content=str(faker_instance.format(self.provider, *self.provider_args, **self.provider_kwargs))[:255],
+                content=str(faker_instance.format(self.provider, *self.provider_args, **self.provider_kwargs)),
             )
             for i in range(settings_with_fallback("SCRUBBER_ENTRIES_PER_PROVIDER"))
         ]
+
+        # check if fake data is fitting our data structure
+        # warn and truncate if not
+        max_length: int = FakeData._meta.get_field("content").max_length
+        if any(len(item.content) > max_length for item in fakedata):
+            logger.warning(
+                "Fake data content exceeds max length of %s characters. "
+                "django-scrubber will automatically truncate it. "
+                "This might however lead to invalid data, e.g. cut off email addresses",
+                max_length,
+            )
+            [setattr(x, "content", x.content[:max_length]) for x in fakedata]
 
         try:
             FakeData.objects.bulk_create(fakedata)
