@@ -2,7 +2,7 @@
 # Managed by modulesync - DO NOT EDIT
 # -------------------------------------------------
 
-FROM python:3.12-slim-bookworm
+FROM python:3.12-bookworm
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=x LC_ALL=C.UTF-8 UV_COMPILE_BYTECODE=0
