@@ -1,5 +1,21 @@
 # Changelog
 
+## [v6.0.1](https://github.com/RegioHelden/django-scrubber/tree/v6.0.1) (2026-01-20)
+
+[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.0...v6.0.1)
+
+**Implemented enhancements:**
+
+- Update ty VSCode extension to 2026.4.0 [\#186](https://github.com/RegioHelden/django-scrubber/pull/186) (@regiohelden-dev)
+- Switch to non-slim Debian image to make VSCode features work [\#185](https://github.com/RegioHelden/django-scrubber/pull/185) (@regiohelden-dev)
+- Use ty instead of pylance as Python language server in VSCode [\#182](https://github.com/RegioHelden/django-scrubber/pull/182) (@regiohelden-dev)
+- Update ruff to 0.14.13 and uv to 0.9.26 [\#181](https://github.com/RegioHelden/django-scrubber/pull/181) (@regiohelden-dev)
+- Update ruff to 0.14.11 and ruff VSCode to 2026.34.0 [\#180](https://github.com/RegioHelden/django-scrubber/pull/180) (@regiohelden-dev)
+
+**Fixed bugs:**
+
+- Truncate fake data exceeding FakeData.content max length [\#184](https://github.com/RegioHelden/django-scrubber/pull/184) (@lociii)
+
 ## [v6.0.0](https://github.com/RegioHelden/django-scrubber/tree/v6.0.0) (2026-01-07)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v5.3.0...v6.0.0)
