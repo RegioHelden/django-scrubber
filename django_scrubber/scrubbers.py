@@ -139,7 +139,7 @@ class Faker:
             faker_instance.add_provider(provider)
 
         provider_args_str = ", ".join(str(i) for i in self.provider_args)
-        provider_kwargs_str = ", ".join(str(i) for i in self.provider_kwargs)
+        provider_kwargs_str = ", ".join(f"{k}={v}" for k, v in self.provider_kwargs.items())
         logger.info(
             "Initializing fake scrub data for provider %s(%s, %s)",
             self.provider,
@@ -148,19 +148,31 @@ class Faker:
         )
         # TODO: maybe be a bit smarter and only regenerate if needed?
         FakeData.objects.filter(provider=self.provider_key).delete()
-        fakedata = []
 
         # if we don't reset the seed for each provider, registering a new one might change all
         # data for subsequent providers
         faker.Generator.seed(settings_with_fallback("SCRUBBER_RANDOM_SEED"))
-        for i in range(settings_with_fallback("SCRUBBER_ENTRIES_PER_PROVIDER")):
-            fakedata.append(
-                FakeData(
-                    provider=self.provider_key,
-                    provider_offset=i,
-                    content=faker_instance.format(self.provider, *self.provider_args, **self.provider_kwargs),
-                ),
+
+        fakedata: list[FakeData] = [
+            FakeData(
+                provider=self.provider_key,
+                provider_offset=i,
+                content=str(faker_instance.format(self.provider, *self.provider_args, **self.provider_kwargs)),
             )
+            for i in range(settings_with_fallback("SCRUBBER_ENTRIES_PER_PROVIDER"))
+        ]
+
+        # check if fake data is fitting our data structure
+        # warn and truncate if not
+        max_length: int = FakeData._meta.get_field("content").max_length
+        if any(len(item.content) > max_length for item in fakedata):
+            logger.warning(
+                "Fake data content exceeds max length of %s characters. "
+                "django-scrubber will automatically truncate it. "
+                "This might however lead to invalid data, e.g. cut off email addresses",
+                max_length,
+            )
+            [setattr(x, "content", x.content[:max_length]) for x in fakedata]
 
         try:
             FakeData.objects.bulk_create(fakedata)

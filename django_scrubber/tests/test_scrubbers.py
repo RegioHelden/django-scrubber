@@ -1,5 +1,6 @@
 from datetime import timedelta
 from io import StringIO
+from unittest import mock
 
 import django
 from django.contrib.sessions.models import Session
@@ -126,6 +127,30 @@ class TestScrubbers(TestCase):
 
         self.assertNotEqual(data.company, "Foo")
         self.assertNotEqual(data.company, "")
+
+    @mock.patch("django_scrubber.scrubbers.logger")
+    def test_faker_scrubber_exceeding_character_limit(self, mock_logging: mock.Mock):
+        """
+        Make sure that even fakers that produce exceedingly long content will not break the scrubbing process
+        """
+        data = DataFactory.create(company="Foo")
+        with self.settings(
+            DEBUG=True,
+            SCRUBBER_GLOBAL_SCRUBBERS={"company": scrubbers.Faker("pystr", min_chars=500, max_chars=500)},
+        ):
+            call_command("scrub_data", stdout=StringIO(), stderr=StringIO())
+        data.refresh_from_db()
+
+        # make sure our data was truncated
+        self.assertNotEqual(data.company, "Foo")
+        self.assertNotEqual(data.company, "")
+        self.assertEqual(len(data.company), FakeData._meta.get_field("content").max_length)
+
+        # make sure a warning was issued
+        mock_logging.warning.assert_called_once()
+
+        # make sure the warning contains the expected message
+        self.assertTrue("Fake data content exceeds max length" in mock_logging.warning.call_args[0][0])
 
     @override_settings(DEBUG=True)
     def test_faker_scrubber_run_clear_session_by_default(self):
