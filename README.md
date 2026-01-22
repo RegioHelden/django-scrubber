@@ -35,6 +35,12 @@ INSTALLED_APPS = [
 ]
 ```
 
+### Database requirements
+
+#### MySQL
+
+When running `MySQL` `9.6` or above, make sure that the `classic_hashing` component is installed as `django-scrubber` makes use of `MD5`. \
+
 ## Scrubbing data
 
 In order to scrub data, i.e.: to replace DB data with anonymized versions, `django-scrubber` must know which models and

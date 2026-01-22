@@ -69,6 +69,7 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: test
+          MYSQL_ROOT_PASSWORD: mysql
         ports:
           - 3306:3306
         options: >-
@@ -78,6 +79,31 @@ jobs:
           --health-retries=5
 
     steps:
+      - name: Install mysql client
+        if: matrix.database == "mysql"
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-mysql-client
+
+      - name: Wait for MySQL to be ready
+        if: matrix.database == "mysql"
+        env:
+          MYSQL_ROOT_PASSWORD: mysql
+        run: |
+          for i in $(seq 1 30); do
+            mysql -h 127.0.0.1 -P 3306 -uroot -p${MYSQL_ROOT_PASSWORD} -e "SELECT 1" && break
+            echo "Waiting for mysql..."
+            sleep 1
+          done
+
+      - name: Enable classic_hashing component (makes MD5 available)
+        if: matrix.database == "mysql"
+        env:
+          MYSQL_ROOT_PASSWORD: mysql
+        run: |
+          mysql -h 127.0.0.1 -P 3306 -uroot -p${MYSQL_ROOT_PASSWORD} -e "INSTALL COMPONENT 'file://component_classic_hashing';"
+          mysql -h 127.0.0.1 -P 3306 -uroot -p${MYSQL_ROOT_PASSWORD} -e "SELECT MD5('test') as md5_test;"
+
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
