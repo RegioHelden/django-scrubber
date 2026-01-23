@@ -1,3 +1,4 @@
+# ruff: noqa: ERA001
 import os
 
 DEBUG = True
@@ -12,6 +13,30 @@ DATABASES = {
         "NAME": ":memory:",
         "OPTIONS": {},
     },
+    # replace default entry to use mysql for testing
+    # "default": {
+    #     "ENGINE": "django.db.backends.mysql",
+    #     "NAME": "app",
+    #     "USER": "app",
+    #     "PASSWORD": "app",
+    #     "HOST": "mysql",
+    #     "PORT": "3306",
+    #     "TEST": {
+    #         "NAME": "app",
+    #     },
+    # },
+    # replace default entry to use postgresql for testing
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": "app",
+    #     "USER": "app",
+    #     "PASSWORD": "app",
+    #     "HOST": "postgres",
+    #     "PORT": "5432",
+    #     "TEST": {
+    #         "NAME": "app",
+    #     },
+    # },
 }
 
 if os.environ.get("GITHUB_WORKFLOW", None):
