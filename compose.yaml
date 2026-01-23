@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
     shm_size: 256m
     user: postgres
-    command: -c 'fsync=off' -c 'effective_io_concurrency=10' -c 'max_connections=200' -c 'wal_level=logical' # yamllint disable-line rule:line-length
+    command: -c 'fsync=off' -c 'effective_io_concurrency=10' -c 'max_connections=200' -c 'wal_level=logical'  # yamllint disable-line rule:line-length
     volumes:
       - db_postgres_data:/var/lib/postgresql/
     environment:
