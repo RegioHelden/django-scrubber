@@ -28,6 +28,8 @@ defaults = {
         "sites.Site",
         "django_scrubber.FakeData",
     ),
+    "SCRUBBER_HASH_TEMPLATE": None,
+    "SCRUBBER_HASH_TEMPLATE_MAX_LENGTH": None,
 }
 
 

@@ -11,7 +11,7 @@
         "./compose.yaml"
     ],
     // define which services from the compose file to start and stop
-    "runServices": ["app"],
+    "runServices": ["app", "mysql", "postgres"],
     // define the docker-compose service to use for the dev container
     "service": "app",
     // define the workspace folder our app is located in

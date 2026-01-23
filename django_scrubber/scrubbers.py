@@ -5,6 +5,7 @@ from typing import ClassVar
 
 import faker
 from django.db import connections, router
+from django.db.backends.base.base import BaseDatabaseWrapper
 from django.db.models import Case, ExpressionWrapper, F, Field, Func, OuterRef, Q, Subquery, When
 from django.db.models.functions import Cast
 from django.db.models.functions import Concat as DjangoConcat
@@ -53,20 +54,62 @@ class Keep(FieldFunc):
 
 class Hash(FieldFunc):
     """
-    Simple md5 hashing of content.
+    Simple hashing of content.
     If initialized with a Field object, will use its max_length attribute to truncate the generated hash.
     Otherwise, if initialized with a field name as string, will use the full hash length.
+
+    Supported vendors out of the box are : mysql, postgresql and sqlite
+    If you use any other vendor and the default implementation (sqlite) does not work,
+    then please use settings SCRUBBER_HASH_TEMPLATE and SCRUBBER_HASH_TEMPLATE_MAX_LENGTH to define
+    custom templates.
     """
 
     template = "NULL"  # replaced during __init__
     arity = 1
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    TEMPLATE_SQLITE: str = "MD5(%(expressions)s)"
+    TEMPLATE_SQLITE_MAX_LENGTH: str = "SUBSTR(MD5(%(expressions)s), 1, %(max_length)s)"
+    TEMPLATE_MYSQL: str = "SHA2(%(expressions)s, 256)"
+    TEMPLATE_MYSQL_MAX_LENGTH: str = "SUBSTR(SHA2(%(expressions)s, 256), 1, %(max_length)s)"
+    TEMPLATE_POSTGRESQL: str = "SHA256(%(expressions)s)"
+    TEMPLATE_POSTGRESQL_MAX_LENGTH: str = "SUBSTR(SHA256(%(expressions)s), 1, %(max_length)s)"
+
+    def __init__(self, field, *args, **kwargs):
+        super().__init__(field, *args, **kwargs)
+
+        db_connection: BaseDatabaseWrapper = connections[router.db_for_write(field.model)]
         if self.extra.get("max_length") is not None:
-            self.template = "SUBSTR(MD5(%(expressions)s), 1, %(max_length)s)"
+            self.template: str = self._get_template_max_length(db_vendor=db_connection.vendor)
         else:
-            self.template = "MD5(%(expressions)s)"
+            self.template: str = self._get_template(db_vendor=db_connection.vendor)
+
+    def _get_template(self, db_vendor: str) -> str:
+        template: str = self.TEMPLATE_SQLITE
+
+        # custom hash template might be defined in settings
+        custom_template: str | None = settings_with_fallback("SCRUBBER_HASH_TEMPLATE")
+        if custom_template is not None:
+            template: str = custom_template
+        elif db_vendor == "mysql":
+            template: str = self.TEMPLATE_MYSQL
+        elif db_vendor == "postgres":
+            template: str = self.TEMPLATE_POSTGRESQL
+
+        return template
+
+    def _get_template_max_length(self, db_vendor: str) -> str:
+        template: str = self.TEMPLATE_SQLITE_MAX_LENGTH
+
+        # custom hash template might be defined in settings
+        custom_template: str | None = settings_with_fallback(key="SCRUBBER_HASH_TEMPLATE_MAX_LENGTH")
+        if custom_template is not None:
+            template: str = custom_template
+        elif db_vendor == "mysql":
+            template: str = self.TEMPLATE_MYSQL_MAX_LENGTH
+        elif db_vendor == "postgres":
+            template: str = self.TEMPLATE_POSTGRESQL_MAX_LENGTH
+
+        return template
 
 
 class Lorem(FieldFunc):

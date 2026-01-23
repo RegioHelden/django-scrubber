@@ -9,3 +9,10 @@
   dependencies: ["Faker>=20.0.0", "Django>=4.2,<6.1"]
   max_line_length: 119
   changelog_since_tag: "v4.1.0"
+
+.devcontainer/devcontainer.json:
+  run_services: ["app", "mysql", "postgres"]
+
+compose.yaml:
+  require_mysql: true
+  require_postgres: true

@@ -46,9 +46,6 @@ class StringToInt(Func):
             **extra_context,
         )
 
-    def as_oracle(self, compiler, connection, **extra_context):
-        raise Exception("No custom implementation for Oracle (yet)")
-
 
 class Command(BaseCommand):
     help = "Replace database data according to model-specific or global scrubbing rules."

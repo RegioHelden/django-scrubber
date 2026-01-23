@@ -12,6 +12,30 @@ DATABASES = {
         "NAME": ":memory:",
         "OPTIONS": {},
     },
+    # replace default entry to use mysql for testing
+    "mysql": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "app",
+        "USER": "app",
+        "PASSWORD": "app",
+        "HOST": "mysql",
+        "PORT": "3306",
+        "TEST": {
+            "NAME": "app",
+        },
+    },
+    # replace default entry to use postgresql for testing
+    "postgres": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "app",
+        "USER": "app",
+        "PASSWORD": "app",
+        "HOST": "postgres",
+        "PORT": "5432",
+        "TEST": {
+            "NAME": "app",
+        },
+    },
 }
 
 if os.environ.get("GITHUB_WORKFLOW", None):

@@ -35,6 +35,14 @@ INSTALLED_APPS = [
 ]
 ```
 
+### Database requirements
+
+`django-scrubber` is tested against SQLite, MySQL and PostgreSQL.
+
+We always try to test against the latest release. SQLite release depends on the Docker and GitHub CI image, MySQL and PostgreSQL are defined in `compose.yaml` and the GitHub workflow definition.
+
+The docker compose based development environment provides all three databases, however you need to define which one gets actually used in the django settings' `DB` entry.
+
 ## Scrubbing data
 
 In order to scrub data, i.e.: to replace DB data with anonymized versions, `django-scrubber` must know which models and
@@ -339,6 +347,14 @@ against the full model name (e.g. `re.compile(auth.*)` to whitelist all auth mod
 'django_scrubber.FakeData', 'db.TestModel',)`)
 
 (default: {})
+
+### `SCRUBBER_HASH_TEMPLATE` and `SCRUBBER_HASH_TEMPLATE_MAX_LENGTH`:
+
+If your database vendor is not supported out of the box by the `Hash` scrubber (only SQLite, MySQL and PostgreSQL are), then you can define your own scrubbing expression here. See `django_scrubber.scrubbers.Hash` for examples on the other vendors.
+
+`SCRUBBER_HASH_TEMPLATE` defines an expression without length limitation, `SCRUBBER_HASH_TEMPLATE_MAX_LENGTH` must cut off at a specifc lengeht of `max_length`.
+
+(default: None)
 
 ## Logging
 
