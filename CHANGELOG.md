@@ -1,5 +1,17 @@
 # Changelog
 
+## [v6.0.2](https://github.com/RegioHelden/django-scrubber/tree/v6.0.2) (2026-01-23)
+
+[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.1...v6.0.2)
+
+**Implemented enhancements:**
+
+- Update ty to 0.0.13 and ty VSCode extension to 2026.6.0 [\#192](https://github.com/RegioHelden/django-scrubber/pull/192) (@regiohelden-dev)
+
+**Fixed bugs:**
+
+- Use more modern hashing algorithms in `Hash` scrubber [\#191](https://github.com/RegioHelden/django-scrubber/pull/191) (@lociii)
+
 ## [v6.0.1](https://github.com/RegioHelden/django-scrubber/tree/v6.0.1) (2026-01-20)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.0...v6.0.1)
