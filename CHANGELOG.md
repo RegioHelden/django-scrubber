@@ -1,5 +1,13 @@
 # Changelog
 
+## [v6.0.3](https://github.com/RegioHelden/django-scrubber/tree/v6.0.3) (2026-01-26)
+
+[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.2...v6.0.3)
+
+**Fixed bugs:**
+
+- Access model from extra instead of the field in Hash scrubber [\#195](https://github.com/RegioHelden/django-scrubber/pull/195) (@lociii)
+
 ## [v6.0.2](https://github.com/RegioHelden/django-scrubber/tree/v6.0.2) (2026-01-23)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.1...v6.0.2)
