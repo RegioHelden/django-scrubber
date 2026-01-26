@@ -74,10 +74,10 @@ class Hash(FieldFunc):
     TEMPLATE_POSTGRESQL: str = "SHA256(%(expressions)s)"
     TEMPLATE_POSTGRESQL_MAX_LENGTH: str = "SUBSTR(SHA256(%(expressions)s), 1, %(max_length)s)"
 
-    def __init__(self, field, *args, **kwargs):
+    def __init__(self, field: str | Field, *args, **kwargs):
         super().__init__(field, *args, **kwargs)
 
-        db_connection: BaseDatabaseWrapper = connections[router.db_for_write(field.model)]
+        db_connection: BaseDatabaseWrapper = connections[router.db_for_write(self.extra.get("model"))]
         if self.extra.get("max_length") is not None:
             self.template: str = self._get_template_max_length(db_vendor=db_connection.vendor)
         else:

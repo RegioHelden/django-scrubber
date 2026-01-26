@@ -52,6 +52,14 @@ class TestScrubbers(TestCase):
 
         self.assertNotEqual(data.description, "Foo")
 
+    def test_hash_scrubber_fieldvalue(self):
+        data = DataFactory.create(description="Foo")
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"description": scrubbers.Hash("description")}):
+            call_command("scrub_data", stdout=StringIO())
+        data.refresh_from_db()
+
+        self.assertNotEqual(data.description, "Foo")
+
     def test_lorem_scrubber(self):
         data = DataFactory.create(description="Foo")
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"description": scrubbers.Lorem}):
