@@ -5,7 +5,6 @@ from typing import ClassVar
 
 import faker
 from django.db import connections, router
-from django.db.backends.base.base import BaseDatabaseWrapper
 from django.db.models import Case, ExpressionWrapper, F, Field, Func, OuterRef, Q, Subquery, When
 from django.db.models.functions import Cast
 from django.db.models.functions import Concat as DjangoConcat
@@ -64,52 +63,79 @@ class Hash(FieldFunc):
     custom templates.
     """
 
-    template = "NULL"  # replaced during __init__
+    template = "NULL"  # replaced during `as_sql`
     arity = 1
 
     TEMPLATE_SQLITE: str = "MD5(%(expressions)s)"
     TEMPLATE_SQLITE_MAX_LENGTH: str = "SUBSTR(MD5(%(expressions)s), 1, %(max_length)s)"
     TEMPLATE_MYSQL: str = "SHA2(%(expressions)s, 256)"
     TEMPLATE_MYSQL_MAX_LENGTH: str = "SUBSTR(SHA2(%(expressions)s, 256), 1, %(max_length)s)"
-    TEMPLATE_POSTGRESQL: str = "SHA256(%(expressions)s)"
-    TEMPLATE_POSTGRESQL_MAX_LENGTH: str = "SUBSTR(SHA256(%(expressions)s), 1, %(max_length)s)"
+    TEMPLATE_POSTGRESQL: str = "ENCODE(SHA256(%(expressions)s::bytea), 'hex')"
+    TEMPLATE_POSTGRESQL_MAX_LENGTH: str = "SUBSTR(ENCODE(SHA256(%(expressions)s::bytea), 'hex'), 1, %(max_length)s)"
 
-    def __init__(self, field: str | Field, *args, **kwargs):
-        super().__init__(field, *args, **kwargs)
-
-        db_connection: BaseDatabaseWrapper = connections[router.db_for_write(self.extra.get("model"))]
+    def as_sql(
+        self,
+        compiler,
+        connection,
+        function=None,
+        template=None,
+        arg_joiner=None,
+        **extra_context,
+    ) -> str:
+        # dynamically replace template by vendor specific code
         if self.extra.get("max_length") is not None:
-            self.template: str = self._get_template_max_length(db_vendor=db_connection.vendor)
+            template: str = self._get_template_max_length(vendor=connection.vendor)
         else:
-            self.template: str = self._get_template(db_vendor=db_connection.vendor)
+            template: str = self._get_template(vendor=connection.vendor)
 
-    def _get_template(self, db_vendor: str) -> str:
-        template: str = self.TEMPLATE_SQLITE
+        return super().as_sql(
+            compiler,
+            connection,
+            function=function,
+            template=template,
+            arg_joiner=arg_joiner,
+            **extra_context,
+        )
 
+    def _get_template(self, vendor: str) -> str:
         # custom hash template might be defined in settings
         custom_template: str | None = settings_with_fallback("SCRUBBER_HASH_TEMPLATE")
         if custom_template is not None:
-            template: str = custom_template
-        elif db_vendor == "mysql":
-            template: str = self.TEMPLATE_MYSQL
-        elif db_vendor == "postgres":
-            template: str = self.TEMPLATE_POSTGRESQL
+            return custom_template
 
-        return template
+        if vendor == "mysql":
+            return self.TEMPLATE_MYSQL
 
-    def _get_template_max_length(self, db_vendor: str) -> str:
-        template: str = self.TEMPLATE_SQLITE_MAX_LENGTH
+        if vendor == "postgresql":
+            return self.TEMPLATE_POSTGRESQL
 
+        if vendor == "sqlite":
+            return self.TEMPLATE_SQLITE
+
+        raise ScrubberInitError(
+            f"Unsupported database vendor '{vendor}' for Hash scrubber. "
+            "Please define a custom template using SCRUBBER_HASH_TEMPLATE setting or open a MR.",
+        )
+
+    def _get_template_max_length(self, vendor: str) -> str:
         # custom hash template might be defined in settings
         custom_template: str | None = settings_with_fallback(key="SCRUBBER_HASH_TEMPLATE_MAX_LENGTH")
         if custom_template is not None:
-            template: str = custom_template
-        elif db_vendor == "mysql":
-            template: str = self.TEMPLATE_MYSQL_MAX_LENGTH
-        elif db_vendor == "postgres":
-            template: str = self.TEMPLATE_POSTGRESQL_MAX_LENGTH
+            return custom_template
 
-        return template
+        if vendor == "mysql":
+            return self.TEMPLATE_MYSQL_MAX_LENGTH
+
+        if vendor == "postgresql":
+            return self.TEMPLATE_POSTGRESQL_MAX_LENGTH
+
+        if vendor == "sqlite":
+            return self.TEMPLATE_SQLITE_MAX_LENGTH
+
+        raise ScrubberInitError(
+            f"Unsupported database vendor '{vendor}' for Hash scrubber. "
+            "Please define a custom template using SCRUBBER_HASH_TEMPLATE setting or open a MR.",
+        )
 
 
 class Lorem(FieldFunc):
