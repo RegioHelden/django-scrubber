@@ -1,5 +1,19 @@
 # Changelog
 
+## [v6.0.4](https://github.com/RegioHelden/django-scrubber/tree/v6.0.4) (2026-01-27)
+
+[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.3...v6.0.4)
+
+**Implemented enhancements:**
+
+- Update VSCode extensions, enable renovate for local requirements [\#201](https://github.com/RegioHelden/django-scrubber/pull/201) (@regiohelden-dev)
+- Align postgresql credentials with other db vendors in dev environment [\#200](https://github.com/RegioHelden/django-scrubber/pull/200) (@regiohelden-dev)
+- Update VSCode feature common-utils to 2.5.6 and git to 1.3.5, ruff to 0.14.14 and uv to 0.9.27 [\#197](https://github.com/RegioHelden/django-scrubber/pull/197) (@regiohelden-dev)
+
+**Fixed bugs:**
+
+- Fix Hash scrubber when using field name strings [\#199](https://github.com/RegioHelden/django-scrubber/pull/199) (@lociii)
+
 ## [v6.0.3](https://github.com/RegioHelden/django-scrubber/tree/v6.0.3) (2026-01-26)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.2...v6.0.3)
