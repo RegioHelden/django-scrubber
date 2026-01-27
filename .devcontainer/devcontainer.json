@@ -143,9 +143,12 @@
                 // ---------------------------------------
                 // CODING SUPPORT
                 // ---------------------------------------
-                // Visual Studio IntelliCode - AI-assisted development
-                // https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode
-                "visualstudioexptteam.vscodeintellicode",
+                // GitHub copilot ML coding assistant
+                // https://marketplace.visualstudio.com/items?itemName=GitHub.copilot
+                "GitHub.copilot",
+                // GitHub Copilot Chat - AI chat features powered by Copilot
+                // https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat
+                "github.copilot-chat",
                 // ---------------------------------------
                 // PYTHON
                 // ---------------------------------------
@@ -170,9 +173,6 @@
                 // Linting with ruff
                 // https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
                 "charliermarsh.ruff@2026.34.0",
-                // Linting with mypy
-                // https://marketplace.visualstudio.com/items?itemName=ms-python.mypy-type-checker
-                "ms-python.mypy-type-checker",
                 // ---------------------------------------
                 // GIT
                 // ---------------------------------------
@@ -182,9 +182,9 @@
                 // Supercharge the Git capabilities built into Visual Studio Code
                 // https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens
                 "eamodio.gitlens",
-                // GitLab Workflow
-                // https://marketplace.visualstudio.com/items?itemName=GitLab.gitlab-workflow
-                "GitLab.gitlab-workflow",
+                // GitHub pull requests and issues
+                https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github
+                "github.vscode-pull-request-github",
                 // create / apply git patches
                 // https://marketplace.visualstudio.com/items?itemName=paragdiwan.gitpatch
                 "paragdiwan.gitpatch",
