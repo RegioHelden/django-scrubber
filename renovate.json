@@ -1,4 +1,6 @@
 {
+    "description": "---------- Managed by modulesync - DO NOT EDIT ----------",
+
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "enabled": true,
     "timezone": "Europe/Berlin",
@@ -10,7 +12,8 @@
     ],
     "enabledManagers": [
         "custom.regex",
-        "github-actions"
+        "github-actions",
+        "pip_requirements"
     ],
     "dockerfile": {
         "enabled": false
@@ -24,6 +27,11 @@
         ],
         "ignorePaths": [
             ".github/workflows/!(workflow).yaml"
+        ]
+    },
+    "pip_requirements": {
+        "managerFilePatterns": [
+            "/(^|/)requirements-.+\\.txt$/"
         ]
     },
     "configMigration": false,
