@@ -41,9 +41,9 @@ services:
     volumes:
       - db_postgres_data:/var/lib/postgresql/
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: app
 
 volumes:
   db_mysql_data: {}
