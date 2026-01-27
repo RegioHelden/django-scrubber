@@ -183,7 +183,7 @@
                 // https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens
                 "eamodio.gitlens",
                 // GitHub pull requests and issues
-                https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github
+                // https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github
                 "github.vscode-pull-request-github",
                 // create / apply git patches
                 // https://marketplace.visualstudio.com/items?itemName=paragdiwan.gitpatch
