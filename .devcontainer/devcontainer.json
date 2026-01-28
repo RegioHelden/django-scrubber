@@ -26,7 +26,7 @@
             "version": "0.14.14"
         },
         "ghcr.io/devcontainers-extra/features/ty:1.0.0": {
-            "version": "0.0.13"
+            "version": "0.0.14"
         }
     },
     // configure vscode
