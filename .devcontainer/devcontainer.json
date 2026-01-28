@@ -157,7 +157,7 @@
                 "ms-python.python",
                 // ty - A fast Python language server and linter written in Rust
                 // https://marketplace.visualstudio.com/items?itemName=astral-sh.ty
-                "astral-sh.ty@2026.6.0",
+                "astral-sh.ty@2026.8.0",
                 // Python docstring generator
                 // https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring
                 "njpwerner.autodocstring",
