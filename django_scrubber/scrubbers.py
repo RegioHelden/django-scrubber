@@ -67,11 +67,11 @@ class Hash(FieldFunc):
     arity = 1
 
     TEMPLATE_SQLITE: str = "MD5(%(expressions)s)"
-    TEMPLATE_SQLITE_MAX_LENGTH: str = "SUBSTR(MD5(%(expressions)s), 1, %(max_length)s)"
+    TEMPLATE_SQLITE_MAX_LENGTH: str = f"SUBSTR({TEMPLATE_SQLITE}, 1, %(max_length)s)"
     TEMPLATE_MYSQL: str = "SHA2(%(expressions)s, 256)"
-    TEMPLATE_MYSQL_MAX_LENGTH: str = "SUBSTR(SHA2(%(expressions)s, 256), 1, %(max_length)s)"
-    TEMPLATE_POSTGRESQL: str = "ENCODE(SHA256(%(expressions)s::bytea), 'hex')"
-    TEMPLATE_POSTGRESQL_MAX_LENGTH: str = "SUBSTR(ENCODE(SHA256(%(expressions)s::bytea), 'hex'), 1, %(max_length)s)"
+    TEMPLATE_MYSQL_MAX_LENGTH: str = f"SUBSTR({TEMPLATE_MYSQL}, 1, %(max_length)s)"
+    TEMPLATE_POSTGRESQL: str = "ENCODE(SHA256(CONVERT_TO(%(expressions)s, 'UTF-8')), 'hex')"
+    TEMPLATE_POSTGRESQL_MAX_LENGTH: str = f"SUBSTR({TEMPLATE_POSTGRESQL}, 1, %(max_length)s)"
 
     def as_sql(
         self,
