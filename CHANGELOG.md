@@ -1,5 +1,19 @@
 # Changelog
 
+## [v6.0.5](https://github.com/RegioHelden/django-scrubber/tree/v6.0.5) (2026-02-02)
+
+[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.4...v6.0.5)
+
+**Implemented enhancements:**
+
+- Update uv to 0.9.28 [\#207](https://github.com/RegioHelden/django-scrubber/pull/207) (@regiohelden-dev)
+- Update ty to 0.0.14 and ty VSCode extension to 2026.8.0 [\#204](https://github.com/RegioHelden/django-scrubber/pull/204) (@regiohelden-dev)
+- Update CI dependency faker to 40.1.2 [\#203](https://github.com/RegioHelden/django-scrubber/pull/203) (@renovate[bot])
+
+**Fixed bugs:**
+
+- Cast string to byte [\#206](https://github.com/RegioHelden/django-scrubber/pull/206) (@lociii)
+
 ## [v6.0.4](https://github.com/RegioHelden/django-scrubber/tree/v6.0.4) (2026-01-27)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.3...v6.0.4)
