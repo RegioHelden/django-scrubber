@@ -1,2 +1,2 @@
 factory-boy==3.3.3
-Faker==40.1.2
+Faker==40.4.0
