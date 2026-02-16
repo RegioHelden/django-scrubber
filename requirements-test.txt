@@ -1,5 +1,5 @@
 -r requirements-ci.txt
 django==6.0.2
 django-mysql==4.19.0
-mysqlclient==2.2.7
+mysqlclient==2.2.8
 psycopg==3.3.2
