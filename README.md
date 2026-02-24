@@ -143,6 +143,11 @@ class Scrubbers:
 
 Wrapper around another single scrubber that only cleans the field if it already contains data before cleaning.
 
+**WARNING**: If the field contains no data, the scrubbed value will always be the empty string `''`, even if the
+original data was `NULL`. Note that Django [discourages](https://docs.djangoproject.com/en/6.0/ref/models/fields/#null)
+the use of `CharField` with `null=True`. If you need a `NULL` value preserving version of `IfNotEmpty`, you can
+implement a custom scrubber.
+
 ```python
 class Scrubbers:
     somefield = scrubbers.IfNotEmpty(scrubbers.Lorem)
