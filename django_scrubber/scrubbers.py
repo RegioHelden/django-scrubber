@@ -210,7 +210,7 @@ class IfNotEmpty:
 
         return Case(
             When(
-                ~Q(**{field.name: ""}),
+                Q((f"{field.name}__isnull", False)) & ~Q((field.name, "")),
                 then=ExpressionWrapper(
                     expression=self.expression(field) if callable(self.expression) else self.expression,
                     **self.kwargs,

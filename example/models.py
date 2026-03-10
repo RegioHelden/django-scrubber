@@ -5,7 +5,7 @@ from factory.django import DjangoModelFactory
 class DataToBeScrubbed(models.Model):
     first_name = models.CharField(max_length=8)
     last_name = models.CharField(max_length=255, blank=True, default="")
-    description = models.TextField()
+    description = models.TextField(null=True)  # noqa: DJ001
     ean8 = models.CharField(max_length=13)
     date_past = models.DateField(null=True)
     company = models.CharField(max_length=255)
