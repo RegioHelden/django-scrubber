@@ -23,10 +23,10 @@
         "ghcr.io/devcontainers/features/common-utils:2.5.7": {},
         "ghcr.io/devcontainers/features/git:1.3.5": {},
         "ghcr.io/devcontainers-extra/features/ruff:2.0.0": {
-            "version": "0.15.6"
+            "version": "0.15.7"
         },
         "ghcr.io/devcontainers-extra/features/ty:1.0.0": {
-            "version": "0.0.22"
+            "version": "0.0.25"
         }
     },
     // configure vscode
@@ -157,7 +157,7 @@
                 "ms-python.python",
                 // ty - A fast Python language server and linter written in Rust
                 // https://marketplace.visualstudio.com/items?itemName=astral-sh.ty
-                "astral-sh.ty@2026.24.0",
+                "astral-sh.ty@2026.30.0",
                 // Python docstring generator
                 // https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring
                 "njpwerner.autodocstring",
@@ -172,7 +172,7 @@
                 "aaron-bond.better-comments",
                 // Linting with ruff
                 // https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
-                "charliermarsh.ruff@2026.36.0",
+                "charliermarsh.ruff@2026.38.0",
                 // ---------------------------------------
                 // GIT
                 // ---------------------------------------
