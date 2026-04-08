@@ -23,10 +23,10 @@
         "ghcr.io/devcontainers/features/common-utils:2.5.7": {},
         "ghcr.io/devcontainers/features/git:1.3.5": {},
         "ghcr.io/devcontainers-extra/features/ruff:2.0.0": {
-            "version": "0.15.8"
+            "version": "0.15.9"
         },
         "ghcr.io/devcontainers-extra/features/ty:1.0.0": {
-            "version": "0.0.26"
+            "version": "0.0.29"
         }
     },
     // configure vscode
@@ -157,7 +157,7 @@
                 "ms-python.python",
                 // ty - A fast Python language server and linter written in Rust
                 // https://marketplace.visualstudio.com/items?itemName=astral-sh.ty
-                "astral-sh.ty@2026.32.0",
+                "astral-sh.ty@2026.36.0",
                 // Python docstring generator
                 // https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring
                 "njpwerner.autodocstring",
