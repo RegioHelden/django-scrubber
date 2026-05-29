@@ -26,7 +26,7 @@
             "version": "0.15.15"
         },
         "ghcr.io/devcontainers-extra/features/ty:1.0.0": {
-            "version": "0.0.38"
+            "version": "0.0.40"
         }
     },
     // configure vscode
@@ -172,7 +172,7 @@
                 "aaron-bond.better-comments",
                 // Linting with ruff
                 // https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
-                "charliermarsh.ruff@2026.44.0",
+                "charliermarsh.ruff@2026.46.0",
                 // ---------------------------------------
                 // GIT
                 // ---------------------------------------
