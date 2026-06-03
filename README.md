@@ -219,6 +219,16 @@ guaranteeing uniqueness).
 When using `django < 2.1` and working on `sqlite` a bug within django causes field-specific scrubbing (
 e.g. `date_object`) to fail. Please consider using a different database backend or upgrade to the latest django version.
 
+### FakerArray
+
+PostgreSQL-specific wrapper around `Faker` to generate multiple entries for an `ArrayField`.
+
+```python
+# scrubbers.py
+class ContentScrubbers:
+    content = scrubbers.FakerArray("sentence", count=3, nb_words=5)
+```
+
 ## Scrubbing third-party models
 
 Sometimes you just don't have control over some code, but you still want to scrub the data of a given model.
@@ -250,16 +260,6 @@ class UserScrubbers:
 SCRUBBER_MAPPING = {
     "auth.User": "apps.account.scrubbers.UserScrubbers",
 }
-```
-
-### FakerArray
-
-PostgreSQL-specific wrapper around `Faker` to generate multiple entries for an `ArrayField`.
-
-```python
-# scrubbers.py
-class ContentScrubbers:
-    content = scrubbers.FakerArray("sentence", count=3, nb_words=5)
 ```
 
 ## Settings
