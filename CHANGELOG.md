@@ -1,5 +1,44 @@
 # Changelog
 
+## [v7.1.0](https://github.com/RegioHelden/django-scrubber/tree/v7.1.0) (2026-06-03)
+
+[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v7.0.0...v7.1.0)
+
+**Implemented enhancements:**
+
+- feat: add documentation for FakerArray [\#260](https://github.com/RegioHelden/django-scrubber/pull/260) (@lociii)
+- feat: add FakerArray scrubber. [\#259](https://github.com/RegioHelden/django-scrubber/pull/259) (@bodja)
+- Update dependency Faker to v40.21.0 [\#258](https://github.com/RegioHelden/django-scrubber/pull/258) (@renovate[bot])
+- Pin GitHub actions dependencies [\#257](https://github.com/RegioHelden/django-scrubber/pull/257) (@renovate[bot])
+- Update ty to 0.0.42, ty VSCode to 2026.52.0 and uv to 0.11.18 [\#256](https://github.com/RegioHelden/django-scrubber/pull/256) (@regiohelden-dev)
+- Update dependency Faker to v40.20.0 [\#255](https://github.com/RegioHelden/django-scrubber/pull/255) (@renovate[bot])
+- Update ruff to 0.15.15, ruff VSCode to 2026.46.0, ty to 0.0.40 and uv to 0.11.17 [\#254](https://github.com/RegioHelden/django-scrubber/pull/254) (@regiohelden-dev)
+- Update dependency Faker to v40.19.1 [\#253](https://github.com/RegioHelden/django-scrubber/pull/253) (@renovate[bot])
+- Update ruff to 0.15.14, ruff VSCode to 2026.44.0, ty VSCode to 2026.50.0 and uv to 0.11.16 [\#252](https://github.com/RegioHelden/django-scrubber/pull/252) (@regiohelden-dev)
+- Update VSCode common-utils to 2.5.9, ty to 0.0.38, ty VSCode to 2026.48.0 and uv to 0.11.15 [\#251](https://github.com/RegioHelden/django-scrubber/pull/251) (@regiohelden-dev)
+- Update devcontainers/features/common-utils to 2.5.8, ruff to 0.15.13, ruff VSCode to 2026.42.0, ty to 0.0.37, ty VSCode to 2026.46.0 and uv to 0.11.1 [\#250](https://github.com/RegioHelden/django-scrubber/pull/250) (@regiohelden-dev)
+- Update dependency Faker to v40.18.0 [\#249](https://github.com/RegioHelden/django-scrubber/pull/249) (@renovate[bot])
+- Update uv to 0.11.11 [\#248](https://github.com/RegioHelden/django-scrubber/pull/248) (@regiohelden-dev)
+- Update dependency django to v6.0.5 [\#247](https://github.com/RegioHelden/django-scrubber/pull/247) (@renovate[bot])
+- Update ruff to 0.15.12, ty to 0.0.34, ty-VSCode to 2026.44.0 and uv to 0.11.9 [\#246](https://github.com/RegioHelden/django-scrubber/pull/246) (@regiohelden-dev)
+- Update dependency psycopg to v3.3.4 [\#245](https://github.com/RegioHelden/django-scrubber/pull/245) (@renovate[bot])
+- Update astral-sh/setup-uv action to v8 [\#244](https://github.com/RegioHelden/django-scrubber/pull/244) (@renovate[bot])
+- Update ty to 0.0.32 and ty VSCode to 2026.40.0 [\#243](https://github.com/RegioHelden/django-scrubber/pull/243) (@regiohelden-dev)
+- Update ty VSCode and setup uv action, pin dependencies [\#242](https://github.com/RegioHelden/django-scrubber/pull/242) (@regiohelden-dev)
+- Update dependency Faker to v40.15.0 [\#241](https://github.com/RegioHelden/django-scrubber/pull/241) (@renovate[bot])
+- Update ruff to 0.15.11, ty to 0.0.31 and uv to 0.11.7 [\#240](https://github.com/RegioHelden/django-scrubber/pull/240) (@regiohelden-dev)
+- Update ruff to 0.15.10, ruff VSCode to 2026.40.0 and uv to 0.11.6 [\#238](https://github.com/RegioHelden/django-scrubber/pull/238) (@regiohelden-dev)
+- Update ruff to 0.15.9, ty to 0.0.29, ty VSCode to 2026.36.0 and uv to 0.11.4 [\#237](https://github.com/RegioHelden/django-scrubber/pull/237) (@regiohelden-dev)
+- Update dependency django to v6.0.4 [\#236](https://github.com/RegioHelden/django-scrubber/pull/236) (@renovate[bot])
+- Update dependency faker to v40.13.0 [\#235](https://github.com/RegioHelden/django-scrubber/pull/235) (@renovate[bot])
+- Update ruff to 0.15.8, ty to 0.0.26, ty VSCode to 2026.32.0, uv to 0.11.2 and reusable workflows to 2.8.1 [\#234](https://github.com/RegioHelden/django-scrubber/pull/234) (@regiohelden-dev)
+- Update dependency faker to v40.12.0 [\#233](https://github.com/RegioHelden/django-scrubber/pull/233) (@renovate[bot])
+- Update ruff to 0.15.7, ruff VSCode to 2026.38.0, ty to 0.0.25, ty VSCode to 2026.30.0 and uv to 0.11.1 [\#232](https://github.com/RegioHelden/django-scrubber/pull/232) (@regiohelden-dev)
+- Update dependency faker to v40.11.1 [\#231](https://github.com/RegioHelden/django-scrubber/pull/231) (@renovate[bot])
+- Update uv to 0.10.11 [\#230](https://github.com/RegioHelden/django-scrubber/pull/230) (@regiohelden-dev)
+- chore\(deps\): update dependency faker to v40.11.0 [\#229](https://github.com/RegioHelden/django-scrubber/pull/229) (@renovate[bot])
+- Update ruff to 0.15.6, ty to 0.0.22 and ty VSCode to 2026.24.0 [\#228](https://github.com/RegioHelden/django-scrubber/pull/228) (@regiohelden-dev)
+
 ## [v7.0.0](https://github.com/RegioHelden/django-scrubber/tree/v7.0.0) (2026-03-11)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.5...v7.0.0)
@@ -11,9 +50,9 @@
 **Implemented enhancements:**
 
 - Updates common-utils to 2.5.7, ruff to 0.15.5, ty to 0.0.21, ty VSCode to 2026.22.0 and uv to 0.10.9 [\#225](https://github.com/RegioHelden/django-scrubber/pull/225) (@regiohelden-dev)
-- chore\(deps\): update dependency faker to v40.8.0 [\#224](https://github.com/RegioHelden/django-scrubber/pull/224) (@renovate[bot])
+- Update dependency faker to v40.8.0 [\#224](https://github.com/RegioHelden/django-scrubber/pull/224) (@renovate[bot])
 - Update uv to 0.10.8, ty to 0.0.20 and ty VSCode to 2026.20.0 [\#223](https://github.com/RegioHelden/django-scrubber/pull/223) (@regiohelden-dev)
-- chore\(deps\): update dependency django to v6.0.3 [\#222](https://github.com/RegioHelden/django-scrubber/pull/222) (@renovate[bot])
+- Update dependency django to v6.0.3 [\#222](https://github.com/RegioHelden/django-scrubber/pull/222) (@renovate[bot])
 - Update uv to 0.10.7, ruff to 0.15.4, ty to 0.0.19, ty VSCode to 2026.18.0 and download-artifact to v8 [\#221](https://github.com/RegioHelden/django-scrubber/pull/221) (@regiohelden-dev)
 - Update uv to 0.10.6, ty to 0.0.18 and ty VSCode to 2026.16.0 [\#220](https://github.com/RegioHelden/django-scrubber/pull/220) (@regiohelden-dev)
 - Update dependency faker to v40.5.1 [\#218](https://github.com/RegioHelden/django-scrubber/pull/218) (@renovate[bot])
@@ -25,11 +64,11 @@
 - Update ruff to 0.15.0, ruff VSCode to 2026.36.0, ty to 0.0.15, ty VSCode to 2026.10.0 and uv to 0.10.0 [\#212](https://github.com/RegioHelden/django-scrubber/pull/212) (@regiohelden-dev)
 - Update dependency faker to 40.4.0 [\#211](https://github.com/RegioHelden/django-scrubber/pull/211) (@renovate[bot])
 - Update uv to 0.9.29 [\#210](https://github.com/RegioHelden/django-scrubber/pull/210) (@regiohelden-dev)
+- Update dependency django to 6.0.2 [\#209](https://github.com/RegioHelden/django-scrubber/pull/209) (@renovate[bot])
 
 **Merged pull requests:**
 
 - docs: warn that IfNotEmpty eats NULL values [\#219](https://github.com/RegioHelden/django-scrubber/pull/219) (@rh-sp)
-- Update dependency django to 6.0.2 [\#209](https://github.com/RegioHelden/django-scrubber/pull/209) (@renovate[bot])
 
 ## [v6.0.5](https://github.com/RegioHelden/django-scrubber/tree/v6.0.5) (2026-02-02)
 
