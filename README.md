@@ -252,6 +252,16 @@ SCRUBBER_MAPPING = {
 }
 ```
 
+### FakerArray
+
+PostgreSQL-specific wrapper around `Faker` to generate multiple entries for an `ArrayField`.
+
+```python
+# scrubbers.py
+class ContentScrubbers:
+    content = scrubbers.FakerArray("sentence", count=3, nb_words=5)
+```
+
 ## Settings
 
 ### `SCRUBBER_GLOBAL_SCRUBBERS`:
