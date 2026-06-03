@@ -73,6 +73,9 @@ INSTALLED_APPS = [
     "example.apps.ExampleConfig",
 ]
 
+if "postgresql" in DATABASES["default"]["ENGINE"]:
+    INSTALLED_APPS.append("django.contrib.postgres")
+
 SITE_ID = 1
 
 MIDDLEWARE = ()
