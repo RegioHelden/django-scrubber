@@ -5,7 +5,7 @@ from typing import ClassVar
 
 import faker
 from django.db import connections, router
-from django.db.models import Case, ExpressionWrapper, F, Field, Func, OuterRef, Q, Subquery, When
+from django.db.models import Case, ExpressionWrapper, F, Field, Func, OuterRef, Q, Subquery, Value, When
 from django.db.models.functions import Cast
 from django.db.models.functions import Concat as DjangoConcat
 from django.db.utils import IntegrityError
@@ -272,6 +272,40 @@ class Faker:
                 ).values("content")[:1],
             ),
             field,
+        )
+
+
+class FakerArray:
+    """
+    Callable scrubber for ArrayField: generates a fixed-size list of fake values using the given faker provider.
+
+    Usage::
+
+        class Scrubbers:
+            tags = FakerArray("city", count=3)
+            urls = FakerArray("url", count=5)
+    """
+
+    PROVIDER_DEFAULTS: ClassVar[dict[str, str]] = {
+        "CharField": "word",
+        "IntegerField": "random_int",
+    }
+
+    def __init__(self, provider: str | None = None, count: int = 3, **kwargs):
+        self.provider = provider
+        self.count = count
+        self.kwargs = kwargs
+
+    def __call__(self, field):
+        provider = self.provider or self.PROVIDER_DEFAULTS.get(field.base_field.get_internal_type())
+
+        if provider is None:
+            raise ValueError(f"No default faker provider for {field.base_field}")
+
+        generate = getattr(faker.Faker(), provider)
+        return Value(
+            [generate(**self.kwargs) for _ in range(self.count)],
+            output_field=field,
         )
 
 

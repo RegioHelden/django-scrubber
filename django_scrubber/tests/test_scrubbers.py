@@ -1,6 +1,6 @@
 from datetime import timedelta
 from io import StringIO
-from unittest import mock
+from unittest import mock, skipUnless
 
 import django
 from django.contrib.sessions.models import Session
@@ -227,6 +227,41 @@ class TestScrubbers(TestCase):
 
         # Assertion that the faker data was removed
         self.assertFalse(FakeData.objects.filter(provider="company", content="Foo").exists())
+
+    @skipUnless(connection.vendor == "postgresql", "ArrayField requires PostgreSQL")
+    def test_faker_array_scrubber(self):
+        data = DataFactory.create(tags=["old1", "old2", "old3"])
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"tags": scrubbers.FakerArray("city", count=3)}):
+            call_command("scrub_data", stdout=StringIO())
+        data.refresh_from_db()
+
+        self.assertNotEqual(data.tags, ["old1", "old2", "old3"])
+        self.assertEqual(len(data.tags), 3)
+        for item in data.tags:
+            self.assertIsInstance(item, str)
+            self.assertTrue(len(item) > 0)
+
+    @skipUnless(connection.vendor == "postgresql", "ArrayField requires PostgreSQL")
+    def test_faker_array_scrubber_infers_provider(self):
+        data = DataFactory.create(tags=["old1", "old2"])
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"tags": scrubbers.FakerArray(count=2)}):
+            call_command("scrub_data", stdout=StringIO())
+        data.refresh_from_db()
+
+        self.assertEqual(len(data.tags), 2)
+        for item in data.tags:
+            self.assertIsInstance(item, str)
+
+    @skipUnless(connection.vendor == "postgresql", "ArrayField requires PostgreSQL")
+    def test_faker_array_scrubber_infers_provider_for_integerfield(self):
+        data = DataFactory.create(int_tags=[1, 2, 3])
+        with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"int_tags": scrubbers.FakerArray(count=3)}):
+            call_command("scrub_data", stdout=StringIO())
+        data.refresh_from_db()
+
+        self.assertEqual(len(data.int_tags), 3)
+        for item in data.int_tags:
+            self.assertIsInstance(item, int)
 
     def test_ifnotempty_null(self):
         data = DataFactory.create(description=None)
