@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: write
       id-token: write
-    uses: RegioHelden/github-reusable-workflows/.github/workflows/build-and-publish.yaml@v2.8.1
+    uses: RegioHelden/github-reusable-workflows/.github/workflows/build-and-publish.yaml@v2.9.0
     with:
       python-version: "3.12"
 
@@ -39,7 +39,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v8.1.0
+        uses: astral-sh/setup-uv@v8.2.0
 
       - name: Download the distribution packages
         uses: actions/download-artifact@v8.0.1
