@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=x LC_ALL=C.UTF-8 UV_COMPILE_BYTEC
 
 COPY system_dependencies.txt /app/
 
-RUN sys_deps=$(grep -v '^#' system_dependencies.txt | tr '\n' ' '); \
+RUN sys_deps=$(grep -v '^#' /app/system_dependencies.txt | tr '\n' ' '); \
     apt -y update && \
     apt -y --no-install-recommends install pipx $sys_deps && \
     apt clean && \
