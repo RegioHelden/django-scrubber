@@ -1,4 +1,3 @@
-import importlib
 import logging
 import warnings
 from inspect import getmembers
@@ -11,13 +10,14 @@ from django.core.management.base import CommandError
 from django.db.models import F, IntegerField, Model
 from django.db.models.expressions import Func
 from django.db.utils import DataError, IntegrityError
+from django.utils.module_loading import import_string
 
 from django_scrubber import settings_with_fallback
 from django_scrubber.models import FakeData
 from django_scrubber.scrubbers import Keep
 from django_scrubber.services.validator import ScrubberValidatorService
 
-logger = logging.getLogger("django_scrubber")
+logger = logging.getLogger(__name__)
 
 
 class StringToInt(Func):
@@ -105,20 +105,23 @@ class ScrubberService:
 
         global_scrubbers = settings_with_fallback("SCRUBBER_GLOBAL_SCRUBBERS")
 
-        # run only for selected model
-        if model is not None:
-            app_label, model_name = model.rsplit(".", 1)
-            try:
-                models = [apps.get_model(app_label=app_label, model_name=model_name)]
-            except LookupError as e:
-                raise CommandError("--model should be defined as <app_label>.<model_name>") from e
+        # A --model-scoped run only touches the requested model; a full run scrubs every model.
+        scrub_all_models = model is None
+
+        # Custom pre-scrubbing. Runs before any data is scrubbed - and before the model list is
+        # materialized - so a subclass may register/load additional models to be picked up below.
+        self.pre_scrub()
 
         # run for all models of all apps
-        else:
+        if scrub_all_models:
             models = apps.get_models()
-
-        # Custom pre-scrubbing
-        self.pre_scrub()
+        # run only for the selected model
+        else:
+            try:
+                app_label, model_name = model.rsplit(".", 1)
+                models = [apps.get_model(app_label=app_label, model_name=model_name)]
+            except (LookupError, ValueError) as e:
+                raise CommandError("--model should be defined as <app_label>.<model_name>") from e
 
         scrubber_apps_list = settings_with_fallback("SCRUBBER_APPS_LIST")
         for model_class in models:
@@ -127,13 +130,16 @@ class ScrubberService:
         # Custom post-scrubbing
         self.post_scrub()
 
-        # Truncate django admin log (may contain user-related data)
-        if settings_with_fallback("SCRUBBER_CLEAR_DJANGO_ADMIN_LOG"):
-            self._clear_django_admin_log()
+        # The following are global side effects that are not tied to a single model. Only run them
+        # on a full scrub, so a --model-scoped run never wipes global tables outside its scope.
+        if scrub_all_models:
+            # Truncate django admin log (may contain user-related data)
+            if settings_with_fallback("SCRUBBER_CLEAR_DJANGO_ADMIN_LOG"):
+                self._clear_django_admin_log()
 
-        # Truncate session data
-        if not keep_sessions:
-            Session.objects.all().delete()
+            # Truncate session data
+            if not keep_sessions:
+                Session.objects.all().delete()
 
         # Truncate Faker data
         if remove_fake_data:
@@ -230,10 +236,8 @@ def _parse_scrubber_class_from_string(path: str):
     Takes a string to a certain scrubber class and returns a python class definition - not an instance.
     """
     try:
-        module_name, class_name = path.rsplit(".", 1)
-        module = importlib.import_module(module_name)
-        return getattr(module, class_name)
-    except (ImportError, ValueError) as e:
+        return import_string(path)
+    except ImportError as e:
         raise ImportError(f'Mapped scrubber class "{path}" could not be found.') from e
 
 

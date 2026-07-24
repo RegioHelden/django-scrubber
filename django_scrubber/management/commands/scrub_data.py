@@ -1,6 +1,5 @@
-import importlib
-
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
+from django.utils.module_loading import import_string
 
 from django_scrubber import settings_with_fallback
 
@@ -22,9 +21,10 @@ def _get_scrubber_service_class() -> type[ScrubberService]:
     Resolve the scrubber service class configured via the ``SCRUBBER_SERVICE_CLASS`` setting.
     """
     path = settings_with_fallback("SCRUBBER_SERVICE_CLASS")
-    module_name, class_name = path.rsplit(".", 1)
-    module = importlib.import_module(module_name)
-    return getattr(module, class_name)
+    try:
+        return import_string(path)
+    except ImportError as e:
+        raise CommandError(f'SCRUBBER_SERVICE_CLASS "{path}" could not be imported: {e}') from e
 
 
 class Command(BaseCommand):
@@ -56,8 +56,13 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         service_class = _get_scrubber_service_class()
         service = service_class(stdout=self.stdout, stderr=self.stderr)
-        service.run(
+        if not service.run(
             model=kwargs.get("model"),
             keep_sessions=kwargs.get("keep_sessions", False),
             remove_fake_data=kwargs.get("remove_fake_data", False),
-        )
+        ):
+            # Preserve the historic contract: handle() returns False when the run was aborted
+            # (e.g. DEBUG is off or STRICT_MODE found undefined policies) so callers of
+            # call_command() can detect that nothing was scrubbed.
+            return False
+        return None
