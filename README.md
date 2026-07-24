@@ -98,6 +98,59 @@ Finally just run `./manage.py scrub_data` to **destructively** scrub the registe
 
 `--remove-fake-data` Will truncate the database table storing preprocessed data for the Faker library.
 
+## Customizing the scrubbing process
+
+Scrubbing the model fields is often only one part of anonymizing a database. You usually also want to run some
+custom logic around it, e.g. creating a known superuser to log in with, clearing caches, or resetting some
+project-specific tables. To make this pluggable, the `scrub_data` command delegates the whole process to a
+`ScrubberService`.
+
+The service is only about *behaviour*: subclass it and override the `pre_scrub` and/or `post_scrub` hooks to run
+custom logic around the scrubbing. It deliberately holds no configuration — what gets cleaned up is controlled
+through the `SCRUBBER_*` settings and the command-line arguments, just like everything else. This is entirely
+opt-in: if you don't configure a custom service, the default one is used and behaves exactly like before.
+
+```python
+# my_app/scrubbers.py
+from django.contrib.auth import get_user_model
+
+from django_scrubber.services.scrubber import ScrubberService
+
+
+class MyScrubberService(ScrubberService):
+    def pre_scrub(self):
+        # runs once *before* any data is scrubbed
+        ...
+
+    def post_scrub(self):
+        # runs once *after* all models have been scrubbed
+        self.create_superuser()
+        self.reset_something_else()
+
+    def create_superuser(self):
+        get_user_model().objects.create_superuser("admin", "admin@example.com", "admin")
+
+    def reset_something_else(self):
+        ...
+```
+
+Register your service via the `SCRUBBER_SERVICE_CLASS` setting:
+
+```python
+# settings.py
+SCRUBBER_SERVICE_CLASS = "my_app.scrubbers.MyScrubberService"
+```
+
+### Ordering of custom steps
+
+`pre_scrub` and `post_scrub` are plain methods, so you control the execution order simply by the order in which
+you call your steps inside them. There is intentionally no decorator-based registration — that would hide the
+order in which functions run and make it depend on definition order.
+
+The overall order is: `pre_scrub()` → scrub all model fields → `post_scrub()` → clear the Django admin log
+(if `SCRUBBER_CLEAR_DJANGO_ADMIN_LOG` is enabled) → truncate sessions (unless `--keep-sessions`) → truncate
+Faker source data (if `--remove-fake-data`).
+
 ## Built-In scrubbers
 
 ### Empty/Null
@@ -365,6 +418,27 @@ If your database vendor is not supported out of the box by the `Hash` scrubber (
 `SCRUBBER_HASH_TEMPLATE` defines an expression without length limitation, `SCRUBBER_HASH_TEMPLATE_MAX_LENGTH` must cut off at a specifc lengeht of `max_length`.
 
 (default: None)
+
+### `SCRUBBER_SERVICE_CLASS`:
+
+Dotted path to the service class orchestrating the `scrub_data` command. Point it at your own
+`ScrubberService` subclass to run custom logic before/after scrubbing or to change the cleanup behaviour.
+See [Customizing the scrubbing process](#customizing-the-scrubbing-process).
+
+(default: `"django_scrubber.services.scrubber.ScrubberService"`)
+
+### `SCRUBBER_CLEAR_DJANGO_ADMIN_LOG`:
+
+If `True`, the `django_admin_log` table (`django.contrib.admin.models.LogEntry`) is truncated after scrubbing.
+This table can contain user-related data (e.g. representations of changed objects), so you may want to clear it.
+
+This is **off by default on purpose**: historically `scrub_data` never touched the admin log, and turning it on
+by default would silently delete data for every existing project on upgrade. `django.contrib.admin` is not a
+dependency of this package; the `LogEntry` model is only imported when this setting is enabled. If it is enabled
+but `django.contrib.admin` is not in your `INSTALLED_APPS`, the cleanup is skipped with a warning instead of
+failing.
+
+(default: `False`)
 
 ## Logging
 
