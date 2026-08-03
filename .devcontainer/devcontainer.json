@@ -18,15 +18,27 @@
     "workspaceFolder": "/app",
     // set the remote user to connect as
     "remoteUser": "app",
+    // mount ssh folder and git config to be able to use ssh keys for commit signing
+    // see https://dev.wiki.regiohelden.de/git/ for more details
+    // make sure to use relative paths to the home directory in your configs!
+    "mounts": [
+        "source=${localEnv:HOME}/.ssh,target=/home/app/.ssh,type=bind,readonly",
+        "source=${localEnv:HOME}/.config/git,target=/home/app/.config/git,type=bind,readonly"
+    ],
+    // initialize command to create the mount points for ssh and git config
+    // if they don't exist to prevent mount errors
+    "initializeCommand": {
+        "mkdir-mount": "mkdir -p /home/app/.ssh /home/app/.config/git || true"
+    },
     // features to be installed in the dev container
     "features": {
         "ghcr.io/devcontainers/features/common-utils:2.5.9": {},
-        "ghcr.io/devcontainers/features/git:1.3.7": {},
+        "ghcr.io/devcontainers/features/git:1.3.8": {},
         "ghcr.io/devcontainers-extra/features/ruff:2.0.0": {
-            "version": "0.15.20"
+            "version": "0.16.1"
         },
         "ghcr.io/devcontainers-extra/features/ty:1.0.0": {
-            "version": "0.0.56"
+            "version": "0.0.65"
         }
     },
     // configure vscode
@@ -157,7 +169,7 @@
                 "ms-python.python",
                 // ty - A fast Python language server and linter written in Rust
                 // https://marketplace.visualstudio.com/items?itemName=astral-sh.ty
-                "astral-sh.ty@2026.60.0",
+                "astral-sh.ty@2026.64.0",
                 // Python docstring generator
                 // https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring
                 "njpwerner.autodocstring",
@@ -172,7 +184,7 @@
                 "aaron-bond.better-comments",
                 // Linting with ruff
                 // https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
-                "charliermarsh.ruff@2026.56.0",
+                "charliermarsh.ruff@2026.68.0",
                 // ---------------------------------------
                 // GIT
                 // ---------------------------------------

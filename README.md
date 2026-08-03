@@ -58,7 +58,7 @@ class MyModel(Model):
     somefield = CharField()
 
     class Scrubbers:
-        somefield = scrubbers.Hash('somefield')
+        somefield = scrubbers.Hash("somefield")
 ```
 
 Adding scrubbers globally, either by field name or field type:
@@ -67,7 +67,7 @@ Adding scrubbers globally, either by field name or field type:
 # (in settings.py)
 
 SCRUBBER_GLOBAL_SCRUBBERS = {
-    'name': scrubbers.Hash,
+    "name": scrubbers.Hash,
     EmailField: scrubbers.Hash,
 }
 ```
@@ -131,7 +131,7 @@ Simple hashing of content:
 ```python
 class Scrubbers:
     somefield = scrubbers.Hash  # will use the field itself as source
-    someotherfield = scrubbers.Hash('somefield')  # can optionally pass a different field name as hashing source
+    someotherfield = scrubbers.Hash("somefield")  # can optionally pass a different field name as hashing source
 ```
 
 Currently, this uses the MD5 hash which is supported in a wide variety of DB engines. Additionally, since security is
@@ -155,8 +155,13 @@ Wrapper around another single scrubber that only cleans the field if it already 
 class Scrubbers:
     somefield = scrubbers.IfNotEmpty(scrubbers.Lorem)
 
+
 class Scrubbers:
-    somefield = scrubbers.IfNotEmpty(scrubbers.Concat(scrubbers.Faker('city'), models.Value('@'), scrubbers.Faker('domain_name'), output_field=models.TextField()))
+    somefield = scrubbers.IfNotEmpty(
+        scrubbers.Concat(
+            scrubbers.Faker("city"), models.Value("@"), scrubbers.Faker("domain_name"), output_field=models.TextField()
+        )
+    )
 ```
 
 ### Concat
@@ -170,7 +175,12 @@ The following will generate random email addresses by hashing the user-part and 
 
 ```python
 class Scrubbers:
-    email = scrubbers.Concat(scrubbers.Hash('email'), models.Value('@'), scrubbers.Faker('domain_name'), output_field=models.EmailField())
+    email = scrubbers.Concat(
+        scrubbers.Hash("email"),
+        models.Value("@"),
+        scrubbers.Faker("domain_name"),
+        output_field=models.EmailField(),
+    )
 ```
 
 ### Faker
@@ -179,9 +189,9 @@ Replaces content with the help of [faker](https://pypi.python.org/pypi/Faker).
 
 ```python
 class Scrubbers:
-    first_name = scrubbers.Faker('first_name')
-    last_name = scrubbers.Faker('last_name')
-    past_date = scrubbers.Faker('past_date', start_date="-30d", tzinfo=None)
+    first_name = scrubbers.Faker("first_name")
+    last_name = scrubbers.Faker("last_name")
+    past_date = scrubbers.Faker("past_date", start_date="-30d", tzinfo=None)
 ```
 
 The replacements are done on the database-level and should therefore be able to cope with large amounts of data with
@@ -243,14 +253,19 @@ That's the way to go:
 ```python
 # scrubbers.py
 class UserScrubbers:
-    scrubbers.Faker('de_DE')
-    first_name = scrubbers.Faker('first_name')
-    last_name = scrubbers.Faker('last_name')
-    username = scrubbers.Faker('uuid4')
-    password = scrubbers.Faker('sha1')
+    scrubbers.Faker("de_DE")
+    first_name = scrubbers.Faker("first_name")
+    last_name = scrubbers.Faker("last_name")
+    username = scrubbers.Faker("uuid4")
+    password = scrubbers.Faker("sha1")
     last_login = scrubbers.Null
-    email = scrubbers.Concat(first_name, models.Value('.'), last_name, models.Value('@'),
-                             models.Value(settings.SCRUBBER_DOMAIN))
+    email = scrubbers.Concat(
+        first_name,
+        models.Value("."),
+        last_name,
+        models.Value("@"),
+        models.Value(settings.SCRUBBER_DOMAIN),
+    )
 ````
 
 2. Set up a mapping between your third-party model and your scrubber class
@@ -273,7 +288,7 @@ Example:
 
 ```python
 SCRUBBER_GLOBAL_SCRUBBERS = {
-    'name': scrubbers.Hash,
+    "name": scrubbers.Hash,
     EmailField: scrubbers.Hash,
 }
 ```
