@@ -33,7 +33,7 @@ classifiers = [
     "Topic :: Software Development",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["Faker>=20.0.0", "Django>=4.2,<6.1"]
+dependencies = ["Faker>=20.0.0", "Django>=4.2,<6.2"]
 
 [project.urls]
 Homepage = "https://github.com/RegioHelden/django-scrubber"
