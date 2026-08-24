@@ -1,5 +1,36 @@
 # Changelog
 
+## [v7.2.0](https://github.com/RegioHelden/django-scrubber/tree/v7.2.0) (2026-08-24)
+
+[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v7.1.0...v7.2.0)
+
+**Implemented enhancements:**
+
+- feat: add support for django 6.1 [\#290](https://github.com/RegioHelden/django-scrubber/pull/290) (@GitRon)
+
+**Merged pull requests:**
+
+- Update mysql Docker tag to v26 [\#284](https://github.com/RegioHelden/django-scrubber/pull/284) (@renovate[bot])
+- Update astral-sh/setup-uv action to v9 [\#281](https://github.com/RegioHelden/django-scrubber/pull/281) (@renovate[bot])
+- Update actions/setup-python action to v7 [\#280](https://github.com/RegioHelden/django-scrubber/pull/280) (@renovate[bot])
+- Update actions/checkout action to v7.0.1 [\#279](https://github.com/RegioHelden/django-scrubber/pull/279) (@renovate[bot])
+- Update dependency Faker to v40.36.0 [\#278](https://github.com/RegioHelden/django-scrubber/pull/278) (@renovate[bot])
+- Library updates, make ssh keys and git config available in devcontainer [\#277](https://github.com/RegioHelden/django-scrubber/pull/277) (@regiohelden-dev)
+- Update dependency django to v6.0.7 [\#276](https://github.com/RegioHelden/django-scrubber/pull/276) (@renovate[bot])
+- Update git VSCode feature to 1.3.7, ruff to 0.15.20, ruff VSCode to 2026.56.0, ty to 0.0.56, ty VSCode to 2026.60.0, astral-sh/setup-uv to 8.3.0, uv to 0.11.26 [\#274](https://github.com/RegioHelden/django-scrubber/pull/274) (@regiohelden-dev)
+- Update astral-sh/setup-uv action to v8.3.0 [\#273](https://github.com/RegioHelden/django-scrubber/pull/273) (@renovate[bot])
+- Update dependency Faker to v40.28.1 [\#272](https://github.com/RegioHelden/django-scrubber/pull/272) (@renovate[bot])
+- Update ruff to 0.15.19, ty to 0.0.53, actions/setup-python to 6.3.0 and uv to 0.11.24 [\#271](https://github.com/RegioHelden/django-scrubber/pull/271) (@regiohelden-dev)
+- Update actions/setup-python action to v6.3.0 [\#270](https://github.com/RegioHelden/django-scrubber/pull/270) (@renovate[bot])
+- Update ruff to 0.15.18, ruff VSCode to 2026.54.0, ty to 0.0.52, ty VSCode to 2026.58.0 and uv to 0.11.23 [\#269](https://github.com/RegioHelden/django-scrubber/pull/269) (@regiohelden-dev)
+- Update actions/checkout action to v7 [\#268](https://github.com/RegioHelden/django-scrubber/pull/268) (@renovate[bot])
+- Update ty to 0.0.50 [\#267](https://github.com/RegioHelden/django-scrubber/pull/267) (@regiohelden-dev)
+- Update ruff to 0.15.17, ruff VSCode to 2026.52.0, ty to 0.0.49, ty VSCode to 2026.56.0, RegioHelden/github-reusable-workflows to v2.9.0, astral-sh/setup-uv to 8.2.0, uv to 0.11.21 [\#266](https://github.com/RegioHelden/django-scrubber/pull/266) (@regiohelden-dev)
+- Update dependency Faker to v40.23.0 [\#265](https://github.com/RegioHelden/django-scrubber/pull/265) (@renovate[bot])
+- Update astral-sh/setup-uv action to v8.2.0 [\#264](https://github.com/RegioHelden/django-scrubber/pull/264) (@renovate[bot])
+- Update dependency django to v6.0.6 [\#263](https://github.com/RegioHelden/django-scrubber/pull/263) (@renovate[bot])
+- fix: move FakerArray documentation to the right place [\#262](https://github.com/RegioHelden/django-scrubber/pull/262) (@lociii)
+
 ## [v7.1.0](https://github.com/RegioHelden/django-scrubber/tree/v7.1.0) (2026-06-03)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v7.0.0...v7.1.0)
@@ -8,6 +39,9 @@
 
 - feat: add documentation for FakerArray [\#260](https://github.com/RegioHelden/django-scrubber/pull/260) (@lociii)
 - feat: add FakerArray scrubber. [\#259](https://github.com/RegioHelden/django-scrubber/pull/259) (@bodja)
+
+**Merged pull requests:**
+
 - Update dependency Faker to v40.21.0 [\#258](https://github.com/RegioHelden/django-scrubber/pull/258) (@renovate[bot])
 - Pin GitHub actions dependencies [\#257](https://github.com/RegioHelden/django-scrubber/pull/257) (@renovate[bot])
 - Update ty to 0.0.42, ty VSCode to 2026.52.0 and uv to 0.11.18 [\#256](https://github.com/RegioHelden/django-scrubber/pull/256) (@regiohelden-dev)
@@ -47,7 +81,7 @@
 
 - fix: prevent IfNotEmpty scrubber from replacing NULL values [\#226](https://github.com/RegioHelden/django-scrubber/pull/226) (@rh-sp)
 
-**Implemented enhancements:**
+**Merged pull requests:**
 
 - Updates common-utils to 2.5.7, ruff to 0.15.5, ty to 0.0.21, ty VSCode to 2026.22.0 and uv to 0.10.9 [\#225](https://github.com/RegioHelden/django-scrubber/pull/225) (@regiohelden-dev)
 - Update dependency faker to v40.8.0 [\#224](https://github.com/RegioHelden/django-scrubber/pull/224) (@renovate[bot])
@@ -55,6 +89,7 @@
 - Update dependency django to v6.0.3 [\#222](https://github.com/RegioHelden/django-scrubber/pull/222) (@renovate[bot])
 - Update uv to 0.10.7, ruff to 0.15.4, ty to 0.0.19, ty VSCode to 2026.18.0 and download-artifact to v8 [\#221](https://github.com/RegioHelden/django-scrubber/pull/221) (@regiohelden-dev)
 - Update uv to 0.10.6, ty to 0.0.18 and ty VSCode to 2026.16.0 [\#220](https://github.com/RegioHelden/django-scrubber/pull/220) (@regiohelden-dev)
+- docs: warn that IfNotEmpty eats NULL values [\#219](https://github.com/RegioHelden/django-scrubber/pull/219) (@rh-sp)
 - Update dependency faker to v40.5.1 [\#218](https://github.com/RegioHelden/django-scrubber/pull/218) (@renovate[bot])
 - Update ruff to 0.15.2 [\#217](https://github.com/RegioHelden/django-scrubber/pull/217) (@regiohelden-dev)
 - Update dependency psycopg to v3.3.3 [\#216](https://github.com/RegioHelden/django-scrubber/pull/216) (@renovate[bot])
@@ -66,37 +101,33 @@
 - Update uv to 0.9.29 [\#210](https://github.com/RegioHelden/django-scrubber/pull/210) (@regiohelden-dev)
 - Update dependency django to 6.0.2 [\#209](https://github.com/RegioHelden/django-scrubber/pull/209) (@renovate[bot])
 
-**Merged pull requests:**
-
-- docs: warn that IfNotEmpty eats NULL values [\#219](https://github.com/RegioHelden/django-scrubber/pull/219) (@rh-sp)
-
 ## [v6.0.5](https://github.com/RegioHelden/django-scrubber/tree/v6.0.5) (2026-02-02)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.4...v6.0.5)
-
-**Implemented enhancements:**
-
-- Update uv to 0.9.28 [\#207](https://github.com/RegioHelden/django-scrubber/pull/207) (@regiohelden-dev)
-- Update ty to 0.0.14 and ty VSCode extension to 2026.8.0 [\#204](https://github.com/RegioHelden/django-scrubber/pull/204) (@regiohelden-dev)
-- Update CI dependency faker to 40.1.2 [\#203](https://github.com/RegioHelden/django-scrubber/pull/203) (@renovate[bot])
 
 **Fixed bugs:**
 
 - Cast string to byte [\#206](https://github.com/RegioHelden/django-scrubber/pull/206) (@lociii)
 
+**Merged pull requests:**
+
+- Update uv to 0.9.28 [\#207](https://github.com/RegioHelden/django-scrubber/pull/207) (@regiohelden-dev)
+- Update ty to 0.0.14 and ty VSCode extension to 2026.8.0 [\#204](https://github.com/RegioHelden/django-scrubber/pull/204) (@regiohelden-dev)
+- Update CI dependency faker to 40.1.2 [\#203](https://github.com/RegioHelden/django-scrubber/pull/203) (@renovate[bot])
+
 ## [v6.0.4](https://github.com/RegioHelden/django-scrubber/tree/v6.0.4) (2026-01-27)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.3...v6.0.4)
 
-**Implemented enhancements:**
+**Fixed bugs:**
+
+- Fix Hash scrubber when using field name strings [\#199](https://github.com/RegioHelden/django-scrubber/pull/199) (@lociii)
+
+**Merged pull requests:**
 
 - Update VSCode extensions, enable renovate for local requirements [\#201](https://github.com/RegioHelden/django-scrubber/pull/201) (@regiohelden-dev)
 - Align postgresql credentials with other db vendors in dev environment [\#200](https://github.com/RegioHelden/django-scrubber/pull/200) (@regiohelden-dev)
 - Update VSCode feature common-utils to 2.5.6 and git to 1.3.5, ruff to 0.14.14 and uv to 0.9.27 [\#197](https://github.com/RegioHelden/django-scrubber/pull/197) (@regiohelden-dev)
-
-**Fixed bugs:**
-
-- Fix Hash scrubber when using field name strings [\#199](https://github.com/RegioHelden/django-scrubber/pull/199) (@lociii)
 
 ## [v6.0.3](https://github.com/RegioHelden/django-scrubber/tree/v6.0.3) (2026-01-26)
 
@@ -110,29 +141,29 @@
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.1...v6.0.2)
 
-**Implemented enhancements:**
-
-- Update ty to 0.0.13 and ty VSCode extension to 2026.6.0 [\#192](https://github.com/RegioHelden/django-scrubber/pull/192) (@regiohelden-dev)
-
 **Fixed bugs:**
 
 - Use more modern hashing algorithms in `Hash` scrubber [\#191](https://github.com/RegioHelden/django-scrubber/pull/191) (@lociii)
+
+**Merged pull requests:**
+
+- Update ty to 0.0.13 and ty VSCode extension to 2026.6.0 [\#192](https://github.com/RegioHelden/django-scrubber/pull/192) (@regiohelden-dev)
 
 ## [v6.0.1](https://github.com/RegioHelden/django-scrubber/tree/v6.0.1) (2026-01-20)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v6.0.0...v6.0.1)
 
-**Implemented enhancements:**
+**Fixed bugs:**
+
+- Truncate fake data exceeding FakeData.content max length [\#184](https://github.com/RegioHelden/django-scrubber/pull/184) (@lociii)
+
+**Merged pull requests:**
 
 - Update ty VSCode extension to 2026.4.0 [\#186](https://github.com/RegioHelden/django-scrubber/pull/186) (@regiohelden-dev)
 - Switch to non-slim Debian image to make VSCode features work [\#185](https://github.com/RegioHelden/django-scrubber/pull/185) (@regiohelden-dev)
 - Use ty instead of pylance as Python language server in VSCode [\#182](https://github.com/RegioHelden/django-scrubber/pull/182) (@regiohelden-dev)
 - Update ruff to 0.14.13 and uv to 0.9.26 [\#181](https://github.com/RegioHelden/django-scrubber/pull/181) (@regiohelden-dev)
 - Update ruff to 0.14.11 and ruff VSCode to 2026.34.0 [\#180](https://github.com/RegioHelden/django-scrubber/pull/180) (@regiohelden-dev)
-
-**Fixed bugs:**
-
-- Truncate fake data exceeding FakeData.content max length [\#184](https://github.com/RegioHelden/django-scrubber/pull/184) (@lociii)
 
 ## [v6.0.0](https://github.com/RegioHelden/django-scrubber/tree/v6.0.0) (2026-01-07)
 
@@ -144,6 +175,14 @@
 - Add support for Python 3.14, remove support for Python 3.9 [\#172](https://github.com/RegioHelden/django-scrubber/pull/172) (@lociii)
 
 **Implemented enhancements:**
+
+- Allow subclassing scrubbers [\#133](https://github.com/RegioHelden/django-scrubber/pull/133) (@rh-sp)
+
+**Fixed bugs:**
+
+- Fix timezone handling in tests [\#150](https://github.com/RegioHelden/django-scrubber/pull/150) (@lociii)
+
+**Merged pull requests:**
 
 - Update ruff to 0.14.10, update uv to 0.9.22, allow installation on Django 6.0 [\#178](https://github.com/RegioHelden/django-scrubber/pull/178) (@regiohelden-dev)
 - Update ruff to 0.14.9, ruff VSCode to 2025.32.0, github-reusable-workflows to 2.8.0, download-artifact to 7, uv to 0.9.17 [\#175](https://github.com/RegioHelden/django-scrubber/pull/175) (@regiohelden-dev)
@@ -183,18 +222,10 @@
 - Update reusable-workflows to 2.4.0 and setup-python to 6 [\#136](https://github.com/RegioHelden/django-scrubber/pull/136) (@regiohelden-dev)
 - Update uv to 0.8.15 [\#135](https://github.com/RegioHelden/django-scrubber/pull/135) (@regiohelden-dev)
 - Update uv to 0.8.14 [\#134](https://github.com/RegioHelden/django-scrubber/pull/134) (@regiohelden-dev)
-- Allow subclassing scrubbers [\#133](https://github.com/RegioHelden/django-scrubber/pull/133) (@rh-sp)
 - Update uv to 0.8.13 [\#132](https://github.com/RegioHelden/django-scrubber/pull/132) (@regiohelden-dev)
 - Update uv to 0.8.12 and reusable workflows to 2.3.0 [\#131](https://github.com/RegioHelden/django-scrubber/pull/131) (@regiohelden-dev)
-- Update uv to 0.8.2 [\#129](https://github.com/RegioHelden/django-scrubber/pull/129) (@regiohelden-dev)
-
-**Fixed bugs:**
-
-- Fix timezone handling in tests [\#150](https://github.com/RegioHelden/django-scrubber/pull/150) (@lociii)
-
-**Merged pull requests:**
-
 - Update uv to 0.8.3 [\#130](https://github.com/RegioHelden/django-scrubber/pull/130) (@regiohelden-dev)
+- Update uv to 0.8.2 [\#129](https://github.com/RegioHelden/django-scrubber/pull/129) (@regiohelden-dev)
 - Update uv to 0.8.0 [\#128](https://github.com/RegioHelden/django-scrubber/pull/128) (@regiohelden-dev)
 - Update uv to 0.7.21 [\#127](https://github.com/RegioHelden/django-scrubber/pull/127) (@regiohelden-dev)
 - Update uv to 0.7.19 [\#126](https://github.com/RegioHelden/django-scrubber/pull/126) (@regiohelden-dev)
@@ -220,13 +251,13 @@
 
 **Implemented enhancements:**
 
-- Update github-reusable-workflows to 2.2.3, fix changelog generation [\#109](https://github.com/RegioHelden/django-scrubber/pull/109) (@lociii)
 - Add support for non-integer primary keys [\#106](https://github.com/RegioHelden/django-scrubber/pull/106) (@lociii)
 - Drop SQLite MD5 workaround [\#105](https://github.com/RegioHelden/django-scrubber/pull/105) (@lociii)
 
 **Merged pull requests:**
 
 - Update uv to 0.7.14 [\#114](https://github.com/RegioHelden/django-scrubber/pull/114) (@regiohelden-dev)
+- Update github-reusable-workflows to 2.2.3, fix changelog generation [\#109](https://github.com/RegioHelden/django-scrubber/pull/109) (@lociii)
 - Update ruff VSCode integration to 2025.24.0 [\#107](https://github.com/RegioHelden/django-scrubber/pull/107) (@regiohelden-dev)
 - Update uv to 0.7.13 [\#103](https://github.com/RegioHelden/django-scrubber/pull/103) (@regiohelden-dev)
 
@@ -238,7 +269,6 @@
 
 - Remove ambiguity around callables and a logical operator [\#101](https://github.com/RegioHelden/django-scrubber/pull/101) (@lociii)
 -  Commands should use stdout instead of logging [\#98](https://github.com/RegioHelden/django-scrubber/pull/98) (@lociii)
-- Bump django in test dependencies from 5.2 to 5.2.2 [\#95](https://github.com/RegioHelden/django-scrubber/pull/95) (@lociii)
 
 **Fixed bugs:**
 
@@ -248,6 +278,7 @@
 
 - Fix documentation comments on some tests [\#99](https://github.com/RegioHelden/django-scrubber/pull/99) (@lociii)
 - Update uv to 0.7.12 [\#96](https://github.com/RegioHelden/django-scrubber/pull/96) (@regiohelden-dev)
+- Bump django in test dependencies from 5.2 to 5.2.2 [\#95](https://github.com/RegioHelden/django-scrubber/pull/95) (@lociii)
 - Update uv to 0.7.11 [\#94](https://github.com/RegioHelden/django-scrubber/pull/94) (@regiohelden-dev)
 
 ## [v5.0.0](https://github.com/RegioHelden/django-scrubber/tree/v5.0.0) (2025-05-26)
