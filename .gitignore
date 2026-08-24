@@ -42,6 +42,12 @@ htmlcov
 .bash_history
 compose.override.yaml
 
+# vscode
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
+.devcontainer/devcontainer-lock.json
+
 # Language specific
 __pycache__
 *.pyc
