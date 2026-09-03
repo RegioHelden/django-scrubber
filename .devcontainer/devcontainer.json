@@ -71,7 +71,7 @@
                 // python environment
                 "python.defaultInterpreterPath": "/home/app/venv/bin/python",
                 "python.analysis.extraPaths": [
-                    "/home/app/venv/lib/python3.12/site-packages/"
+                    "/home/app/venv/lib/python3.13/site-packages/"
                 ],
                 "python.analysis.useImportHeuristic": true,
                 "python.analysis.autoSearchPaths": true,
