@@ -6,7 +6,7 @@
 name = "django-scrubber"
 dynamic = ["version"]
 license = "MIT"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 description = "Data anonymizer for Django"
 readme = "README.md"
 keywords = ["django", "data protection", "scrubber", "scrub", "anonymize", "gdpr"]
@@ -25,7 +25,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -33,7 +32,7 @@ classifiers = [
     "Topic :: Software Development",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["Faker>=20.0.0", "Django>=4.2,<6.2"]
+dependencies = ["Faker>=20.0.0", "Django>=5.2,<6.2"]
 
 [project.urls]
 Homepage = "https://github.com/RegioHelden/django-scrubber"
