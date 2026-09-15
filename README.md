@@ -130,8 +130,7 @@ class MyScrubberService(ScrubberService):
     def create_superuser(self):
         get_user_model().objects.create_superuser("admin", "admin@example.com", "admin")
 
-    def reset_something_else(self):
-        ...
+    def reset_something_else(self): ...
 ```
 
 Register your service via the `SCRUBBER_SERVICE_CLASS` setting:
