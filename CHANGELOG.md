@@ -1,5 +1,30 @@
 # Changelog
 
+## [v8.0.0](https://github.com/RegioHelden/django-scrubber/tree/v8.0.0) (2026-09-15)
+
+[Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v7.2.0...v8.0.0)
+
+**Breaking changes:**
+
+- scrub\_validation should raise CommandError instead of using sys.exit [\#303](https://github.com/RegioHelden/django-scrubber/pull/303) (@lociii)
+- Drop support for Python 3.10 and Django 4.2, use Python 3.13 on devcontainer and tests [\#297](https://github.com/RegioHelden/django-scrubber/pull/297) (@regiohelden-dev)
+- Scrubber service wrapper with support for pre- and post scrub hooks, scrub\_data command now exits non-zero on error [\#283](https://github.com/RegioHelden/django-scrubber/pull/283) (@GitRon)
+
+**Merged pull requests:**
+
+- Update ruff to 0.16.7, ruff VSCode to 2026.80.0, ty to 0.0.81, uv to 0.12.14 and setup-uv to 10.1.0 [\#302](https://github.com/RegioHelden/django-scrubber/pull/302) (@regiohelden-dev)
+- Update dependency mysqlclient to v2.3.0 [\#301](https://github.com/RegioHelden/django-scrubber/pull/301) (@renovate[bot])
+- Update dependency Faker to v40.39.0 [\#300](https://github.com/RegioHelden/django-scrubber/pull/300) (@renovate[bot])
+- Update astral-sh/setup-uv action to v10.1.0 [\#299](https://github.com/RegioHelden/django-scrubber/pull/299) (@renovate[bot])
+- Update ruff to 0.16.6, ruff VSCode to 2026.78.0 and uv to 0.12.10 [\#298](https://github.com/RegioHelden/django-scrubber/pull/298) (@regiohelden-dev)
+- Remove tests for Python 3.10 and Django 4.2 [\#296](https://github.com/RegioHelden/django-scrubber/pull/296) (@lociii)
+- Update sync config to remove python 3.10 and django 4.2 support [\#294](https://github.com/RegioHelden/django-scrubber/pull/294) (@lociii)
+- Update ruff to 0.16.5, ruff VSCode to 2026.76.0, ty to 0.0.78, ty VSCode to 2026.70.0, action setup-uv to 10.0.1 and uv to 0.12.9 [\#293](https://github.com/RegioHelden/django-scrubber/pull/293) (@regiohelden-dev)
+- Update dependency psycopg to v3.3.5 [\#292](https://github.com/RegioHelden/django-scrubber/pull/292) (@renovate[bot])
+- Update dependency Faker to v40.38.0 [\#288](https://github.com/RegioHelden/django-scrubber/pull/288) (@renovate[bot])
+- Update astral-sh/setup-uv action to v10 [\#287](https://github.com/RegioHelden/django-scrubber/pull/287) (@renovate[bot])
+- Update dependency django to v6.1.1 [\#286](https://github.com/RegioHelden/django-scrubber/pull/286) (@renovate[bot])
+
 ## [v7.2.0](https://github.com/RegioHelden/django-scrubber/tree/v7.2.0) (2026-08-24)
 
 [Full Changelog](https://github.com/RegioHelden/django-scrubber/compare/v7.1.0...v7.2.0)
