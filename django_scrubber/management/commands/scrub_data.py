@@ -3,7 +3,8 @@ from django.utils.module_loading import import_string
 
 from django_scrubber import settings_with_fallback
 
-# Re-exported so that `from django_scrubber.management.commands.scrub_data import ...` keeps working.
+# ScrubberService is used below; the other names are re-exported so that
+# `from django_scrubber.management.commands.scrub_data import ...` keeps working.
 from django_scrubber.services.scrubber import (  # noqa: F401
     ScrubberService,
     StringToInt,
@@ -56,13 +57,8 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         service_class = self.get_scrubber_service_class()
         service = service_class(stdout=self.stdout, stderr=self.stderr)
-        if not service.run(
+        service.run(
             model=kwargs.get("model"),
             keep_sessions=kwargs.get("keep_sessions", False),
             remove_fake_data=kwargs.get("remove_fake_data", False),
-        ):
-            # handle() returns False when the run was aborted (e.g. DEBUG is off or STRICT_MODE
-            # found undefined policies) so callers of call_command() can detect that nothing
-            # was scrubbed.
-            return False
-        return None
+        )

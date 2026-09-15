@@ -150,6 +150,14 @@ The overall order is: `pre_scrub()` → scrub all model fields → `post_scrub()
 (if `SCRUBBER_CLEAR_DJANGO_ADMIN_LOG` is enabled) → truncate sessions (unless `--keep-sessions`) → truncate
 Faker source data (if `--remove-fake-data`).
 
+### Error handling
+
+`ScrubberService.run()` raises `django.core.management.base.CommandError` whenever a run is refused or fails —
+for example when `DEBUG` is off, when `SCRUBBER_STRICT_MODE` finds fields without a scrubbing policy, or when a
+scrubber hits a database error. `scrub_data` therefore prints the message on stderr and exits with a non-zero
+status, so a failed scrubbing run is never mistaken for a successful one in a shell or CI pipeline. Raise
+`CommandError` from your own `pre_scrub`/`post_scrub` hooks to get the same behaviour.
+
 ## Built-In scrubbers
 
 ### Empty/Null

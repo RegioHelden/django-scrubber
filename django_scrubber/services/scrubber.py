@@ -80,28 +80,27 @@ class ScrubberService:
         cleanup. Override in a subclass; see :meth:`pre_scrub` for ordering semantics.
         """
 
-    def run(self, *, model: str | None = None, keep_sessions: bool = False, remove_fake_data: bool = False) -> bool:
+    def run(self, *, model: str | None = None, keep_sessions: bool = False, remove_fake_data: bool = False) -> None:
         """
         Run the full scrubbing process. ``model``, ``keep_sessions`` and ``remove_fake_data`` mirror the
         ``scrub_data`` command arguments.
 
-        Returns ``True`` when scrubbing ran and ``False`` when it was aborted (e.g. because ``DEBUG`` is off).
+        Raises ``CommandError`` when the run is refused or fails, so the ``scrub_data`` command exits with a
+        non-zero status instead of silently doing nothing.
         """
         if not settings.DEBUG:
             # avoid logger, otherwise we might silently fail if we're on live and logging is being sent somewhere else
-            self._write_stderr("This command should only be run with DEBUG=True, to avoid running on live systems")
-            return False
+            raise CommandError("This command should only be run with DEBUG=True, to avoid running on live systems")
 
         # Check STRICT mode
         if settings_with_fallback("SCRUBBER_STRICT_MODE"):
             validator = ScrubberValidatorService()
             non_scrubbed_field_list = validator.process()
             if len(non_scrubbed_field_list) > 0:
-                self._write_stderr(
+                raise CommandError(
                     'When "SCRUBBER_STRICT_MODE" is enabled, you have to define a scrubbing policy '
                     "for every text-based field.",
                 )
-                return False
 
         global_scrubbers = settings_with_fallback("SCRUBBER_GLOBAL_SCRUBBERS")
 
@@ -144,8 +143,6 @@ class ScrubberService:
         # Truncate Faker data
         if remove_fake_data:
             FakeData.objects.all().delete()
-
-        return True
 
     def _clear_django_admin_log(self) -> None:
         # django.contrib.admin is not a hard dependency, so only touch it when it is actually installed

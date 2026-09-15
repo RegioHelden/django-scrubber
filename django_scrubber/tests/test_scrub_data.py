@@ -73,30 +73,31 @@ class TestScrubData(TestCase):
         self.assertRegex(self.user.first_name, "[a-f0-9]{32}")
 
     def test_scrub_data_debug_is_false(self):
-        err = StringIO()
-
-        with self.settings(DEBUG=False):
-            call_command("scrub_data", stdout=StringIO(), stderr=err)
-        output = err.getvalue()
+        with (
+            self.settings(DEBUG=False),
+            self.assertRaisesRegex(
+                CommandError,
+                "This command should only be run with DEBUG=True, to avoid running on live systems",
+            ),
+        ):
+            call_command("scrub_data", stdout=StringIO(), stderr=StringIO())
         self.user.refresh_from_db()
 
-        self.assertIn("This command should only be run with DEBUG=True, to avoid running on live systems", output)
         self.assertEqual(self.user.first_name, self.DEFAULT_USER_FIRST_NAME)
 
     @override_settings(SCRUBBER_STRICT_MODE=True)
     def test_scrub_data_strict_mode_enabled_scrubbing_blocked(self):
-        err = StringIO()
-
-        with self.settings(DEBUG=True):
-            call_command("scrub_data", stdout=StringIO(), stderr=err)
-        output = err.getvalue()
+        with (
+            self.settings(DEBUG=True),
+            self.assertRaisesRegex(
+                CommandError,
+                'When "SCRUBBER_STRICT_MODE" is enabled, '
+                "you have to define a scrubbing policy for every text-based field.",
+            ),
+        ):
+            call_command("scrub_data", stdout=StringIO(), stderr=StringIO())
         self.user.refresh_from_db()
 
-        self.assertIn(
-            'When "SCRUBBER_STRICT_MODE" is enabled, '
-            "you have to define a scrubbing policy for every text-based field.",
-            output,
-        )
         self.assertEqual(self.user.first_name, self.DEFAULT_USER_FIRST_NAME)
 
     def test_hash_simple_global_scrubber(self):
@@ -271,12 +272,10 @@ class TestScrubData(TestCase):
         with self.settings(DEBUG=True), self.assertRaisesRegex(CommandError, "app_label"):
             call_command("scrub_data", "--model", "auth.DoesNotExist", stdout=StringIO())
 
-    def test_handle_returns_false_when_aborted(self):
-        # programmatic callers rely on call_command() returning False when the run is aborted
-        with self.settings(DEBUG=False):
-            result = call_command("scrub_data", stdout=StringIO(), stderr=StringIO())
-
-        self.assertIs(result, False)
+    def test_handle_raises_command_error_when_aborted(self):
+        # an aborted run must fail loudly so shell/CI callers see a non-zero exit code
+        with self.settings(DEBUG=False), self.assertRaises(CommandError):
+            call_command("scrub_data", stdout=StringIO(), stderr=StringIO())
 
     def test_handle_returns_none_on_success(self):
         with self.settings(DEBUG=True, SCRUBBER_GLOBAL_SCRUBBERS={"first_name": scrubbers.Faker("first_name")}):
