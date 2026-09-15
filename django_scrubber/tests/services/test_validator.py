@@ -32,7 +32,7 @@ class ScrubberValidatorServiceTest(TestCase):
 
     @override_settings(SCRUBBER_MAPPING={"auth.User": "FullUserScrubbers"})
     @mock.patch(
-        "django_scrubber.management.commands.scrub_data._parse_scrubber_class_from_string",
+        "django_scrubber.services.scrubber._parse_scrubber_class_from_string",
         return_value=FullUserScrubbers,
     )
     def test_process_scrubber_mapper_all_fields(self, mocked_function):
@@ -46,7 +46,7 @@ class ScrubberValidatorServiceTest(TestCase):
 
     @override_settings(SCRUBBER_MAPPING={"auth.User": "PartUserScrubbers"})
     @mock.patch(
-        "django_scrubber.management.commands.scrub_data._parse_scrubber_class_from_string",
+        "django_scrubber.services.scrubber._parse_scrubber_class_from_string",
         return_value=PartUserScrubbers,
     )
     def test_process_scrubber_mapper_some_fields(self, mocked_function):

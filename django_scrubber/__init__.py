@@ -30,6 +30,8 @@ defaults = {
     ),
     "SCRUBBER_HASH_TEMPLATE": None,
     "SCRUBBER_HASH_TEMPLATE_MAX_LENGTH": None,
+    "SCRUBBER_SERVICE_CLASS": "django_scrubber.services.scrubber.ScrubberService",
+    "SCRUBBER_CLEAR_DJANGO_ADMIN_LOG": False,
 }
 
 
