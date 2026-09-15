@@ -2,6 +2,7 @@ from io import StringIO
 from unittest import mock
 
 from django.core.management import call_command
+from django.core.management.base import CommandError
 from django.test import TestCase, override_settings
 
 from django_scrubber.services.validator import ScrubberValidatorService
@@ -12,14 +13,12 @@ class TestScrubValidator(TestCase):
     def test_scrub_validator_regular(self):
         out = StringIO()
 
-        with self.assertRaises(SystemExit) as exc:
-            call_command(
-                "scrub_validation",
-                verbosity=3,
-                stdout=out,
-            )
+        call_command(
+            "scrub_validation",
+            verbosity=3,
+            stdout=out,
+        )
 
-        self.assertEqual(exc.exception.code, 0)
         self.assertIn("unscrubbed field(s) detected", out.getvalue())
         self.assertIn("However strict mode is deactivated and scrubbing is not enforced.", out.getvalue())
 
@@ -27,14 +26,14 @@ class TestScrubValidator(TestCase):
     def test_scrub_validator_strict_mode(self):
         out = StringIO()
 
-        with self.assertRaises(SystemExit) as exc:
+        with self.assertRaises(CommandError) as exc:
             call_command(
                 "scrub_validation",
                 verbosity=3,
                 stdout=out,
             )
 
-        self.assertEqual(exc.exception.code, 1)
+        self.assertEqual(exc.exception.returncode, 1)
         self.assertIn("unscrubbed field(s) detected", out.getvalue())
         self.assertNotIn("However strict mode is deactivated and scrubbing is not enforced.", out.getvalue())
 
