@@ -447,11 +447,10 @@ See [Customizing the scrubbing process](#customizing-the-scrubbing-process).
 If `True`, the `django_admin_log` table (`django.contrib.admin.models.LogEntry`) is truncated after scrubbing.
 This table can contain user-related data (e.g. representations of changed objects), so you may want to clear it.
 
-This is **off by default on purpose**: historically `scrub_data` never touched the admin log, and turning it on
-by default would silently delete data for every existing project on upgrade. `django.contrib.admin` is not a
-dependency of this package; the `LogEntry` model is only imported when this setting is enabled. If it is enabled
-but `django.contrib.admin` is not in your `INSTALLED_APPS`, the cleanup is skipped with a warning instead of
-failing.
+This is **off by default on purpose**: enabling it by default would silently delete data in projects that do not
+expect `scrub_data` to touch the admin log. `django.contrib.admin` is not a dependency of this package; the
+`LogEntry` model is only imported when this setting is enabled. If it is enabled but `django.contrib.admin` is
+not in your `INSTALLED_APPS`, the cleanup is skipped with a warning instead of failing.
 
 (default: `False`)
 

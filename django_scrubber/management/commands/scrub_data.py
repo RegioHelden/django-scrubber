@@ -3,7 +3,7 @@ from django.utils.module_loading import import_string
 
 from django_scrubber import settings_with_fallback
 
-# Re-exported for backwards compatibility: these used to live in this module and may be imported from here.
+# Re-exported so that `from django_scrubber.management.commands.scrub_data import ...` keeps working.
 from django_scrubber.services.scrubber import (  # noqa: F401
     ScrubberService,
     StringToInt,
@@ -14,17 +14,6 @@ from django_scrubber.services.scrubber import (  # noqa: F401
     _parse_scrubber_class_from_string,
     is_primary_key_integer,
 )
-
-
-def _get_scrubber_service_class() -> type[ScrubberService]:
-    """
-    Resolve the scrubber service class configured via the ``SCRUBBER_SERVICE_CLASS`` setting.
-    """
-    path = settings_with_fallback("SCRUBBER_SERVICE_CLASS")
-    try:
-        return import_string(path)
-    except ImportError as e:
-        raise CommandError(f'SCRUBBER_SERVICE_CLASS "{path}" could not be imported: {e}') from e
 
 
 class Command(BaseCommand):
@@ -53,16 +42,27 @@ class Command(BaseCommand):
             "them. If not, you will add a huge bunch of data to your dump size.",
         )
 
+    @classmethod
+    def get_scrubber_service_class(cls) -> type[ScrubberService]:
+        """
+        Resolve the scrubber service class configured via the ``SCRUBBER_SERVICE_CLASS`` setting.
+        """
+        path = settings_with_fallback("SCRUBBER_SERVICE_CLASS")
+        try:
+            return import_string(path)
+        except ImportError as e:
+            raise CommandError(f'SCRUBBER_SERVICE_CLASS "{path}" could not be imported: {e}') from e
+
     def handle(self, *args, **kwargs):
-        service_class = _get_scrubber_service_class()
+        service_class = self.get_scrubber_service_class()
         service = service_class(stdout=self.stdout, stderr=self.stderr)
         if not service.run(
             model=kwargs.get("model"),
             keep_sessions=kwargs.get("keep_sessions", False),
             remove_fake_data=kwargs.get("remove_fake_data", False),
         ):
-            # Preserve the historic contract: handle() returns False when the run was aborted
-            # (e.g. DEBUG is off or STRICT_MODE found undefined policies) so callers of
-            # call_command() can detect that nothing was scrubbed.
+            # handle() returns False when the run was aborted (e.g. DEBUG is off or STRICT_MODE
+            # found undefined policies) so callers of call_command() can detect that nothing
+            # was scrubbed.
             return False
         return None

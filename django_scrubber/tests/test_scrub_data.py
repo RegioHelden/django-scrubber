@@ -14,8 +14,8 @@ from django.utils import timezone
 
 from django_scrubber import scrubbers
 from django_scrubber.management.commands.scrub_data import (
+    Command,
     _get_model_scrubbers,
-    _get_scrubber_service_class,
     _parse_scrubber_class_from_string,
 )
 from django_scrubber.models import FakeData
@@ -286,11 +286,11 @@ class TestScrubData(TestCase):
 
     def test_get_scrubber_service_class_invalid_path_raises_command_error(self):
         with self.settings(SCRUBBER_SERVICE_CLASS="not_a_valid_dotted_path"), self.assertRaises(CommandError):
-            _get_scrubber_service_class()
+            Command.get_scrubber_service_class()
 
     def test_get_scrubber_service_class_missing_attribute_raises_command_error(self):
         with (
             self.settings(SCRUBBER_SERVICE_CLASS="django_scrubber.services.scrubber.DoesNotExist"),
             self.assertRaises(CommandError),
         ):
-            _get_scrubber_service_class()
+            Command.get_scrubber_service_class()
