@@ -24,27 +24,22 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
           - "3.14"
         django:
-          - "4.2"
           - "5.2"
           - "6.0"
+          - "6.1"
         database:
           - sqlite
           - mysql
           - postgres
         exclude:
-          - django: "4.2"
-            python-version: "3.13"
-          - django: "4.2"
-            python-version: "3.14"
           - django: "6.0"
-            python-version: "3.10"
-          - django: "6.0"
+            python-version: "3.11"
+          - django: "6.1"
             python-version: "3.11"
 
     services:
@@ -88,7 +83,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v9.0.0
+        uses: astral-sh/setup-uv@v10.0.1
 
       - name: Install requirements
         run: uv pip install --system -r requirements-ci.txt

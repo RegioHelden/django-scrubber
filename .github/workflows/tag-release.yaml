@@ -19,6 +19,6 @@ jobs:
       contents: write
     uses: RegioHelden/github-reusable-workflows/.github/workflows/tag-release.yaml@v2.9.0
     with:
-      python-version: "3.12"
+      python-version: "3.13"
     secrets:
       personal-access-token: "${{ secrets.COMMIT_KEY }}"

@@ -2,7 +2,7 @@
 # Managed by modulesync - DO NOT EDIT
 # -------------------------------------------------
 
-FROM python:3.12-bookworm
+FROM python:3.13-bookworm
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=x LC_ALL=C.UTF-8 UV_COMPILE_BYTECODE=0
@@ -28,7 +28,7 @@ COPY --chown=app requirements* /app/
 
 ENV PATH=/home/app/.local/bin:/home/app/venv/bin:${PATH} DJANGO_SETTINGS_MODULE=example.settings
 
-RUN pipx install --force uv==0.12.1 && \
+RUN pipx install --force uv==0.12.10 && \
     uv venv ~/venv --clear && \
     uv pip install --no-cache --upgrade --requirements /app/requirements-test.txt && \
     uv cache clean
