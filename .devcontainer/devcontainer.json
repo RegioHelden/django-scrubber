@@ -38,7 +38,7 @@
             "version": "0.16.9"
         },
         "ghcr.io/devcontainers-extra/features/ty:1.0.0": {
-            "version": "0.0.81"
+            "version": "0.0.84"
         }
     },
     // configure vscode
@@ -169,7 +169,7 @@
                 "ms-python.python",
                 // ty - A fast Python language server and linter written in Rust
                 // https://marketplace.visualstudio.com/items?itemName=astral-sh.ty
-                "astral-sh.ty@2026.70.0",
+                "astral-sh.ty@2026.74.0",
                 // Python docstring generator
                 // https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring
                 "njpwerner.autodocstring",
