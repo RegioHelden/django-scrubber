@@ -184,7 +184,7 @@
                 "aaron-bond.better-comments",
                 // Linting with ruff
                 // https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
-                "charliermarsh.ruff@2026.84.0",
+                "charliermarsh.ruff@2026.88.0",
                 // ---------------------------------------
                 // GIT
                 // ---------------------------------------
