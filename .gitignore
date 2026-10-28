@@ -38,6 +38,7 @@ htmlcov
 .pydevproject
 .mypy_cache
 .ruff_cache
+.venv
 .ipython
 .bash_history
 compose.override.yaml
